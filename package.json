@@ -1,0 +1,24 @@
+{
+  "name": "react-practice",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "latest",
+    "react-dom": "latest",
+    "react-redux": "latest",
+    "react-scripts": "latest",
+    "redux": "latest"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "latest",
+    "@babel/preset-react": "latest",
+    "babelify": "latest",
+    "html-loader": "latest",
+    "typescript": "latest",
+    "webpack": "latest",
+    "webpack-cli": "latest",
+    "html-webpack-plugin": "latest",
+    "mini-css-extract-plugin": "latest",
+    "babel-register": "latest"
+  }
+}

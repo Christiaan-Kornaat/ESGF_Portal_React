@@ -32,7 +32,7 @@ export class XPFWrapper extends Component {
         };
 
         return (
-            <section>
+            <section class="row">
                 <ESGFFilterList
                     title={"Filters"}
                     properties={items}/>

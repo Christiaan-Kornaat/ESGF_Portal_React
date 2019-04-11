@@ -5,14 +5,14 @@ export class ESGFFilterList extends Component {
         let title = this.props.title;
 
         let items = this.props.properties.map(item =>
-            <li class="list-group-item">{item.shortName} ({item.propertyCount})</li>
+            <li className="list-group-item">{item.shortName} ({item.propertyCount})</li>
         );
 
         return (
-            <div class="col-md-4">
+            <div className="col-sm">
                 <h3>{title}</h3>
                 <ul 
-                    class="list-group list-group-flush"
+                    className="list-group list-group-flush"
                 >
                     {items}
                 </ul>

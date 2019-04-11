@@ -12,13 +12,15 @@
   "devDependencies": {
     "@babel/preset-env": "latest",
     "@babel/preset-react": "latest",
+    "babel-register": "latest",
     "babelify": "latest",
     "html-loader": "latest",
-    "typescript": "latest",
-    "webpack": "latest",
-    "webpack-cli": "latest",
     "html-webpack-plugin": "latest",
     "mini-css-extract-plugin": "latest",
-    "babel-register": "latest"
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "typescript": "latest",
+    "webpack": "latest",
+    "webpack-cli": "latest"
   }
 }

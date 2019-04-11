@@ -1,16 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import initializeStore from './initializeReduxStore';
-import App from './App.jsx';
-import {initialiseLikeButton} from "./search-list/like_button";
+import {ESGFFilterList} from './components/expanded-property-finder/esgf-filter-list/esgf-filter-list.component';
 
 window.addEventListener("load", () => {
-    console.log('loaded');
-
-    // ReactDOM.render(<Provider store={initializeStore()}><App/></Provider>, document.getElementById('app'));//TODO
-    initialiseLikeButton();
-
-    console.log("done");
+    const domContainer = document.getElementById('test');
+    ReactDOM.render((new ESGFFilterList({})).render(), domContainer);
 });
 

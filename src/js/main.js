@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {ESGFFilterList} from './components/expanded-property-finder/esgf-filter-list/esgf-filter-list.component';
+import {XPFWrapper} from "./components/expanded-property-finder/wrapper/xpf-wrapper.component";
 
 window.addEventListener("load", () => {
     const domContainer = document.getElementById('test');
-    ReactDOM.render((new ESGFFilterList({})).render(), domContainer);
+    ReactDOM.render((new XPFWrapper({})).render(), domContainer);
 });
 

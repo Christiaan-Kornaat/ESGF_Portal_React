@@ -13,19 +13,14 @@ export class ESGFPropertyList extends Component {
 
         let items = this.props.properties.items.map(item =>
             <li 
-            class="list-group-item"
-            onClick={createOnSelect(item)}
-            >
-                {item}
-            </li>
+            className="list-group-item"
+            onClick={createOnSelect(item)} >{item}</li>
         );
 
         return (
-            <div class="col-md-4">
-                <h3>{title}</h3>
-                <ul 
-                    class="list-group list-group-flush"
-                >
+            <div className="col-sm">
+                <h3 className='text-center'>{title}</h3>
+                <ul className='list-group list-group-flush'>
                     {items}
                 </ul>
             </div>

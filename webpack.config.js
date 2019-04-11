@@ -20,7 +20,9 @@ module.exports = {
     mode: 'development',
     output: {
         path: path.resolve(OUTPUT_PATH),
-        filename: 'react-practice.js'
+        filename: 'esgf-search.js',
+        hotUpdateChunkFilename: 'hot/hot-update.js',
+        hotUpdateMainFilename: 'hot/hot-update.json'
     },
     devtool: 'source-map',
     module: {

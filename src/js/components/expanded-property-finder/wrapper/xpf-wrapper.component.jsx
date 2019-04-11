@@ -4,7 +4,17 @@ import {ESGFFilterList} from "../esgf-filter-list/esgf-filter-list.component";
 import {ESGFPropertyList} from "../esgf-property-list/esgf-property-list.component";
 
 export class XPFWrapper extends Component {
+
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            selectedItem: null
+        }
+    }
+
     render() {
+
         let items = (new ESGFFilterProvider()).provide();
         let properties = [
             "test",
@@ -15,17 +25,29 @@ export class XPFWrapper extends Component {
             "test2"
         ];
 
+        let handleSelect = (item) => {
+            this.state.selectedItem = item;
+
+            console.log(this.state.selectedItem);
+        };
+
         return (
-            <section>
+            <section class="row">
                 <ESGFFilterList
                     title={"Filters"}
-                    items={items}/>
+                    properties={items}/>
                 <ESGFPropertyList
                     title={"Properties"}
-                    items={properties}/>
+                    properties={{
+                        items: properties,
+                        onSelect: handleSelect
+                    }}/>
                 <ESGFPropertyList
                     title={"Selected properties"}
-                    items={selected_properties}/>
+                    properties={{
+                        items: selected_properties,
+                        onSelect: handleSelect
+                    }}/>
             </section>
         )
     }

@@ -13,7 +13,7 @@ export class QFTile extends Component {
 
         return (
             <div className="qf-tile">
-                <div className="qf-tile-header" style={style}><i className={icon}></i> {title}</div>
+                <div className="qf-tile-header" style={style}><i className={icon}></i>{title}</div>
                 <ul>{items}</ul>
             </div>
         )

@@ -20,7 +20,7 @@ module.exports = {
     mode: 'development',
     output: {
         path: path.resolve(OUTPUT_PATH),
-        filename: 'react-practice.js'
+        filename: 'esgf-search.js'
     },
     devtool: 'source-map',
     module: {

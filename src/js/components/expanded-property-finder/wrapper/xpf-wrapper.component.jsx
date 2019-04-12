@@ -7,11 +7,22 @@ export class XPFWrapper extends Component {
 
 
     constructor(props) {
-        super(props)
+        super(props);
+
         this.state = {
-            selectedItem: null
-        }
+            selectedProperties: [],
+        };
+
+        this.selectProperty = this.selectProperty.bind(this);
     }
+
+    selectProperty(item) {
+        if (this.state.selectedProperties.includes(item)) return;
+
+        let selectedProperties = this.state.selectedProperties.concat(item);
+
+        this.setState(() => ({selectedProperties: selectedProperties}));
+    };
 
     render() {
 
@@ -21,18 +32,12 @@ export class XPFWrapper extends Component {
             "test2",
         ];
 
-        let selected_properties = [
-            "test2"
-        ];
+        let selectProperty = this.selectProperty;
 
-        let handleSelect = (item) => {
-            this.state.selectedItem = item;
-
-            console.log(this.state.selectedItem);
-        };
+        let selectedProperties = this.state.selectedProperties;
 
         return (
-            <section class="row">
+            <section className='row'>
                 <ESGFFilterList
                     title={"Filters"}
                     properties={items}/>
@@ -40,13 +45,13 @@ export class XPFWrapper extends Component {
                     title={"Properties"}
                     properties={{
                         items: properties,
-                        onSelect: handleSelect
+                        onSelect: selectProperty
                     }}/>
                 <ESGFPropertyList
                     title={"Selected properties"}
                     properties={{
-                        items: selected_properties,
-                        onSelect: handleSelect
+                        items: selectedProperties,
+                        onSelect: selectProperty
                     }}/>
             </section>
         )

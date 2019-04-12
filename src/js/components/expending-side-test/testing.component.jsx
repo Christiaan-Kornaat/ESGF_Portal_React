@@ -17,8 +17,9 @@ export class Testing extends React.Component {
     render() {
         return (
             <Sidebar
-                sidebar={<b>presets hier</b>}
+                sidebar={<b>presets hier</b>} 
                 open={this.state.sidebarOpen}
+                defaultSidebarWidth={200}
                 sidebarClassName={"qf-sidebar"}
                 overlayClassName={"qf-overlay"}
                 rootClassName={"qf-root"}

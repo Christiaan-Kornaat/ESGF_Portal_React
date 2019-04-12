@@ -26,7 +26,7 @@ export class ESGFPropertyList extends Component {
         );
 
         return (
-            <div className="col-md-4">
+            <div className="col-sm border-right border-left">
                 <h3 className='text-center'>{title}</h3>
 
                 <div className="input-group md-form form-sm form-2 pl-0 mb-4">

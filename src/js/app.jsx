@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {XPFWrapper} from "./components/expanded-property-finder/wrapper/xpf-wrapper.component";
+import {ESGFSearchPortal} from "./components/esgf-search-portaal/esgf-search-portaal.component";
 
 class App extends Component {
     render() {
         return (
             <div>
-                <XPFWrapper/>
+                <ESGFSearchPortal />
             </div>
         );
     }

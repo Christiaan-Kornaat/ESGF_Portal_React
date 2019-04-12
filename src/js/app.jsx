@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import XPFWrapper from "./components/expanded-property-finder/wrapper/xpf-wrapper.component";
 import {ESGFFilterProvider} from "./providers/esgf-filter/esgf-filter.provider";
 import {ESGFFilterServiceMock} from "./services/esgf-filter/esgf-filter.service.mock";
+import {ESGFSearchPortal} from "./components/esgf-search-portaal/esgf-search-portal.component";
 
 class App extends Component {
     render() {
@@ -10,7 +10,7 @@ class App extends Component {
 
         return (
             <div>
-                <XPFWrapper filterProvider={filterProvider}/>
+                <ESGFSearchPortal filterProvider={filterProvider}/>
             </div>
         );
     }

@@ -45,11 +45,11 @@ export default class XPFWrapper extends Component {
         let {properties, selectedProperties} = this.state;
 
         let searchFunc = (query, items) => {
-            console.log(items);
-            return items.filter(({shortName: name}) => name.includes(query));
+
+            return query == null || query.trim() === "" ? items : items.filter(({shortName: name}) => name.includes(query));
         };
         let searchPropertyFunc = (query, items) =>
-            items.filter((property) => property.includes(query));
+            query == null || query.trim() === "" ? items : items.filter((property) => property.includes(query));
 
         let filterListItemFactory = item => <li className="list-group-item">{item.shortName}</li>;
 
@@ -63,19 +63,19 @@ export default class XPFWrapper extends Component {
 
         return (
             <section className='row'>
-                <XpfColumn className="col-sm"
+                <XpfColumn className="col-sm border-right border-left"
                            tabs={["Filters"]}
                            searchFunction={searchFunc}
                            items={items}
                            listItemFactory={filterListItemFactory}/>
 
-                <XpfColumn className="col-md-4"
+                <XpfColumn className="col-sm border-right border-left"
                            tabs={["Properties"]}
                            searchFunction={searchPropertyFunc}
                            items={properties}
                            listItemFactory={propertyListItemFactoryFactory(selectProperty)}/>
 
-                <XpfColumn className="col-md-4"
+                <XpfColumn className="col-sm border-right border-left"
                            tabs={["Selected properties"]}
                            searchFunction={searchPropertyFunc}
                            items={selectedProperties}

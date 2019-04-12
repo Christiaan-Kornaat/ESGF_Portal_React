@@ -3,7 +3,6 @@ import {ESGFFilterDTO} from "../../model/dto/ESGFFilterDTO";
 export class ESGFFilterProvider {
 
     constructor(filterService) {
-
         this.filterService = filterService;
     }
 

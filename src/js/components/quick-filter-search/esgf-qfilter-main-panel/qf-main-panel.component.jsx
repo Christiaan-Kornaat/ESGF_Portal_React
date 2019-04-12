@@ -4,8 +4,13 @@ import { QFTile } from "../esgf-qfilter-tile/qf-tile.component";
 import { Testing } from "../../expending-side-test/testing.component";
 
 export class QFMainPanel extends Component {
+    constructor(props){
+        super(props);
+        let {filterProvider} = props;
+        this._filterProvider = filterProvider;
+    }
     render() {
-        let items = (new ESGFFilterProvider()).provide();
+        let items = this._filterProvider.provide();
 
         return (
             <div className="qf-main-container container">

@@ -13,6 +13,8 @@ export default class XPFWrapper extends Component {
             ]
         };
 
+        console.log(props);
+
         this.filterProvider = props.filterProvider;
 
         this.selectProperty = this.selectProperty.bind(this);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ESGFFilterProvider } from "../../../providers/esgf-filter/esgf-filter.provider";
 import { QFTile } from "../esgf-qfilter-tile/qf-tile.component";
+import { Testing } from "../../expending-side-test/testing.component";
 
 export class QFMainPanel extends Component {
     render() {
@@ -8,6 +9,7 @@ export class QFMainPanel extends Component {
 
         return (
             <div className="qf-main-container container">
+                <Testing />
                 <div className="d">
                     <QFTile
                         title={"Temperature"}
@@ -22,7 +24,7 @@ export class QFMainPanel extends Component {
                     <QFTile
                         title={"Wind"}
                         color={"#dd14fc"}
-                        icon={"fas fa-tint"}
+                        icon={"fas fa-tint"}å
                         properties={items} />
                     <QFTile
                         title={"Evaporation"}

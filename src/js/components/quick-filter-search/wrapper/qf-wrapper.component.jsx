@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { QFTile } from "../esgf-qfilter-tile/qf-tile.component";
-import { Testing } from "../../expending-side-test/testing.component";
+import { QFSidebar } from "../qf-sidebar/testing.component";
 
 export class QFWrapper extends Component {
     constructor(props) {
@@ -28,7 +28,7 @@ export class QFWrapper extends Component {
         return (
             <section className="qf-wrapper">
                 <div className="qf-main-container container">
-                    <Testing />
+                    <QFSidebar />
                     <div className="tiles">    
                         {tiles} 
                     </div>

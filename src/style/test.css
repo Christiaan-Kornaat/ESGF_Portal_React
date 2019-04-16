@@ -15,6 +15,17 @@
     background: #FFF;
 }
 
+.tiles{
+    flex-flow: row wrap;
+    width: 100%;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+}
+
 .qf-main-container {
     padding: 0px;
 }

@@ -83,22 +83,24 @@ export default class XPFWrapper extends Component {
                 </li>;
         };
 
+        let testObject = { Name: "Something" };
+
         return (
             <section className='XPF-Wrapper'>
                 <XpfColumn className="QF"
-                           tabs={["Filters"]}
+                           tabs={ { "Filters": testObject, "Presets": testObject } }
                            searchFunction={searchFunc}
                            items={items}
                            listItemFactory={filterListItemFactory}/>
 
                 <XpfColumn className="XPF"
-                           tabs={["Properties"]}
+                           tabs={ { "Properties": testObject } }
                            searchFunction={searchPropertyFunc}
                            items={properties}
                            listItemFactory={propertyListItemFactoryFactory(selectProperty)}/>
 
                 <XpfColumn className="QFC"
-                           tabs={["Selected properties"]}
+                           tabs={ { "Selected properties": testObject } }
                            searchFunction={searchPropertyFunc}
                            items={selectedProperties}
                            listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>

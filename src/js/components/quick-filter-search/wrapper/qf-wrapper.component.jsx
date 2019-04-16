@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { QFTile } from "../esgf-qfilter-tile/qf-tile.component";
-import { QFSidebar } from "../qf-sidebar/testing.component";
+import { QFSidebar } from "../qf-sidebar/qfsidebar.component";
 
 export class QFWrapper extends Component {
     constructor(props) {

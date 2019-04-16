@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "autoprefixer": "^9.5.1",
+    "bootstrap": "^4.3.1",
+    "css-loader": "^2.1.1",
+    "jquery": "^3.4.0",
+    "postcss-loader": "^3.0.0",
+    "precss": "^4.0.0",
     "react": "latest",
     "react-bootstrap": "^1.0.0-beta.6",
     "react-bootstrap-tabs": "^1.0.2",
@@ -11,7 +17,8 @@
     "react-scripts": "latest",
     "react-sidebar": "^3.0.2",
     "react-slide-menu": "^0.5.1",
-    "redux": "latest"
+    "redux": "latest",
+    "style-loader": "^0.23.1"
   },
   "devDependencies": {
     "@babel/preset-env": "latest",

@@ -6,6 +6,7 @@ export default class XPFWrapper extends Component {
         super(props);
 
         this.state = {
+            selectedFilter: null,
             selectedProperties: [],
             properties: [
                 "test",
@@ -15,10 +16,25 @@ export default class XPFWrapper extends Component {
 
         this.filterProvider = props.filterProvider;
 
+        this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
     }
 
+    /**
+     *
+     * @param {ESGFFilterDTO}filter
+     */
+    selectFilter(filter) {
+        if (this.state.selectedFilter === filter) return;
+
+        this.setState({selectedFilter: filter, properties: filter.properties});
+    }
+
+    /**
+     *
+     * @param {string}property
+     */
     selectProperty(property) {
         if (this.state.selectedProperties.includes(property)) return;
 
@@ -27,6 +43,10 @@ export default class XPFWrapper extends Component {
         this.setState(() => ({selectedProperties: selectedProperties}));
     };
 
+    /**
+     *
+     * @param {string}property
+     */
     deselectProperty(property) {
         if (!this.state.selectedProperties.includes(property)) return;
 
@@ -36,11 +56,11 @@ export default class XPFWrapper extends Component {
     };
 
     render() {
-        let {selectProperty, deselectProperty} = this;
+        let {selectProperty, deselectProperty, filterProvider, state} = this;
 
-        let items = this.filterProvider.provide(); //FIXME TEMP
+        let items = filterProvider.provide(); //FIXME TEMP
 
-        let {properties, selectedProperties} = this.state;
+        let {properties, selectedProperties} = state;
 
         let searchFunc = (query, items) => {
             return query == null || query.trim() === "" ? items : items.filter(({shortName: name}) => name.includes(query));
@@ -48,10 +68,16 @@ export default class XPFWrapper extends Component {
         let searchPropertyFunc = (query, items) =>
             query == null || query.trim() === "" ? items : items.filter(property => property.includes(query));
 
-            {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */}
-        let filterListItemFactory = item => <li className="list-group-item">{item.shortName}</li>;
+        {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */
+        }
+        let filterListItemFactory = item =>
+            <li className="list-group-item"
+                onClick={() => this.selectFilter(item)}>
+                {item.shortName}
+            </li>;
 
-            {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */}
+        {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */
+        }
         let propertyListItemFactoryFactory = (onClick) => {
             return item =>
                 <li className="list-group-item"

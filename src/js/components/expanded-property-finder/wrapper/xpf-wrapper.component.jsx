@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import XpfColumn from "../column/xpf-column";
+import XpfColumn from "../column/xpf-column.component";
 
 export default class XPFWrapper extends Component {
     constructor(props) {
@@ -48,8 +48,10 @@ export default class XPFWrapper extends Component {
         let searchPropertyFunc = (query, items) =>
             query == null || query.trim() === "" ? items : items.filter(property => property.includes(query));
 
+            {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */}
         let filterListItemFactory = item => <li className="list-group-item">{item.shortName}</li>;
 
+            {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */}
         let propertyListItemFactoryFactory = (onClick) => {
             return item =>
                 <li className="list-group-item"
@@ -59,20 +61,20 @@ export default class XPFWrapper extends Component {
         };
 
         return (
-            <section className='row'>
-                <XpfColumn className="col-sm border-right border-left"
+            <section className='XPF-Wrapper'>
+                <XpfColumn className="QF"
                            tabs={["Filters"]}
                            searchFunction={searchFunc}
                            items={items}
                            listItemFactory={filterListItemFactory}/>
 
-                <XpfColumn className="col-sm border-right border-left"
+                <XpfColumn className="XPF"
                            tabs={["Properties"]}
                            searchFunction={searchPropertyFunc}
                            items={properties}
                            listItemFactory={propertyListItemFactoryFactory(selectProperty)}/>
 
-                <XpfColumn className="col-sm border-right border-left"
+                <XpfColumn className="QFC"
                            tabs={["Selected properties"]}
                            searchFunction={searchPropertyFunc}
                            items={selectedProperties}

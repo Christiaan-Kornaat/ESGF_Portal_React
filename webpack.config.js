@@ -12,7 +12,7 @@ const OUTPUT_PATH = __dirname + "/dist";
 
 const HTML_PATH = "./src/html";
 const JS_PATH = "./src/js";
-const CSS_PATH = "./src/css";
+const CSS_PATH = "./style";
 
 module.exports = {
     entry: JS_PATH + '/main.js',
@@ -52,7 +52,21 @@ module.exports = {
             }, //HTML
             {
                 test: /\.(s*)css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader']
+                use: [
+                    MiniCssExtractPlugin.loader, 
+                    "css-loader",
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            plugins: function(){
+                                return [
+                                    require("precss"),
+                                    require("autoprefixer")]
+                            }
+                        }
+                    },
+                    "sass-loader"
+                ]
             }, //CSS
             {
                 test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.woff2$|\.eot$|\.ttf$|\.wav$|\.mp3$/,

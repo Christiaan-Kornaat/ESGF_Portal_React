@@ -1,0 +1,63 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
+.ESGFSearchPortal {
+    @extend .container;
+
+    .Tabs {
+        .Tab {
+            .Hide {
+                @extend .ml-auto, .active;
+            }
+        }
+    }
+
+    .XPF-Wrapper {
+        @extend .row;
+
+        .QF {
+            @extend .col-sm;
+        }
+
+        .XPF {
+            @extend .col-sm, .border-right, .border-left;
+        }
+
+        .QFC {
+            @extend .col-sm;
+        }
+
+        .Center-Title{
+            @extend .text-center;
+        }
+
+        .Search {
+            @extend .input-group, .md-form, .form-sm, .form-2, .pl-0, .mb-4;
+
+            .SearchBar {
+                @extend .form-control, .my-0, .py-1;
+                font-size: 12px;
+            }
+
+            .SearchButton {
+                @extend .input-group-append;
+
+                .Button {
+                    @extend .input-group-text, .cyan, .lighten-2;
+                }
+
+                .Button-Icon {
+                    @extend .fas, .fa-search, .text-gray;
+                }
+
+            }
+
+        }
+
+        .List {
+            @extend .list-group, .list-group-flush;
+            font-size: 12px;
+        }
+
+    }
+
+}

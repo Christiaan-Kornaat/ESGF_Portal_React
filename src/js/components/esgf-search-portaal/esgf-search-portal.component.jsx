@@ -16,7 +16,6 @@ export class ESGFSearchPortal extends Component {
     render() {
       return (
         <Tabs
-          id="controlled-tab-example"
           activeKey={this.state.key}
           onSelect={key => this.setState({ key })}
         >
@@ -29,7 +28,7 @@ export class ESGFSearchPortal extends Component {
           <Tab eventKey="CQF" title="Customize quick filters">
             <h1>Tab 3</h1>
           </Tab>
-          <Tab tabClassName='ml-auto active' eventKey="CLR" title="^"></Tab>
+          <Tab tabClassName='Hide' eventKey="CLR" title="^"></Tab>
         </Tabs>
       );
     }

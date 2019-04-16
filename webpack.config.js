@@ -12,7 +12,7 @@ const OUTPUT_PATH = __dirname + "/dist";
 
 const HTML_PATH = "./src/html";
 const JS_PATH = "./src/js";
-const CSS_PATH = "./style";
+const CSS_PATH = "./src/css";
 
 module.exports = {
     entry: JS_PATH + '/main.js',
@@ -51,23 +51,29 @@ module.exports = {
                 ]
             }, //HTML
             {
-                test: /\.(s*)css$/,
-                use: [
-                    MiniCssExtractPlugin.loader, 
-                    "css-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: function(){
-                                return [
-                                    require("precss"),
-                                    require("autoprefixer")]
-                            }
-                        }
-                    },
-                    "sass-loader"
-                ]
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             }, //CSS
+            {
+                test: /\.(scss)$/,
+                use: [{
+                    loader: 'style-loader', // inject CSS to page
+                }, {
+                    loader: 'css-loader', // translates CSS into CommonJS modules
+                }, {
+                    loader: 'postcss-loader', // Run post css actions
+                    options: {
+                        plugins: function () { // post css plugins, can be exported to postcss.config.js
+                            return [
+                                require('precss'),
+                                require('autoprefixer')
+                            ];
+                        }
+                    }
+                }, {
+                    loader: 'sass-loader' // compiles Sass to CSS
+                }]
+            },
             {
                 test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.woff2$|\.eot$|\.ttf$|\.wav$|\.mp3$/,
                 loader: 'file-loader?name=[name].[ext]' // <-- retain original file name

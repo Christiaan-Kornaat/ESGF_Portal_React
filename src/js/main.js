@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import App from "./app";
 import 'bootstrap';
 
-require("../style/ESGFSearch.scss");
+
 require("../style/test.css");
+require("../style/test.scss");
+
 
 
 window.addEventListener("load", () => {

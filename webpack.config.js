@@ -51,7 +51,7 @@ module.exports = {
                 ]
             }, //HTML
             {
-                test: /\.css$/,
+                test: /\.(s*)css$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader']
             }, //CSS
             {

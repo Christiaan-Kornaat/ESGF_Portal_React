@@ -8,10 +8,7 @@ export default class XPFWrapper extends Component {
         this.state = {
             selectedFilter: null,
             selectedProperties: [],
-            properties: [
-                "test",
-                "test2"
-            ]
+            properties: []
         };
 
         this.filterProvider = props.filterProvider;

@@ -1,63 +1,63 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
 .ESGFSearchPortal {
-    @extend .container;
+  @extend .container;
 
-    .Tabs {
-        .Tab {
-            .Hide {
-                @extend .ml-auto, .active;
-            }
-        }
+  .tab-hidden {
+    @extend .ml-auto, .active;
+  }
+
+  .XPF-Wrapper {
+    @extend .row;
+
+    .QF {
+      @extend .col-sm;
     }
 
-    .XPF-Wrapper {
-        @extend .row;
+    .XPF {
+      @extend .col-sm, .border-right, .border-left;
+    }
 
-        .QF {
-            @extend .col-sm;
+    .QFC {
+      @extend .col-sm;
+    }
+
+    .Center-Title {
+      @extend .text-center;
+    }
+
+    .Search {
+      @extend .input-group;
+      @extend .pl-0;
+      @extend .mb-4;
+      @extend .form-control-sm;
+
+
+      .SearchBar {
+        @extend .form-control, .my-0, .py-1;
+        //@extend .form-control-sm;
+        font-size: 12px;
+      }
+
+      .SearchButton {
+        @extend .input-group-append;
+        @extend .form-control-sm;
+
+
+        .Button {
+          @extend .input-group-text;
+          @extend .form-control;
         }
 
-        .XPF {
-            @extend .col-sm, .border-right, .border-left;
-        }
-
-        .QFC {
-            @extend .col-sm;
-        }
-
-        .Center-Title{
-            @extend .text-center;
-        }
-
-        .Search {
-            @extend .input-group, .md-form, .form-sm, .form-2, .pl-0, .mb-4;
-
-            .SearchBar {
-                @extend .form-control, .my-0, .py-1;
-                font-size: 12px;
-            }
-
-            .SearchButton {
-                @extend .input-group-append;
-
-                .Button {
-                    @extend .input-group-text, .cyan, .lighten-2;
-                }
-
-                .Button-Icon {
-                    @extend .fas, .fa-search, .text-gray;
-                }
-
-            }
-
-        }
-
-        .List {
-            @extend .list-group, .list-group-flush;
-            font-size: 12px;
-        }
+      }
 
     }
+
+    .List {
+      @extend .list-group, .list-group-flush;
+      font-size: 12px;
+    }
+
+  }
 
 }

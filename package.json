@@ -5,6 +5,7 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.0",
+    "font-awesome": "latest",
     "react": "latest",
     "react-bootstrap": "latest",
     "react-bootstrap-tabs": "latest",

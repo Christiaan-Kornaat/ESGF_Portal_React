@@ -73,7 +73,7 @@ module.exports = {
                 }, {
                     loader: 'sass-loader' // compiles Sass to CSS
                 }]
-            },
+            },//SCSS
             {
                 test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.woff2$|\.eot$|\.ttf$|\.wav$|\.mp3$/,
                 loader: 'file-loader?name=[name].[ext]' // <-- retain original file name

@@ -11,7 +11,13 @@ export default class XPFWrapper extends Component {
             properties: []
         };
 
-        this.filterProvider = props.filterProvider;
+        let {selectedPropertyManager: selectedManager, filterProvider} = props;
+
+        this.filterProvider = filterProvider;
+        this.selectedPropertyManager = selectedManager;
+
+
+        this.updateProperties();
 
         this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
@@ -25,7 +31,7 @@ export default class XPFWrapper extends Component {
     selectFilter(filter) {
         if (this.state.selectedFilter === filter) return;
 
-        this.setState({selectedFilter: filter, properties: filter.properties});
+        this.setState(() => ({properties: filter.properties}));
     }
 
     /**
@@ -33,11 +39,9 @@ export default class XPFWrapper extends Component {
      * @param {string}property
      */
     selectProperty(property) {
-        if (this.state.selectedProperties.includes(property)) return;
+        this.selectedPropertyManager.select(property);
 
-        let selectedProperties = this.state.selectedProperties.concat(property);
-
-        this.setState(() => ({selectedProperties: selectedProperties}));
+        this.updateProperties();
     };
 
     /**
@@ -45,12 +49,14 @@ export default class XPFWrapper extends Component {
      * @param {string}property
      */
     deselectProperty(property) {
-        if (!this.state.selectedProperties.includes(property)) return;
+        this.selectedPropertyManager.deselect(property);
 
-        let selectedProperties = this.state.selectedProperties.filter(item => item !== property);
-
-        this.setState(() => ({selectedProperties: selectedProperties}));
+        this.updateProperties();
     };
+
+    updateProperties() {
+        this.setState(() => ({selectedProperties: this.selectedPropertyManager.getSelected()}));
+    }
 
     render() {
         let {selectProperty, deselectProperty, filterProvider, state} = this;
@@ -83,24 +89,24 @@ export default class XPFWrapper extends Component {
                 </li>;
         };
 
-        let testObject = { Name: "Something" };
+        let testObject = {Name: "Something"};
 
         return (
             <section className='XPF-Wrapper'>
                 <XpfColumn className="QF"
-                           tabs={ { "Filters": testObject, "Presets": testObject } }
+                           tabs={{"Filters": testObject, "Presets": testObject}}
                            searchFunction={searchFunc}
                            items={items}
                            listItemFactory={filterListItemFactory}/>
 
                 <XpfColumn className="XPF"
-                           tabs={ { "Properties": testObject } }
+                           tabs={{"Properties": testObject}}
                            searchFunction={searchPropertyFunc}
                            items={properties}
                            listItemFactory={propertyListItemFactoryFactory(selectProperty)}/>
 
                 <XpfColumn className="QFC"
-                           tabs={ { "Selected properties": testObject } }
+                           tabs={{"Selected properties": testObject}}
                            searchFunction={searchPropertyFunc}
                            items={selectedProperties}
                            listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>

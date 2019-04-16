@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "react-sidebar";
 
-export class Testing extends React.Component {
+export class QFSidebar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

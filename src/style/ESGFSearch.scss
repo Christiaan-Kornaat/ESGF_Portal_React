@@ -28,25 +28,23 @@
 
     .Search {
       @extend .input-group;
+      @extend .input-group-sm;
       @extend .pl-0;
       @extend .mb-4;
-      @extend .form-control-sm;
 
 
       .SearchBar {
         @extend .form-control, .my-0, .py-1;
-        //@extend .form-control-sm;
+        @extend .form-control-sm;
         font-size: 12px;
       }
 
       .SearchButton {
         @extend .input-group-append;
-        @extend .form-control-sm;
 
 
         .Button {
           @extend .input-group-text;
-          @extend .form-control;
         }
 
       }

@@ -93,19 +93,19 @@ export default class XPFWrapper extends Component {
 
         return (
             <section className='XPF-Wrapper'>
-                <XpfColumn className="QF"
+                <XpfColumn className="Filters"
                            tabs={{"Filters": testObject, "Presets": testObject}}
                            searchFunction={searchFunc}
                            items={items}
                            listItemFactory={filterListItemFactory}/>
 
-                <XpfColumn className="XPF"
+                <XpfColumn className="Properties"
                            tabs={{"Properties": testObject}}
                            searchFunction={searchPropertyFunc}
                            items={properties}
                            listItemFactory={propertyListItemFactoryFactory(selectProperty)}/>
 
-                <XpfColumn className="QFC"
+                <XpfColumn className="SelectedProperties"
                            tabs={{"Selected properties": testObject}}
                            searchFunction={searchPropertyFunc}
                            items={selectedProperties}

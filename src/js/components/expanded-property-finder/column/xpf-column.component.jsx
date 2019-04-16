@@ -39,7 +39,10 @@ class XpfColumn extends Component {
         let { activeTab } = this.state;
 
         let tabs = Object.keys(this.tabs).map(name => (
-            <Tab eventKey={name} title={name}>
+            <Tab 
+            className="centered-tab"
+            eventKey={name} 
+            title={name}>
                 <XpfColumnTab 
                     searchFunction={this.search}
                     items={this.state.items}
@@ -52,6 +55,7 @@ class XpfColumn extends Component {
             <div className={this.props.className}>
                 
                 <Tabs
+                    className="nav-center"
                     activeKey={activeTab}
                     onSelect={activeTab => this.setState({ activeTab })}
                 >

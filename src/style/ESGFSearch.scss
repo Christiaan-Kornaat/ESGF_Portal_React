@@ -7,31 +7,62 @@
     @extend .ml-auto, .active;
   }
 
+  a.nav-item.nav-link {
+    background-color: white;
+    border: 1px solid #dee2e6;
+  }
+
+  a.nav-item.nav-link.active {
+    background-color: white;
+    border: none;
+  }
+
   .XPF-Wrapper {
     @extend .row;
 
-    .QF {
+    background-color: white;
+
+    .Filters {
       @extend .col-sm;
     }
 
-    .XPF {
+    .Properties {
       @extend .col-sm, .border-right, .border-left;
     }
 
-    .QFC {
+    .SelectedProperties {
       @extend .col-sm;
     }
 
-    .Center-Title {
-      @extend .text-center;
+    .nav-center {  
+      @extend .mt-2;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      border: none;
+      padding: 0;
+      border-bottom: 1px solid #dee2e6;
+    
+      a.nav-item.nav-link {
+        font-weight: bold;
+        border: none;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      a.nav-item.nav-link.active {
+        cursor: default;
+        border: 1px solid #dee2e6;
+        border-bottom: none;
+      }
     }
 
     .Search {
       @extend .input-group;
       @extend .input-group-sm;
       @extend .pl-0;
-      @extend .mb-4;
-
+      @extend .my-3;
 
       .SearchBar {
         @extend .form-control, .my-0, .py-1;

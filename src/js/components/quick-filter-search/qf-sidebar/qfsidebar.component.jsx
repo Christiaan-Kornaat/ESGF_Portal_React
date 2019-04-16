@@ -25,7 +25,7 @@ export class QFSidebar extends React.Component {
                 rootClassName={"qf-root"}
                 contentClassName={"qf-sidebar-content"}
                 onSetOpen={this.onSetSidebarOpen}
-                styles={{ sidebar: { background: "white", position:"relative" },root: { position:"relative"} }}
+                styles={{ sidebar: { background: "white", position:"relative" },root: { position:"fixed"} }}
             >
                 <div className="qf-open-presets" onClick={() => this.onSetSidebarOpen(true)}>
                     Open presets

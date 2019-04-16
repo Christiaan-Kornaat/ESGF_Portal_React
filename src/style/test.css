@@ -3,15 +3,10 @@
     margin: 0 auto;
     top: 0px;
     left: 0px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 1px;
-    padding-bottom: 20px;
     line-height: 1.6;
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
-    /* border: 1px solid blue; */
     background: #FFF;
 }
 
@@ -31,7 +26,7 @@
 }
 
 .qf-tile {
-    width: 198px;
+    width: 200px;
     height: 170px;
     display: inline-block;
     overflow: hidden;
@@ -55,6 +50,10 @@
     cursor: pointer;
     vertical-align: middle;
     color: white;
+}
+
+.qf-root{
+    position: fixed;
 }
 
 ul{

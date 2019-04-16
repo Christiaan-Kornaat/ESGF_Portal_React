@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.3.1",
     "react": "latest",
     "react-bootstrap": "^1.0.0-beta.6",
     "react-bootstrap-tabs": "^1.0.2",
@@ -16,15 +17,18 @@
   "devDependencies": {
     "@babel/preset-env": "latest",
     "@babel/preset-react": "latest",
+    "autoprefixer": "^9.5.1",
     "babel-register": "latest",
     "babelify": "latest",
     "html-loader": "latest",
     "html-webpack-plugin": "latest",
     "mini-css-extract-plugin": "latest",
     "node-sass": "^4.11.0",
+    "postcss": "^7.0.14",
+    "precss": "^4.0.0",
     "sass-loader": "^7.1.0",
     "typescript": "latest",
-    "webpack": "latest",
+    "webpack": "^4.30.0",
     "webpack-cli": "latest"
   }
 }

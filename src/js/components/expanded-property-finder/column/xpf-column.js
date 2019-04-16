@@ -68,28 +68,29 @@ class XpfColumn extends Component {
         let {renderItems} = this.state;
 
         let SearchButton = ({onClick}) => (
-            <div className="input-group-append">
+            <div className="SearchButton">
                 <span onClick={onClick}
-                      className="input-group-text cyan lighten-2"
+                      className="Button"
                       id="basic-text1">
-                    <i className="fas fa-search text-gray"
+                    <i className="Button-Icon"
                        aria-hidden="true"/>
                 </span>
             </div>);
 
         return (
             <div className={this.props.className}>
-                <h3 className='text-center'>{title}</h3>
+                
+                {/* Deze title wordt vervangen door een meegegeven object */}
+                <h3 className='Center-Title'>{title}</h3>
 
-                <div className="input-group md-form form-sm form-2 pl-0 mb-4">
-                    <input className="form-control my-0 py-1"
-                           style={{fontSize: 12}}
+                <div className="Search">
+                    <input className="SearchBar"
                            type="text" placeholder="Search"
                            aria-label="Search"
                            onChange={this.handleChange}/>
                     <SearchButton onClick={this.handleSubmit}/>
                 </div>
-                <UnorderedList className="list-group list-group-flush"
+                <UnorderedList className="List"
                                items={renderItems}
                                createListItem={this.createListItem}/>
             </div>

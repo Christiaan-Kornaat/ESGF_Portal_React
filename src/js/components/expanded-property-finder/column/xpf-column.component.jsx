@@ -1,29 +1,29 @@
-import React, {Component} from 'react';
-import UnorderedList from "../../shared/list-unordered/list-unordered.component";
+import React, { Component } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+import XpfColumnTab from "../column/xpf-column-tab.component";
 
 class XpfColumn extends Component {
     constructor(props) {
         super(props);
 
-        let {tabs, searchFunction, items, listItemFactory: createListItem} = props;
+        let { tabs, searchFunction, items, listItemFactory } = props;
 
         this.search = searchFunction;
         this.tabs = tabs;
-        this.createListItem = createListItem;
+        this.listItemFactory = listItemFactory;
+
+        let [activeTab] = Object.keys(this.tabs);
 
         this.state = {
             items: items,
-            renderItems: items
+            renderItems: items,
+            activeTab: activeTab
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.executeSearch = this.executeSearch.bind(this);
-
     }
-
-    componentWillReceiveProps({items}) {
-        let {searchQuery: query, renderItems} = this.state;
+    
+    componentWillReceiveProps({ items }) {
+        let { searchQuery: query, renderItems } = this.state;
 
         if (query == null || query.trim() === "")
             renderItems = items;
@@ -34,66 +34,31 @@ class XpfColumn extends Component {
         })
     }
 
-    handleChange(event) {
-        let {target: {value}} = event;
-
-        this.changeQuery(value);
-
-        this.executeSearch(value);
-    }
-
-    changeQuery(newQuery) {
-        this.setState({
-            searchQuery: newQuery
-        });
-    }
-
-    handleSubmit() {
-        event.preventDefault();
-
-        let {searchQuery: query} = this.state;
-
-        this.executeSearch(query);
-    }
-
-    executeSearch(query) {
-        this.setState({
-            renderItems: this.search(query, [...this.state.items])
-        })
-    }
-
     render() {
-        let [title] = this.tabs;
 
-        let {renderItems} = this.state;
+        let { activeTab } = this.state;
 
-        let SearchButton = ({onClick}) => (
-            <div className="SearchButton">
-                <span onClick={onClick}
-                      className="Button"
-                      id="basic-text1">
-                    <i className="fas fa-search text-grey"
-                       aria-hidden="true"/>
-                </span>
-            </div>);
+        let tabs = Object.keys(this.tabs).map(name => (
+            <Tab eventKey={name} title={name}>
+                <XpfColumnTab 
+                    searchFunction={this.search}
+                    items={this.state.items}
+                    listItemFactory={this.listItemFactory}
+                />
+            </Tab>
+        ));
 
         return (
             <div className={this.props.className}>
+                
+                <Tabs
+                    activeKey={activeTab}
+                    onSelect={activeTab => this.setState({ activeTab })}
+                >
+                    {tabs}
+                </Tabs>
+                
 
-                {/* Deze title wordt vervangen door een meegegeven object */}
-                <h3 className='Center-Title'>{title}</h3>
-
-                <div className="Search">
-                    <input className="SearchBar"
-                           type="text"
-                           placeholder="Search"
-                           aria-label="Search"
-                           onChange={this.handleChange}/>
-                    <SearchButton onClick={this.handleSubmit}/>
-                </div>
-                <UnorderedList className="List"
-                               items={renderItems}
-                               createListItem={this.createListItem}/>
             </div>
         );
     }

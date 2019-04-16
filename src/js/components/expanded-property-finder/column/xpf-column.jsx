@@ -84,7 +84,8 @@ class XpfColumn extends Component {
                 <div className="input-group md-form form-sm form-2 pl-0 mb-4">
                     <input className="form-control my-0 py-1"
                            style={{fontSize: 12}}
-                           type="text" placeholder="Search"
+                           type="text"
+                           placeholder="Search"
                            aria-label="Search"
                            onChange={this.handleChange}/>
                     <SearchButton onClick={this.handleSubmit}/>

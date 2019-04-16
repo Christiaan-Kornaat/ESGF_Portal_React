@@ -13,8 +13,6 @@ export default class XPFWrapper extends Component {
             ]
         };
 
-        console.log(props);
-
         this.filterProvider = props.filterProvider;
 
         this.selectProperty = this.selectProperty.bind(this);
@@ -38,20 +36,17 @@ export default class XPFWrapper extends Component {
     };
 
     render() {
-        let selectProperty = this.selectProperty;
-        let deselectProperty = this.deselectProperty;
+        let {selectProperty, deselectProperty} = this;
 
         let items = this.filterProvider.provide(); //FIXME TEMP
-
 
         let {properties, selectedProperties} = this.state;
 
         let searchFunc = (query, items) => {
-
             return query == null || query.trim() === "" ? items : items.filter(({shortName: name}) => name.includes(query));
         };
         let searchPropertyFunc = (query, items) =>
-            query == null || query.trim() === "" ? items : items.filter((property) => property.includes(query));
+            query == null || query.trim() === "" ? items : items.filter(property => property.includes(query));
 
         let filterListItemFactory = item => <li className="list-group-item">{item.shortName}</li>;
 

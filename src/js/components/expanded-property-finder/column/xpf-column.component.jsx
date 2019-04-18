@@ -6,48 +6,34 @@ class XpfColumn extends Component {
     constructor(props) {
         super(props);
 
-        let { tabs, searchFunction, items, listItemFactory } = props;
-
-        this.search = searchFunction;
-        this.tabs = tabs;
-        this.listItemFactory = listItemFactory;
-
-        let [activeTab] = Object.keys(this.tabs);
+        let { tabs } = props;
+        
+        let [activeTab] = Object.keys(tabs);
 
         this.state = {
-            items: items,
-            renderItems: items,
-            activeTab: activeTab
+            activeTab: activeTab,
+            tabs:tabs
         };
 
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
     }
     
-    componentWillReceiveProps({ items }) {
-        let { searchQuery: query, renderItems } = this.state;
-
-        if (query == null || query.trim() === "")
-            renderItems = items;
-
+    componentWillReceiveProps({tabs}) {
         this.setState({
-            items: items,
-            renderItems: renderItems
+            tabs:tabs
         })
     }
-
+    
     render() {
 
-        let { activeTab } = this.state;
+        let { activeTab, tabs } = this.state;
 
-        let tabs = Object.keys(this.tabs).map(name => (
+        let tabComponents = Object.keys(tabs).map(name => (
             <Tab 
             className="centered-tab"
             eventKey={name} 
             title={name}>
-                <XpfColumnTab 
-                    searchFunction={this.search}
-                    items={this.state.items}
-                    listItemFactory={this.listItemFactory}
-                />
+                {tabs[activeTab]}
             </Tab>
         ));
 
@@ -57,9 +43,8 @@ class XpfColumn extends Component {
                 <Tabs
                     className="nav-center"
                     activeKey={activeTab}
-                    onSelect={activeTab => this.setState({ activeTab })}
-                >
-                    {tabs}
+                    onSelect={activeTab => this.setState({ activeTab })}>
+                    {tabComponents}
                 </Tabs>
                 
 

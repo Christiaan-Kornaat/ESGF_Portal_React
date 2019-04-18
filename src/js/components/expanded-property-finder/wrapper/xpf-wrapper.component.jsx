@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import XpfColumn from "../column/xpf-column.component";
+import XpfColumnTab from "../column/xpf-column-tab.component";
 
 export default class XPFWrapper extends Component {
     constructor(props) {
@@ -89,27 +90,29 @@ export default class XPFWrapper extends Component {
                 </li>;
         };
 
-        let testObject = {Name: "Something"};
+        let FilterList = <XpfColumnTab 
+            searchFunction={searchFunc}
+            items={items}
+            listItemFactory={filterListItemFactory}
+        />;
+
+        let PropertyFilterList = <XpfColumnTab 
+            searchFunction={searchPropertyFunc}
+            items={properties}
+            listItemFactory={propertyListItemFactoryFactory(selectProperty)}
+        />;
+
+        let SelectedPropertyFilterList = <XpfColumnTab 
+            searchFunction={searchPropertyFunc}
+            items={selectedProperties}
+            listItemFactory={propertyListItemFactoryFactory(deselectProperty)}
+        />;
 
         return (
-            <section className='XPF-Wrapper'>
-                <XpfColumn className="QF"
-                           tabs={{"Filters": testObject, "Presets": testObject}}
-                           searchFunction={searchFunc}
-                           items={items}
-                           listItemFactory={filterListItemFactory}/>
-
-                <XpfColumn className="XPF"
-                           tabs={{"Properties": testObject}}
-                           searchFunction={searchPropertyFunc}
-                           items={properties}
-                           listItemFactory={propertyListItemFactoryFactory(selectProperty)}/>
-
-                <XpfColumn className="QFC"
-                           tabs={{"Selected properties": testObject}}
-                           searchFunction={searchPropertyFunc}
-                           items={selectedProperties}
-                           listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>
+            <section className='XPF-Wrapper'> 
+                <XpfColumn className="Filters" tabs={{"Filters": FilterList, "Presets": FilterList}}/>
+                <XpfColumn className="Properties" tabs={{"Properties": PropertyFilterList}}/>
+                <XpfColumn className="SelectedProperties" tabs={{"Selected properties": SelectedPropertyFilterList}}/>
             </section>
         )
     }

@@ -24,14 +24,41 @@
 
     .Filters {
       @extend .col-sm;
+
+      .filter {
+        @extend .list-group-item;
+      }
+      .filter:hover {
+        cursor: pointer;
+        background-color: #dee2e6;
+      }
+
     }
 
     .Properties {
       @extend .col-sm, .border-right, .border-left;
+
+      .property {
+        @extend .list-group-item;
+      }
+      .property:hover {
+        cursor: pointer;
+        background-color: #dee2e6;
+      }
+
     }
 
     .SelectedProperties {
       @extend .col-sm;
+
+      .property {
+        @extend .list-group-item;
+      }
+      .property:hover {
+        cursor: pointer;
+        background-color: #dee2e6;
+      }
+      
     }
 
     .nav-center {  
@@ -76,6 +103,10 @@
 
         .Button {
           @extend .input-group-text;
+        }
+
+        .Button:hover {
+          cursor: pointer;
         }
 
       }

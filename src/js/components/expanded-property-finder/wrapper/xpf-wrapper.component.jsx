@@ -72,19 +72,15 @@ export default class XPFWrapper extends Component {
         let searchPropertyFunc = (query, items) =>
             query == null || query.trim() === "" ? items : items.filter(property => property.includes(query));
 
-        {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */
-        }
         let filterListItemFactory = item =>
-            <li className="list-group-item"
+            <li className="filter"
                 onClick={() => this.selectFilter(item)}>
                 {item.shortName}
             </li>;
 
-        {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */
-        }
         let propertyListItemFactoryFactory = (onClick) => {
             return item =>
-                <li className="list-group-item"
+                <li className="property"
                     onClick={() => onClick(item)}>
                     {item}
                 </li>;

@@ -1,3 +1,4 @@
-describe("test1", () => {
-
+test("if bla", () => {
+    expect("something")
+        .toBeDefined();
 });

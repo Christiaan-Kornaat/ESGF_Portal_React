@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import UnorderedList from "../../shared/list-unordered/list-unordered.component";
 
-class XpfColumnTab extends Component {
+class XpfColumnTabContent extends Component {
     constructor(props) {
         super(props);
 
@@ -91,4 +91,4 @@ class XpfColumnTab extends Component {
 
 }
 
-export default XpfColumnTab;
+export default XpfColumnTabContent;

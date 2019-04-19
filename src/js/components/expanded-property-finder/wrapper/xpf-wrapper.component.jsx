@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import XpfColumnTab from "../column/xpf-column-tab.component";
 import XpfColumn from "../column/xpf-column.component";
 
 export default class XPFWrapper extends Component {
@@ -8,17 +9,22 @@ export default class XPFWrapper extends Component {
         this.state = {
             selectedFilter: null,
             selectedProperties: [],
-            properties: [
-                "test",
-                "test2"
-            ]
+            properties: []
         };
 
-        this.filterProvider = props.filterProvider;
+        let {selectedPropertyManager: selectedManager, filterProvider} = props;
+
+        this.filterProvider = filterProvider;
+        this.selectedPropertyManager = selectedManager;
+
+
+        this.updateProperties();
 
         this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
+        this.toggleProperty = this.toggleProperty.bind(this);
+        this.isPropertySelected = this.isPropertySelected.bind(this);
     }
 
     /**
@@ -28,7 +34,7 @@ export default class XPFWrapper extends Component {
     selectFilter(filter) {
         if (this.state.selectedFilter === filter) return;
 
-        this.setState({selectedFilter: filter, properties: filter.properties});
+        this.setState(() => ({properties: filter.properties}));
     }
 
     /**
@@ -36,11 +42,9 @@ export default class XPFWrapper extends Component {
      * @param {string}property
      */
     selectProperty(property) {
-        if (this.state.selectedProperties.includes(property)) return;
+        this.selectedPropertyManager.select(property);
 
-        let selectedProperties = this.state.selectedProperties.concat(property);
-
-        this.setState(() => ({selectedProperties: selectedProperties}));
+        this.updateProperties();
     };
 
     /**
@@ -48,66 +52,99 @@ export default class XPFWrapper extends Component {
      * @param {string}property
      */
     deselectProperty(property) {
-        if (!this.state.selectedProperties.includes(property)) return;
+        this.selectedPropertyManager.deselect(property);
 
-        let selectedProperties = this.state.selectedProperties.filter(item => item !== property);
-
-        this.setState(() => ({selectedProperties: selectedProperties}));
+        this.updateProperties();
     };
 
+    toggleProperty(property) {
+        let selectionAction = this.isPropertySelected(property) ?
+            this.deselectProperty :
+            this.selectProperty;
+
+        selectionAction(property);
+    }
+
+    isPropertySelected(property) {
+        return (this.state.selectedProperties.includes(property));
+    }
+
+    updateProperties() {
+        this.setState(() => ({selectedProperties: this.selectedPropertyManager.getSelected()}));
+    }
+
     render() {
-        let {selectProperty, deselectProperty, filterProvider, state} = this;
+        let {toggleProperty, deselectProperty, filterProvider, state} = this;
 
         let items = filterProvider.provide(); //FIXME TEMP
 
         let {properties, selectedProperties} = state;
 
-        let searchFunc = (query, items) => {
-            return query == null || query.trim() === "" ? items : items.filter(({shortName: name}) => name.includes(query));
-        };
-        let searchPropertyFunc = (query, items) =>
-            query == null || query.trim() === "" ? items : items.filter(property => property.includes(query));
+        let isQueryValid = query => !(query == null || query.trim() === "");
 
-        {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */
-        }
+        let searchFunctions = {
+            filters: (query, items) => !isQueryValid(query) ?
+                items.filter(({shortName}) => shortName.includes(query)) :
+                items,
+            properties: (query, items) => !isQueryValid(query) ?
+                items.filter(property => property.includes(query)) :
+                items
+        };
+
         let filterListItemFactory = item =>
-            <li className="list-group-item"
+            <li className="filter"
                 onClick={() => this.selectFilter(item)}>
                 {item.shortName}
             </li>;
 
-        {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */
-        }
+        let showPropertyInfo = console.log;
+
         let propertyListItemFactoryFactory = (onClick) => {
-            return item =>
-                <li className="list-group-item"
-                    onClick={() => onClick(item)}>
-                    {item}
+            return item => {
+                let checked = this.isPropertySelected(item);
+
+                return <li className="property">
+                    <span className="name" 
+                        onClick={() => onClick(item)}>
+                        <input type={"checkbox"}
+                               checked={checked}/> {item}
+                    </span>
+                    <span className={"icon-info"}
+                          onClick={() => showPropertyInfo(item)}><i className="fas fa-info-circle"></i></span>
                 </li>;
+            };
         };
 
-        let testObject = { Name: "Something" };
+        let FilterList = <XpfColumnTab
+            searchFunction={searchFunctions.filters}
+            items={items}
+            listItemFactory={filterListItemFactory}
+        />;
+
+        let PresetList = <XpfColumnTab
+            searchFunction={searchFunctions.properties}
+            items={items}
+            listItemFactory={filterListItemFactory}
+        />;
+
+        let PropertyFilterList = <XpfColumnTab
+            searchFunction={searchFunctions.properties}
+            items={properties}
+            listItemFactory={propertyListItemFactoryFactory(toggleProperty, "O")}
+        />;
+
+        let SelectedPropertyFilterList = <XpfColumnTab
+            searchFunction={searchFunctions.properties}
+            items={selectedProperties}
+            listItemFactory={propertyListItemFactoryFactory(deselectProperty, "X")}
+        />;
 
         return (
             <section className='XPF-Wrapper'>
-                <XpfColumn className="QF"
-                           tabs={ { "Filters": testObject, "Presets": testObject } }
-                           searchFunction={searchFunc}
-                           items={items}
-                           listItemFactory={filterListItemFactory}/>
-
-                <XpfColumn className="XPF"
-                           tabs={ { "Properties": testObject } }
-                           searchFunction={searchPropertyFunc}
-                           items={properties}
-                           listItemFactory={propertyListItemFactoryFactory(selectProperty)}/>
-
-                <XpfColumn className="QFC"
-                           tabs={ { "Selected properties": testObject } }
-                           searchFunction={searchPropertyFunc}
-                           items={selectedProperties}
-                           listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>
+                <XpfColumn className="Filters" tabs={{"Filters": FilterList, "Presets": PresetList}}/>
+                <XpfColumn className="Properties" tabs={{"Properties": PropertyFilterList}}/>
+                <XpfColumn className="SelectedProperties" tabs={{"Selected properties": SelectedPropertyFilterList}}/>
             </section>
-        )
+        );
     }
 }

@@ -7,31 +7,95 @@
     @extend .ml-auto, .active;
   }
 
+  a.nav-item.nav-link {
+    background-color: white;
+    border: 1px solid #dee2e6;
+  }
+
+  a.nav-item.nav-link.active {
+    background-color: white;
+    border: none;
+  }
+
   .XPF-Wrapper {
     @extend .row;
 
-    .QF {
+    background-color: white;
+
+    .Filters {
       @extend .col-sm;
+
+      .filter {
+        @extend .list-group-item;
+      }
+
+      .filter:hover {
+        cursor: pointer;
+        background-color: #dee2e6;
+      }
+
+    }
+    
+    .Properties {
+      @extend .border-right, .border-left;
     }
 
-    .XPF {
-      @extend .col-sm, .border-right, .border-left;
-    }
-
-    .QFC {
+    .Properties , .SelectedProperties {
       @extend .col-sm;
+
+      .property {
+        @extend .list-group-item, .py-2;
+
+        .name {
+          margin: auto 0;
+        }
+
+        .icon-info {
+          @extend .float-right;
+          font-size: 1.5em;
+        }
+
+        .icon-info:hover, .name {
+          cursor: pointer;
+        }
+
+      }
+
+      .property:hover {
+        background-color: #dee2e6;
+      }
+
     }
 
-    .Center-Title {
-      @extend .text-center;
+    .nav-center {
+      @extend .mt-2;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      border: none;
+      padding: 0;
+      border-bottom: 1px solid #dee2e6;
+
+      a.nav-item.nav-link {
+        font-weight: bold;
+        border: none;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      a.nav-item.nav-link.active {
+        cursor: default;
+        border: 1px solid #dee2e6;
+        border-bottom: none;
+      }
     }
 
     .Search {
       @extend .input-group;
       @extend .input-group-sm;
       @extend .pl-0;
-      @extend .mb-4;
-
+      @extend .my-3;
 
       .SearchBar {
         @extend .form-control, .my-0, .py-1;
@@ -47,6 +111,10 @@
           @extend .input-group-text;
         }
 
+        .Button:hover {
+          cursor: pointer;
+        }
+
       }
 
     }
@@ -55,7 +123,6 @@
       @extend .list-group, .list-group-flush;
       font-size: 12px;
     }
-
   }
 
 }

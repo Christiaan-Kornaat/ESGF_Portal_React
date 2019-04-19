@@ -66,8 +66,7 @@ class XpfColumnTab extends Component {
         let SearchButton = ({ onClick }) => (
             <div className="SearchButton">
                 <span onClick={onClick}
-                    className="Button"
-                    id="basic-text1">
+                    className="Button">
                     <i className="fas fa-search text-grey"
                         aria-hidden="true" />
                 </span>

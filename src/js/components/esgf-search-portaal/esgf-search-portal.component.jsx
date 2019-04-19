@@ -9,9 +9,11 @@ export class ESGFSearchPortal extends Component {
         this.state = {
             key: 'QF',
         };
-        let {filterProvider} = props;
+
+        let {filterProvider, selectedPropertyManager} = props;
 
         this._filterProvider = filterProvider;
+        this._selectedPropertyManager = selectedPropertyManager;
     }
 
     render() {
@@ -24,7 +26,8 @@ export class ESGFSearchPortal extends Component {
                     <QFWrapper filterProvider={this._filterProvider}/>
                 </Tab>
                 <Tab eventKey="XPF" title="Extended property finder">
-                    <XPFWrapper filterProvider={this._filterProvider}/>
+                    <XPFWrapper filterProvider={this._filterProvider}
+                                selectedPropertyManager={this._selectedPropertyManager}/>
                 </Tab>
                 <Tab eventKey="CQF" title="Customize quick filters">
                     <h1>Tab 3</h1>

@@ -1,16 +1,16 @@
 import React, {Component} from "react";
-import {Tabs, Tab} from 'react-bootstrap';
-import XPFWrapper from '../expanded-property-finder/wrapper/xpf-wrapper.component';
-import {QFWrapper} from '../quick-filter-search/wrapper/qf-wrapper.component'
+import {Tab, Tabs} from "react-bootstrap";
+import XPFWrapper from "../expanded-property-finder/wrapper/xpf-wrapper.component";
+import {QFWrapper} from "../quick-filter-search/wrapper/qf-wrapper.component";
 
 export class ESGFSearchPortal extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            key: 'QF',
+            key: "QF"
         };
 
-        let {filterProvider, selectedPropertyManager} = props;
+        let {filterProvider, selectedPropertyManager} = this.props;
 
         this._filterProvider = filterProvider;
         this._selectedPropertyManager = selectedPropertyManager;
@@ -18,10 +18,8 @@ export class ESGFSearchPortal extends Component {
 
     render() {
         return (
-            <Tabs
-                activeKey={this.state.key}
-                onSelect={key => this.setState({key})}
-            >
+            <Tabs activeKey={this.state.key}
+                  onSelect={key => this.setState({key})}>
                 <Tab eventKey="QF" title="Quick select">
                     <QFWrapper filterProvider={this._filterProvider}/>
                 </Tab>

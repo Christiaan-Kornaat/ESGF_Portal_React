@@ -12,10 +12,8 @@ export default class XPFWrapper extends Component {
             properties: []
         };
 
-        let {selectedPropertyManager: selectedManager, filterProvider} = props;
-
-        this.filterProvider = filterProvider;
-        this.selectedPropertyManager = selectedManager;
+        this.filterProvider = props.filterProvider;
+        this.selectedPropertyManager = props.selectedPropertyManager;
 
 
         this.updateProperties();
@@ -83,10 +81,10 @@ export default class XPFWrapper extends Component {
         let isQueryValid = query => !(query == null || query.trim() === "");
 
         let searchFunctions = {
-            filters: (query, items) => !isQueryValid(query) ?
+            filters: (query, items) => isQueryValid(query) ?
                 items.filter(({shortName}) => shortName.includes(query)) :
                 items,
-            properties: (query, items) => !isQueryValid(query) ?
+            properties: (query, items) => isQueryValid(query) ?
                 items.filter(property => property.includes(query)) :
                 items
         };

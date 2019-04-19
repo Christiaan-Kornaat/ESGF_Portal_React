@@ -37,9 +37,7 @@ export class QFSidebar extends React.Component {
                         <h2>Presets</h2>
                         <p>Hier moeten die presets komen</p>
                     </div>
-                    <div className="list-group">
-                        {this.props.children}
-                    </div>
+                
                 </div>
             </div>
         );

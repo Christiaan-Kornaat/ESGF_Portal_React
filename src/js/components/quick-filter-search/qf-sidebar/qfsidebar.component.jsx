@@ -1,36 +1,46 @@
 import React from "react";
-import Sidebar from "react-sidebar";
 
 export class QFSidebar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sidebarOpen: false
+            style: {
+                width: 350
+            }
         };
-        this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+        this.openNav = this.openNav.bind(this);
+        this.closeNav = this.closeNav.bind(this);
     }
 
-    onSetSidebarOpen(open) {
-        this.setState({ sidebarOpen: open });
+    openNav() {
+        const style = { width: 350 };
+        this.setState({ style });
+        document.addEventListener("click", this.closeNav);
+    }
+
+    closeNav() {
+        document.removeEventListener("click", this.closeNav);
+        const style = { width: 0 };
+        this.setState({ style });
     }
 
     render() {
         return (
-            <Sidebar
-                sidebar={<b>presets hier</b>} 
-                open={this.state.sidebarOpen}
-                defaultSidebarWidth={200}
-                sidebarClassName={"qf-sidebar"}
-                overlayClassName={"qf-overlay"}
-                rootClassName={"qf-root"}
-                contentClassName={"qf-sidebar-content"}
-                onSetOpen={this.onSetSidebarOpen}
-                styles={{ sidebar: { background: "white", position:"relative" },root: { position:"relative"} }}
-            >
-                <div className="qf-open-presets" onClick={() => this.onSetSidebarOpen(true)}>
-                    Open presets
+            <div className="overlay" style={this.state.style}>
+                <div className="sidenav-container">
+                    <a
+                        href="javascript:void(0)"
+                        className="closebtn"
+                        onClick={this.closeNav}>x</a>
+                    <div className="text-center">
+                        <h2>Presets</h2>
+                        <p>Hier moeten die presets komen</p>
+                    </div>
+                    <div className="list-group">
+                        {this.props.children}
+                    </div>
                 </div>
-            </Sidebar>
+            </div>
         );
     }
 }

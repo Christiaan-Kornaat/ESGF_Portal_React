@@ -7,6 +7,7 @@ export class QFWrapper extends Component {
         super(props);
         let { filterProvider } = props;
         this._filterProvider = filterProvider;
+        
     }
     render() {
         let items = this._filterProvider.provide();
@@ -27,8 +28,9 @@ export class QFWrapper extends Component {
 
         return (
             <section className="qf-wrapper">
+                <QFSidebar/>
+                <div style={{ fontSize: 20, cursor: "pointer" }} onClick={this.openNav}>&#9776; Presets</div>
                 <div className="qf-main-container container">
-                    <QFSidebar />
                     <div className="tiles">    
                         {tiles} 
                     </div>

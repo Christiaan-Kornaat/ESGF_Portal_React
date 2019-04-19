@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import XpfColumn from "../column/xpf-column.component";
 import XpfColumnTab from "../column/xpf-column-tab.component";
+import XpfColumn from "../column/xpf-column.component";
 
 export default class XPFWrapper extends Component {
     constructor(props) {
@@ -23,6 +23,8 @@ export default class XPFWrapper extends Component {
         this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
+        this.toggleProperty = this.toggleProperty.bind(this);
+        this.isPropertySelected = this.isPropertySelected.bind(this);
     }
 
     /**
@@ -55,22 +57,39 @@ export default class XPFWrapper extends Component {
         this.updateProperties();
     };
 
+    toggleProperty(property) {
+        let selectionAction = this.isPropertySelected(property) ?
+            this.deselectProperty :
+            this.selectProperty;
+
+        selectionAction(property);
+    }
+
+    isPropertySelected(property) {
+        return (this.state.selectedProperties.includes(property));
+    }
+
     updateProperties() {
         this.setState(() => ({selectedProperties: this.selectedPropertyManager.getSelected()}));
     }
 
     render() {
-        let {selectProperty, deselectProperty, filterProvider, state} = this;
+        let {toggleProperty, deselectProperty, filterProvider, state} = this;
 
         let items = filterProvider.provide(); //FIXME TEMP
 
         let {properties, selectedProperties} = state;
 
-        let searchFunc = (query, items) => {
-            return query == null || query.trim() === "" ? items : items.filter(({shortName: name}) => name.includes(query));
+        let isQueryValid = query => !(query == null || query.trim() === "");
+
+        let searchFunctions = {
+            filters: (query, items) => !isQueryValid(query) ?
+                items.filter(({shortName}) => shortName.includes(query)) :
+                items,
+            properties: (query, items) => !isQueryValid(query) ?
+                items.filter(property => property.includes(query)) :
+                items
         };
-        let searchPropertyFunc = (query, items) =>
-            query == null || query.trim() === "" ? items : items.filter(property => property.includes(query));
 
         let filterListItemFactory = item =>
             <li className="filter"
@@ -78,38 +97,53 @@ export default class XPFWrapper extends Component {
                 {item.shortName}
             </li>;
 
+        let showPropertyInfo = console.log;
+
         let propertyListItemFactoryFactory = (onClick) => {
-            return item =>
-                <li className="property"
-                    onClick={() => onClick(item)}>
-                    {item}
+            return item => {
+                let checked = this.isPropertySelected(item);
+
+                return <li className="property">
+                    <span onClick={() => onClick(item)}>
+                        <input type={"checkbox"}
+                               checked={checked}/> {item}
+                    </span>
+                    <span className={"xpf-icon-info"}
+                          onClick={() => showPropertyInfo(item)}>i</span>
                 </li>;
+            };
         };
 
-        let FilterList = <XpfColumnTab 
-            searchFunction={searchFunc}
+        let FilterList = <XpfColumnTab
+            searchFunction={searchFunctions.filters}
             items={items}
             listItemFactory={filterListItemFactory}
         />;
 
-        let PropertyFilterList = <XpfColumnTab 
-            searchFunction={searchPropertyFunc}
-            items={properties}
-            listItemFactory={propertyListItemFactoryFactory(selectProperty)}
+        let PresetList = <XpfColumnTab
+            searchFunction={searchFunctions.properties}
+            items={items}
+            listItemFactory={filterListItemFactory}
         />;
 
-        let SelectedPropertyFilterList = <XpfColumnTab 
-            searchFunction={searchPropertyFunc}
+        let PropertyFilterList = <XpfColumnTab
+            searchFunction={searchFunctions.properties}
+            items={properties}
+            listItemFactory={propertyListItemFactoryFactory(toggleProperty, "O")}
+        />;
+
+        let SelectedPropertyFilterList = <XpfColumnTab
+            searchFunction={searchFunctions.properties}
             items={selectedProperties}
-            listItemFactory={propertyListItemFactoryFactory(deselectProperty)}
+            listItemFactory={propertyListItemFactoryFactory(deselectProperty, "X")}
         />;
 
         return (
-            <section className='XPF-Wrapper'> 
-                <XpfColumn className="Filters" tabs={{"Filters": FilterList, "Presets": FilterList}}/>
+            <section className='XPF-Wrapper'>
+                <XpfColumn className="Filters" tabs={{"Filters": FilterList, "Presets": PresetList}}/>
                 <XpfColumn className="Properties" tabs={{"Properties": PropertyFilterList}}/>
                 <XpfColumn className="SelectedProperties" tabs={{"Selected properties": SelectedPropertyFilterList}}/>
             </section>
-        )
+        );
     }
 }

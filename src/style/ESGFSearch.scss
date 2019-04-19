@@ -28,6 +28,7 @@
       .filter {
         @extend .list-group-item;
       }
+
       .filter:hover {
         cursor: pointer;
         background-color: #dee2e6;
@@ -41,6 +42,7 @@
       .property {
         @extend .list-group-item;
       }
+
       .property:hover {
         cursor: pointer;
         background-color: #dee2e6;
@@ -54,14 +56,15 @@
       .property {
         @extend .list-group-item;
       }
+
       .property:hover {
         cursor: pointer;
         background-color: #dee2e6;
       }
-      
+
     }
 
-    .nav-center {  
+    .nav-center {
       @extend .mt-2;
 
       display: flex;
@@ -71,7 +74,7 @@
       border: none;
       padding: 0;
       border-bottom: 1px solid #dee2e6;
-    
+
       a.nav-item.nav-link {
         font-weight: bold;
         border: none;
@@ -118,6 +121,21 @@
       font-size: 12px;
     }
 
+    .xpf-icon-info {
+      $padding: 19px;
+
+      display: inline-block;
+
+      border: 1px solid grey;
+      border-radius: 50%;
+
+      width: $padding;
+      height: $padding;
+
+      text-align: center;
+      font-style: italic;
+      font-weight: bold;
+    }
   }
 
 }

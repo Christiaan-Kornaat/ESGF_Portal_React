@@ -101,15 +101,25 @@ export default class XPFWrapper extends Component {
             return item => {
                 let checked = this.isPropertySelected(item);
 
-                return <li className="property">
-                    <span className="name" 
-                        onClick={() => onClick(item)}>
+                let onChange = () => onClick(item);
+
+                let onInfoClick = event => {
+                    event.stopPropagation();
+                    showPropertyInfo(item);
+                };
+
+                return (
+                    <li className="property"
+                        onClick={onChange}>
                         <input type={"checkbox"}
-                               checked={checked}/> {item}
-                    </span>
-                    <span className={"icon-info"}
-                          onClick={() => showPropertyInfo(item)}><i className="fas fa-info-circle"></i></span>
-                </li>;
+                               checked={checked}
+                               onChange={onChange}/> {item}
+                        <span className={"icon-info"}
+                              onClick={onInfoClick}>
+                            <i className="fas fa-info-circle"></i>
+                        </span>
+
+                    </li>);
             };
         };
 

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from "react";
 import UnorderedList from "../../shared/list-unordered/list-unordered.component";
 
 class XpfColumnTab extends Component {
     constructor(props) {
         super(props);
 
-        let { searchFunction, items, listItemFactory: createListItem } = props;
+        let {searchFunction, items, listItemFactory: createListItem} = props;
 
         this.search = searchFunction;
         this.createListItem = createListItem;
@@ -20,20 +20,21 @@ class XpfColumnTab extends Component {
         this.executeSearch = this.executeSearch.bind(this);
     }
 
-    componentWillReceiveProps({ items }) {
-        let { searchQuery: query, renderItems } = this.state;
+    componentWillReceiveProps({items}) {
+        let {searchQuery: query, renderItems} = this.state;
 
-        if (query == null || query.trim() === "")
+        if (query == null || query.trim() === "") {
             renderItems = items;
+        }
 
         this.setState({
             items: items,
             renderItems: renderItems
-        })
+        });
     }
 
     handleChange(event) {
-        let { target: { value } } = event;
+        let {target: {value}} = event;
 
         this.changeQuery(value);
 
@@ -47,9 +48,7 @@ class XpfColumnTab extends Component {
     }
 
     handleSubmit() {
-        event.preventDefault();
-
-        let { searchQuery: query } = this.state;
+        let {searchQuery: query} = this.state;
 
         this.executeSearch(query);
     }
@@ -57,34 +56,34 @@ class XpfColumnTab extends Component {
     executeSearch(query) {
         this.setState({
             renderItems: this.search(query, [...this.state.items])
-        })
+        });
     }
 
-    render(){
-        let { renderItems } = this.state;
+    render() {
+        let {renderItems} = this.state;
 
-        let SearchButton = ({ onClick }) => (
+        let SearchButton = ({onClick}) => (
             <div className="SearchButton">
                 <span onClick={onClick}
-                    className="Button">
+                      className="Button">
                     <i className="fas fa-search text-grey"
-                        aria-hidden="true" />
+                       aria-hidden="true"/>
                 </span>
             </div>);
 
-        return(
+        return (
             <div>
                 <div className="Search">
                     <input className="SearchBar"
-                        type="text"
-                        placeholder="Search"
-                        aria-label="Search"
-                        onChange={this.handleChange} />
-                    <SearchButton onClick={this.handleSubmit} />
+                           type="text"
+                           placeholder="Search"
+                           aria-label="Search"
+                           onChange={this.handleChange}/>
+                    <SearchButton onClick={this.handleSubmit}/>
                 </div>
                 <UnorderedList className="List"
-                    items={renderItems}
-                    createListItem={this.createListItem} />
+                               items={renderItems}
+                               createListItem={this.createListItem}/>
             </div>
         );
     }

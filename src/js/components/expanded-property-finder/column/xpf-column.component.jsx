@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
-import XpfColumnTab from "../column/xpf-column-tab.component";
 
 class XpfColumn extends Component {
     constructor(props) {

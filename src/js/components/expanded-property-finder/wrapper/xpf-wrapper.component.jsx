@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import XpfColumnTab from "../column/xpf-column-tab.component";
+import XpfColumnTabContent from "../column/xpf-column-tab-content.component";
 import XpfColumn from "../column/xpf-column.component";
 
 export default class XPFWrapper extends Component {
@@ -111,7 +111,8 @@ export default class XPFWrapper extends Component {
                 return (
                     <li className="property"
                         onClick={onChange}>
-                        <input type={"checkbox"}
+                        <input className={"checkbox"}
+                               type={"checkbox"}
                                checked={checked}
                                onChange={onChange}/> {item}
                         <span className={"icon-info"}
@@ -123,25 +124,25 @@ export default class XPFWrapper extends Component {
             };
         };
 
-        let FilterList = <XpfColumnTab
+        let FilterList = <XpfColumnTabContent
             searchFunction={searchFunctions.filters}
             items={items}
             listItemFactory={filterListItemFactory}
         />;
 
-        let PresetList = <XpfColumnTab
+        let PresetList = <XpfColumnTabContent
             searchFunction={searchFunctions.properties}
             items={items}
             listItemFactory={filterListItemFactory}
         />;
 
-        let PropertyFilterList = <XpfColumnTab
+        let PropertyFilterList = <XpfColumnTabContent
             searchFunction={searchFunctions.properties}
             items={properties}
             listItemFactory={propertyListItemFactoryFactory(toggleProperty, "O")}
         />;
 
-        let SelectedPropertyFilterList = <XpfColumnTab
+        let SelectedPropertyFilterList = <XpfColumnTabContent
             searchFunction={searchFunctions.properties}
             items={selectedProperties}
             listItemFactory={propertyListItemFactoryFactory(deselectProperty, "X")}

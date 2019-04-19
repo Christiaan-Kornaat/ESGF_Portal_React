@@ -35,30 +35,33 @@
       }
 
     }
-
+    
     .Properties {
-      @extend .col-sm, .border-right, .border-left;
-
-      .property {
-        @extend .list-group-item;
-      }
-
-      .property:hover {
-        cursor: pointer;
-        background-color: #dee2e6;
-      }
-
+      @extend .border-right, .border-left;
     }
 
-    .SelectedProperties {
+    .Properties , .SelectedProperties {
       @extend .col-sm;
 
       .property {
-        @extend .list-group-item;
+        @extend .list-group-item, .py-2;
+
+        .name {
+          margin: auto 0;
+        }
+
+        .icon-info {
+          @extend .float-right;
+          font-size: 1.5em;
+        }
+
+        .icon-info:hover, .name {
+          cursor: pointer;
+        }
+
       }
 
       .property:hover {
-        cursor: pointer;
         background-color: #dee2e6;
       }
 
@@ -119,22 +122,6 @@
     .List {
       @extend .list-group, .list-group-flush;
       font-size: 12px;
-    }
-
-    .xpf-icon-info {
-      $padding: 19px;
-
-      display: inline-block;
-
-      border: 1px solid grey;
-      border-radius: 50%;
-
-      width: $padding;
-      height: $padding;
-
-      text-align: center;
-      font-style: italic;
-      font-weight: bold;
     }
   }
 

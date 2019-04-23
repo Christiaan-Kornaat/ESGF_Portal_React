@@ -113,8 +113,7 @@ export default class XPFWrapper extends Component {
                         onClick={onChange}>
                         <input className={"checkbox"}
                                type={"checkbox"}
-                               checked={checked}
-                               onChange={onChange}/> {item}
+                               checked={checked}/> {item}
                         <span className={"icon-info"}
                               onClick={onInfoClick}>
                             <i className="fas fa-info-circle"></i>

@@ -1,28 +1,32 @@
 import React, {Component} from "react";
-import XpfColumnTabContent from "../column/xpf-column-tab-content.component";
+import XpfColumnTabInfoContent from "../column/xpf-column-tab-info-content.component";
+import XpfColumnTabListContent from "../column/xpf-column-tab-list-content.component";
 import XpfColumn from "../column/xpf-column.component";
 
 export default class XPFWrapper extends Component {
     constructor(props) {
         super(props);
 
+        let {selectedPropertyManager, filterProvider} = props;
+
         this.state = {
             selectedFilter: null,
-            selectedProperties: [],
-            properties: []
+            selectedProperties: selectedPropertyManager.getSelected(),
+            properties: [],
+            infoTabs: []
         };
 
-        this.filterProvider = props.filterProvider;
-        this.selectedPropertyManager = props.selectedPropertyManager;
+        this.filterProvider = filterProvider;
+        this.selectedPropertyManager = selectedPropertyManager;
 
-
-        this.updateProperties();
-
+        this.render = this.render.bind(this);
         this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
         this.toggleProperty = this.toggleProperty.bind(this);
         this.isPropertySelected = this.isPropertySelected.bind(this);
+        this.showPropertyInfo = this.showPropertyInfo.bind(this);
+        this.addInfoTab = this.addInfoTab.bind(this);
     }
 
     /**
@@ -71,12 +75,37 @@ export default class XPFWrapper extends Component {
         this.setState(() => ({selectedProperties: this.selectedPropertyManager.getSelected()}));
     }
 
+    showPropertyInfo(property) {
+        this.addInfoTab({
+            title: property,
+            paragraphs: {
+                "Paragraph 1!": "Lorem ipsum",
+                "Paragraph 2!": "In enim justo"
+            }
+        });
+    }
+
+    addInfoTab(viewModel) {
+        let infoTabs = this.state.infoTabs.concat({
+            title: "Info",
+            content: viewModel
+        });
+
+        this.setState({infoTabs: infoTabs});
+    }
+
+    removeInfoTab(viewModel) {
+        let infoTabs = this.state.infoTabs.filter(tab => tab.title !== viewModel.title);
+
+        this.setState({infoTabs: infoTabs});
+    }
+
     render() {
-        let {toggleProperty, deselectProperty, filterProvider, state} = this;
+        let {selectFilter, toggleProperty, deselectProperty, filterProvider, state} = this;
 
         let filters = filterProvider.provide(); //FIXME TEMP
 
-        let {properties, selectedProperties} = state;
+        let {properties, selectedProperties, infoTabs} = state;
 
         let isQueryValid = query => !(query == null || query.trim() === "");
 
@@ -89,13 +118,13 @@ export default class XPFWrapper extends Component {
                 items
         };
 
-        let filterListItemFactory = property =>
+        let filterFactory = property =>
             <li className="filter"
-                onClick={() => this.selectFilter(property)}>
+                onClick={() => selectFilter(property)}>
                 {property.shortName}
             </li>;
 
-        let showPropertyInfo = console.log;
+        let showPropertyInfo = this.showPropertyInfo;
 
         let propertyListItemFactoryFactory = (onClick) => {
             return item => {
@@ -113,7 +142,7 @@ export default class XPFWrapper extends Component {
                         onClick={onChange}>
                         <input className={"checkbox"}
                                type={"checkbox"}
-                               checked={checked}/> {item}
+                               defaultChecked={checked}/> {item}
                         <span className={"icon-info"}
                               onClick={onInfoClick}>
                             <i className="fas fa-info-circle"></i>
@@ -123,35 +152,32 @@ export default class XPFWrapper extends Component {
             };
         };
 
-        let FilterList = <XpfColumnTabContent
-            searchFunction={searchFunctions.filters}
-            items={filters}
-            listItemFactory={filterListItemFactory}
-        />;
+        let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
+                                                  items={filters}
+                                                  listItemFactory={filterFactory}/>;
 
-        let PresetList = <XpfColumnTabContent
-            searchFunction={searchFunctions.properties}
-            items={filters}
-            listItemFactory={filterListItemFactory}
-        />;
+        let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
+                                                  items={filters}
+                                                  listItemFactory={filterFactory}/>;
 
-        let PropertyFilterList = <XpfColumnTabContent
-            searchFunction={searchFunctions.properties}
-            items={properties}
-            listItemFactory={propertyListItemFactoryFactory(toggleProperty, "O")}
-        />;
+        let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
+                                                    items={properties}
+                                                    listItemFactory={propertyListItemFactoryFactory(toggleProperty)}/>;
+        let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
+                                                            items={selectedProperties}
+                                                            listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>;
 
-        let SelectedPropertyFilterList = <XpfColumnTabContent
-            searchFunction={searchFunctions.properties}
-            items={selectedProperties}
-            listItemFactory={propertyListItemFactoryFactory(deselectProperty, "X")}
-        />;
+        let infoTab = Object.values(infoTabs)
+                            .pop();
+        let propertyTabs = infoTab != null ? {"Info": <XpfColumnTabInfoContent model={infoTab.content}/>} : {};
+        propertyTabs["Selected properties"] = SelectedPropertyList;
 
         return (
             <section className='XPF-Wrapper'>
                 <XpfColumn className="Filters" tabs={{"Filters": FilterList, "Presets": PresetList}}/>
-                <XpfColumn className="Properties" tabs={{"Properties": PropertyFilterList}}/>
-                <XpfColumn className="SelectedProperties" tabs={{"Selected properties": SelectedPropertyFilterList}}/>
+                <XpfColumn className="Properties" tabs={{"Properties": PropertyList}}/>
+                <XpfColumn className="SelectedProperties"
+                           tabs={propertyTabs}/>
             </section>
         );
     }

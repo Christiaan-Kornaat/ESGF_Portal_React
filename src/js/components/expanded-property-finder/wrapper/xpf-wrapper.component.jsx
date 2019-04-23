@@ -74,7 +74,7 @@ export default class XPFWrapper extends Component {
     render() {
         let {toggleProperty, deselectProperty, filterProvider, state} = this;
 
-        let items = filterProvider.provide(); //FIXME TEMP
+        let filters = filterProvider.provide(); //FIXME TEMP
 
         let {properties, selectedProperties} = state;
 
@@ -89,10 +89,10 @@ export default class XPFWrapper extends Component {
                 items
         };
 
-        let filterListItemFactory = item =>
+        let filterListItemFactory = property =>
             <li className="filter"
-                onClick={() => this.selectFilter(item)}>
-                {item.shortName}
+                onClick={() => this.selectFilter(property)}>
+                {property.shortName}
             </li>;
 
         let showPropertyInfo = console.log;
@@ -125,13 +125,13 @@ export default class XPFWrapper extends Component {
 
         let FilterList = <XpfColumnTabContent
             searchFunction={searchFunctions.filters}
-            items={items}
+            items={filters}
             listItemFactory={filterListItemFactory}
         />;
 
         let PresetList = <XpfColumnTabContent
             searchFunction={searchFunctions.properties}
-            items={items}
+            items={filters}
             listItemFactory={filterListItemFactory}
         />;
 

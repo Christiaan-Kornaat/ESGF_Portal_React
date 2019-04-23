@@ -30,7 +30,6 @@ export class QFWrapper extends Component {
 
         let [item] = this._filterProvider.provide();
         let items = item.properties;
-        console.log(item);
         let tilesInfo = [
             { title: "Temperature", color: "#f9a718", icon: "fas fa-thermometer-three-quarters", properties: items },
             { title: "Wind", color: "#14fc61", icon: "fas fa-wind", properties: items },

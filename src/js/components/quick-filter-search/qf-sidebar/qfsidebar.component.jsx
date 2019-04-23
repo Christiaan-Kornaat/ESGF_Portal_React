@@ -17,9 +17,8 @@ export class QFSidebar extends React.Component {
     }
 
     render() {
-let items = range(0, 12);
-
-
+        let items = range(0, 12);
+        
         return (
             <div className="overlay" style={this.state.style}>
                 <a href="javascript:void(0)" className="closebtn" onClick={this.closeNav}>x</a> 

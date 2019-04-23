@@ -4,7 +4,7 @@ export class QFTile extends Component {
         let title = this.props.title;
         let icon = this.props.icon;
         let items = this.props.properties.map(item =>
-            <li><input type="checkbox"/> {item.shortName} ({item.propertyCount})</li>
+            <li><input type="checkbox"/> {item}</li>
         );
 
         let style = {

@@ -5,7 +5,6 @@ import '../../node_modules/bootstrap/dist/js/bootstrap';
 
 
 require("../style/test.css");
-require("../style/test.scss");
 require("../style/ESGFSearch.scss");
 
 

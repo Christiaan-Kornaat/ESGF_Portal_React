@@ -26,34 +26,42 @@ export class QFWrapper extends Component {
         this.setState({ QFSidebarShow: false });
     }
 
-    render() {
-        let { QFSidebarShow } = this.state;
+    createTiles(){
 
-        let items = this._filterProvider.provide();
-
+        let [item] = this._filterProvider.provide();
+        let items = item.properties;
+        console.log(item);
         let tilesInfo = [
-            {title: "Temperature", color: "#f9a718", icon: "fas fa-thermometer-three-quarters", properties: items},
-            {title: "Wind", color: "#14fc61", icon: "fas fa-wind", properties: items},
-            {title: "Precipitation", color: "#dd14fc", icon: "fas fa-tint", properties: items},
-            {title: "Evaporation", color: "#f91634", icon: "fas fa-cloud-sun-rain", properties: items},
-            {title: "Radiation", color: "#24ccd8", icon: "fas fa-radiation", properties: items}
+            { title: "Temperature", color: "#f9a718", icon: "fas fa-thermometer-three-quarters", properties: items },
+            { title: "Wind", color: "#14fc61", icon: "fas fa-wind", properties: items },
+            { title: "Precipitation", color: "#dd14fc", icon: "fas fa-tint", properties: items },
+            { title: "Evaporation", color: "#f91634", icon: "fas fa-cloud-sun-rain", properties: items },
+            { title: "Radiation", color: "#24ccd8", icon: "fas fa-radiation", properties: items }
         ];
 
-        const tiles = tilesInfo.map(({title, color, icon, properties}) =>
+        const tiles = tilesInfo.map(({ title, color, icon, properties }) =>
             <QFTile
                 title={title}
                 color={color}
                 icon={icon}
-                properties={properties}/>
+                properties={properties} />
         );
+
+        return tiles;
+    }
+
+    render() {
+        let { QFSidebarShow } = this.state;
+
+        const tiles = this.createTiles();
 
         return (
             <section className="qf-wrapper">
                 { QFSidebarShow? (
                      <QFSidebar close={this.closeNav}/>
                 ): ""}
-                <div style={{ fontSize: 20, cursor: "pointer" }} onClick={this.openNav}>&#9776; Presets</div>
-                <div className="qf-main-container container">
+                <div className="button-open-presets" onClick={this.openNav}>&#9776; Presets</div>
+                <div className="qf-main-container">
                     <div className="tiles">
                         {tiles}
                     </div>

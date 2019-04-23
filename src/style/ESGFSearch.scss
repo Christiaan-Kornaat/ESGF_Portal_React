@@ -19,7 +19,7 @@
 
   .XPF-Wrapper {
     @extend .row;
-
+    margin: 0 auto;
     background-color: white;
 
     .Filters {
@@ -125,4 +125,50 @@
     }
   }
 
+  .qf-wrapper{
+        @extend .row;
+        margin: 0 auto;
+        background-color: white;
+
+        ul{
+          @extend .list-unstyled, .p-0;
+          margin-left:8px;
+        }
+
+          .qf-main-container {
+            @extend .container;
+            
+            .button-open-presets{
+              margin: 10px;
+              font-size: 20;
+              cursor: "pointer";
+            }
+
+            .tiles {
+              @extend .w-100, .d-flex, .justify-content-center, .flex-wrap;
+            }
+
+            .qf-tile {
+              @extend .p-0, .shadow;
+
+              $background-colour: #E0EBEB;
+
+              width: 200px;
+              margin: 6px;
+              background-color: $background-colour;
+
+              &:hover {
+                background-color:darken($color: $background-colour, $amount: 5);
+              }
+            }
+
+            .qf-tile-header {
+              @extend .w-100, .h5, .text-center;
+              height: 32px;
+              line-height: 32px;
+              color: white;
+            }
+
+          }
+  }
 }

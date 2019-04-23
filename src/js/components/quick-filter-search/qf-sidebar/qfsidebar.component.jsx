@@ -1,4 +1,6 @@
 import React from "react";
+import UnorderedList from "../../shared/list-unordered/list-unordered.component";
+import { range } from "../../../util/array.util";
 
 export class QFSidebar extends React.Component {
     constructor(props) {
@@ -12,33 +14,17 @@ export class QFSidebar extends React.Component {
             },
         };
         this.closeNav = close;
-        /*
-        this.openNav = this.openNav.bind(this);
-        this.closeNav = this.closeNav.bind(this);
-        */
-    }
-    /*
-    openNav() {
-        const style = { width: 350 };
-        this.setState({ style });
     }
 
-    closeNav() {
-        const style = { width: 0 };
-        this.setState({ style });
-    }
-    */
     render() {
+let items = range(0, 12);
+
+
         return (
             <div className="overlay" style={this.state.style}>
-                <div className="sidenav-container">
-                    <a href="javascript:void(0)" className="closebtn" onClick={this.closeNav}>x</a>
-                    <div className="text-center">
-                        <h2>Presets</h2>
-                        <p>Hier moeten die presets komen</p>
-                    </div>
-                
-                </div>
+                <a href="javascript:void(0)" className="closebtn" onClick={this.closeNav}>x</a> 
+                <h2>Presets</h2>
+                <UnorderedList className="List" items={items} createListItem={(item) => <li class="filter">{item}</li>}/>                
             </div>
         );
     }

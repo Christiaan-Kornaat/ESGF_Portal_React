@@ -21,7 +21,8 @@ export class ESGFSearchPortal extends Component {
             <Tabs activeKey={this.state.key}
                   onSelect={key => this.setState({key})}>
                 <Tab eventKey="QF" title="Quick select">
-                    <QFWrapper filterProvider={this._filterProvider}/>
+                    <QFWrapper  filterProvider={this._filterProvider}
+                                selectedPropertyManager={this._selectedPropertyManager} />
                 </Tab>
                 <Tab eventKey="XPF" title="Extended property finder">
                     <XPFWrapper filterProvider={this._filterProvider}

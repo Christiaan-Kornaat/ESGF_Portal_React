@@ -129,6 +129,17 @@
         @extend .row;
         margin: 0 auto;
         background-color: white;
+        
+        .qf-root {
+          position: fixed;
+        }
+
+        ol,
+        li {
+          margin: 0;
+          padding: 0;
+          list-style-type: none
+        }
 
         ul{
           @extend .list-unstyled, .p-0;
@@ -169,6 +180,39 @@
               color: white;
             }
 
+          }
+          /* Sidebar & overlay */
+          /* Sidebar & overlay */
+
+          .overlay {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #dee2e6;
+            overflow-x: hidden;
+            transition: 0.5s;
+          }
+
+
+
+          .overlay a:hover,
+          .overlay a:focus {
+            color: #495057;
+          }
+
+          .overlay .closebtn {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            color: #495057;
+            font-size: 60px;
+          }
+
+          .overlay h2,
+          .overlay p {
+            color: #495057;
           }
   }
 }

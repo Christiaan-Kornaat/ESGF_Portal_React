@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import InfoTabVM from "../../../model/view-model/InfoTabVM";
 import XpfColumnTabInfoContent from "../column/xpf-column-tab-info-content.component";
 import XpfColumnTabListContent from "../column/xpf-column-tab-list-content.component";
 import XpfColumn from "../column/xpf-column.component";
@@ -78,7 +79,7 @@ export default class XPFWrapper extends Component {
     }
 
     updateProperties() {
-        this.setState(() => ({selectedProperties: this.selectedPropertyManager.getSelected()}));
+        this.setState({selectedProperties: this.selectedPropertyManager.getSelected()});
     }
 
     showPropertyInfo(property) {
@@ -91,11 +92,8 @@ export default class XPFWrapper extends Component {
         });
     }
 
-    addInfoTab(viewModel) {
-        let infoTabs = this.state.infoTabs.concat({
-            title: "Info",
-            content: viewModel
-        });
+    addInfoTab({title, paragraphs}) {
+        let infoTabs = this.state.infoTabs.concat(new InfoTabVM("Info", title, paragraphs));
 
         this.setState({infoTabs: infoTabs});
     }

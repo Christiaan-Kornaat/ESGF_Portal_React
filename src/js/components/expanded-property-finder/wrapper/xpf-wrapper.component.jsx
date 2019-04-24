@@ -13,13 +13,19 @@ export default class XPFWrapper extends Component {
             selectedFilter: null,
             selectedProperties: selectedPropertyManager.getSelected(),
             properties: [],
-            infoTabs: []
+            infoTabs: [],
+            selectedTabs: {
+                filterColumn: null,
+                propertyColumn: null,
+                selectedColumn: null
+            }
         };
 
         this.filterProvider = filterProvider;
         this.selectedPropertyManager = selectedPropertyManager;
 
-        this.render = this.render.bind(this);
+        this.setState = this.setState.bind(this);
+        this.selectTab = this.selectTab.bind(this);
         this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
@@ -95,17 +101,27 @@ export default class XPFWrapper extends Component {
     }
 
     removeInfoTab(viewModel) {
-        let infoTabs = this.state.infoTabs.filter(tab => tab.title !== viewModel.title);
+        let {state, setState} = this;
 
-        this.setState({infoTabs: infoTabs});
+        let infoTabs = state.infoTabs.filter(tab => tab.title !== viewModel.title);
+
+        setState({infoTabs: infoTabs});
+    }
+
+    selectTab(columnName, tabName) {
+        let {state: {selectedTabs}, setState} = this;
+
+        selectedTabs[columnName] = tabName;
+
+        setState({selectedTabs});
     }
 
     render() {
-        let {selectFilter, toggleProperty, deselectProperty, filterProvider, state} = this;
+        let {selectFilter, toggleProperty, deselectProperty, filterProvider, state, selectTab} = this;
 
         let filters = filterProvider.provide(); //FIXME TEMP
 
-        let {properties, selectedProperties, infoTabs} = state;
+        let {properties, selectedProperties, infoTabs, selectedTabs} = state;
 
         let isQueryValid = query => !(query == null || query.trim() === "");
 
@@ -126,15 +142,16 @@ export default class XPFWrapper extends Component {
 
         let showPropertyInfo = this.showPropertyInfo;
 
-        let propertyListItemFactoryFactory = (onClick) => {
-            return item => {
+        let propertyListItemFactoryFactory = (onClick) =>
+            item => {
                 let checked = this.isPropertySelected(item);
 
                 let onChange = () => onClick(item);
 
                 let onInfoClick = event => {
                     event.stopPropagation();
-                    showPropertyInfo(item);
+                    new Promise((resolve) => resolve(showPropertyInfo(item)))
+                        .then(() => this.selectTab("selectedColumn", "Info"));
                 };
 
                 return (
@@ -150,7 +167,6 @@ export default class XPFWrapper extends Component {
 
                     </li>);
             };
-        };
 
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
                                                   items={filters}
@@ -172,12 +188,22 @@ export default class XPFWrapper extends Component {
         let propertyTabs = infoTab != null ? {"Info": <XpfColumnTabInfoContent model={infoTab.content}/>} : {};
         propertyTabs["Selected properties"] = SelectedPropertyList;
 
+        let createClearSelected = columnName => newTab => selectTab(columnName, newTab);
+
         return (
             <section className='XPF-Wrapper'>
-                <XpfColumn className="Filters" tabs={{"Filters": FilterList, "Presets": PresetList}}/>
-                <XpfColumn className="Properties" tabs={{"Properties": PropertyList}}/>
+                <XpfColumn className="Filters"
+                           tabs={{"Filters": FilterList, "Presets": PresetList}}
+                           activeTab={selectedTabs.filterColumn}
+                           onSelect={createClearSelected("filterColumn")}/>
+                <XpfColumn className="Properties"
+                           tabs={{"Properties": PropertyList}}
+                           activeTab={selectedTabs.propertyColumn}
+                           onSelect={createClearSelected("propertyColumn")}/>
                 <XpfColumn className="SelectedProperties"
-                           tabs={propertyTabs}/>
+                           tabs={propertyTabs}
+                           activeTab={selectedTabs.selectedColumn}
+                           onSelect={createClearSelected("selectedColumn")}/>
             </section>
         );
     }

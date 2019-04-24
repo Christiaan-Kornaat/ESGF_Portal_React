@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { QFTile } from "../esgf-qfilter-tile/qf-tile.component";
 import { QFSidebar } from "../qf-sidebar/qfsidebar.component";
-import { createWatchCompilerHost } from "typescript";
 
 export class QFWrapper extends Component {
     constructor(props) {
@@ -12,6 +11,7 @@ export class QFWrapper extends Component {
 
         this.state = {
             QFSidebarShow: false,
+            filters: []
         }
 
         this.openNav = this.openNav.bind(this);
@@ -27,9 +27,9 @@ export class QFWrapper extends Component {
     }
 
     createTiles(){
+        let [item] = this.state.filters; 
 
-        let [item] = this._filterProvider.provide();
-        let items = item.properties;
+        let items = item != null ? item.properties : [];
         let tilesInfo = [
             { title: "Temperature", color: "#f9a718", icon: "fas fa-thermometer-three-quarters", properties: items, type: "properties" },
             { title: "Wind", color: "#14fc61", icon: "fas fa-wind", properties: items, type: "properties" },
@@ -49,6 +49,11 @@ export class QFWrapper extends Component {
         );
 
         return tiles;
+    }
+
+    componentDidMount() {
+        this._filterProvider.provide()
+            .then(filters => this.setState({ filters: filters })); //FIXME TEMP
     }
 
     render() {

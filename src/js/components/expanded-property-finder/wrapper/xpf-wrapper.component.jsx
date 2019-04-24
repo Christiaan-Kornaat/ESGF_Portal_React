@@ -9,7 +9,8 @@ export default class XPFWrapper extends Component {
         this.state = {
             selectedFilter: null,
             selectedProperties: [],
-            properties: []
+            properties: [],
+            filters: []
         };
 
         this.filterProvider = props.filterProvider;
@@ -71,12 +72,15 @@ export default class XPFWrapper extends Component {
         this.setState(() => ({selectedProperties: this.selectedPropertyManager.getSelected()}));
     }
 
+    componentDidMount() {
+        this.filterProvider.provide()
+            .then(filters => this.setState({ filters: filters })); //FIXME TEMP
+    }
+
     render() {
         let {toggleProperty, deselectProperty, filterProvider, state} = this;
 
-        let items = filterProvider.provide(); //FIXME TEMP
-
-        let {properties, selectedProperties} = state;
+        let {filters, properties, selectedProperties} = state;
 
         let isQueryValid = query => !(query == null || query.trim() === "");
 
@@ -115,13 +119,13 @@ export default class XPFWrapper extends Component {
 
         let FilterList = <XpfColumnTab
             searchFunction={searchFunctions.filters}
-            items={items}
+            items={filters}
             listItemFactory={filterListItemFactory}
         />;
 
         let PresetList = <XpfColumnTab
             searchFunction={searchFunctions.properties}
-            items={items}
+            items={filters}
             listItemFactory={filterListItemFactory}
         />;
 

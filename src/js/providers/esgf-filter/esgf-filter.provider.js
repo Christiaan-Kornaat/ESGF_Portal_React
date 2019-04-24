@@ -2,6 +2,10 @@ import {ESGFFilterDTO} from "../../model/dto/ESGFFilterDTO";
 
 export class ESGFFilterProvider {
 
+    /**
+     * 
+     * @param {ESGFFilterService} filterService 
+     */
     constructor(filterService) {
         this.filterService = filterService;
     }
@@ -12,9 +16,12 @@ export class ESGFFilterProvider {
      */
     provide() {
         if (this.filters == null) {
-            this.filters = this.filterService.fetch();
+            return this.filterService.fetch().then(filters => {
+                this.filters = filters;
+                return filters;
+            });
         }
 
-        return this.filters;
+        return new Promise(resolve=> resolve(this.filters));
     }
 }

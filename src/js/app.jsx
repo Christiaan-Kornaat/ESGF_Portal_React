@@ -3,16 +3,22 @@ import {ESGFSearchPortal} from "./components/esgf-search-portaal/esgf-search-por
 import SelectedPropertyManager from "./managers/selected-property.manager";
 import {ESGFFilterProvider} from "./providers/esgf-filter/esgf-filter.provider";
 import {ESGFFilterServiceMock} from "./services/esgf-filter/esgf-filter.service.mock";
+import {ESGFFilterServiceDemo} from "./services/esgf-filter/esgf-filter.service.demo";
 
 const Dependencies = {
     dev: {
         FilterService: ESGFFilterServiceMock,
         FilterProvider: ESGFFilterProvider,
         SelectedPropertyManager: SelectedPropertyManager
+    },
+    demo: {
+        FilterService: ESGFFilterServiceDemo,
+        FilterProvider: ESGFFilterProvider,
+        SelectedPropertyManager: SelectedPropertyManager
     }
 };
 
-const environment = "dev";
+const environment = "demo";
 
 class App extends Component {
     render() {

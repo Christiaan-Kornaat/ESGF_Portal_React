@@ -8,12 +8,15 @@ export class CQFWrapper extends Component {
         let { filterProvider } = this.props;
         this._filterProvider = filterProvider;
 
+        this.state = {
+            filters: []
+        }
     }
 
     createTiles() {
-
-        let [item] = this._filterProvider.provide();
-        let items = item.properties;
+        let [item] = this.state.filters; 
+        
+        let items = item != null ? item.properties : [];
         let tilesInfo = [
             { title: "Temperature", color: "#f9a718", icon: "fas fa-thermometer-three-quarters", properties: items, type: "properties" },
             { title: "Wind", color: "#14fc61", icon: "fas fa-wind", properties: items, type: "properties" },
@@ -34,6 +37,11 @@ export class CQFWrapper extends Component {
         );
 
         return tiles;
+    }
+
+    componentDidMount() {
+        this._filterProvider.provide()
+            .then(filters => this.setState({ filters: filters })); //FIXME TEMP
     }
 
     render() {

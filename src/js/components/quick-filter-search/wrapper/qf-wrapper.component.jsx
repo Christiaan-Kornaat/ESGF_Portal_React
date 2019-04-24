@@ -26,6 +26,16 @@ export class QFWrapper extends Component {
         this.setState({ QFSidebarShow: false });
     }
 
+    QuickFilterListItemFactory(item) {
+        return <li className="qf-property">
+            <span className="name"
+                onClick={() => onClick(item)}>
+                <input type={"checkbox"}
+                    /> {item}
+            </span>
+        </li>;
+    };
+
     createTiles(){
         let [item] = this.state.filters; 
 
@@ -40,6 +50,7 @@ export class QFWrapper extends Component {
 
         const tiles = tilesInfo.map(({ title, color, icon, properties, type }) =>
             <QFTile
+                listItemFactory={this.QuickFilterListItemFactory}
                 title={title}
                 color={color}
                 icon={icon}

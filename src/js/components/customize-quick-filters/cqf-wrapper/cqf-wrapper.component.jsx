@@ -13,6 +13,16 @@ export class CQFWrapper extends Component {
         }
     }
 
+    QuickFilterListItemFactory(item) {
+        return <li className="qf-property">
+            <span className="name"
+                onClick={() => onClick(item)}>
+                <input type={"checkbox"}
+                /> {item}
+            </span>
+        </li>;
+    };
+
     createTiles() {
         let [item] = this.state.filters; 
         
@@ -28,6 +38,7 @@ export class CQFWrapper extends Component {
 
         const tiles = tilesInfo.map(({ title, color, icon, properties, type }) =>
             <QFTile
+                listItemFactory={this.QuickFilterListItemFactory}
                 title={title}
                 color={color}
                 icon={icon}

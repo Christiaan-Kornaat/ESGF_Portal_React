@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Tab, Tabs} from "react-bootstrap";
 import XPFWrapper from "../expanded-property-finder/wrapper/xpf-wrapper.component";
 import {QFWrapper} from "../quick-filter-search/wrapper/qf-wrapper.component";
+import { CQFWrapper } from "../customize-quick-filters/cqf-wrapper/cqf-wrapper.component";
 
 export class ESGFSearchPortal extends Component {
     constructor(props, context) {
@@ -29,7 +30,8 @@ export class ESGFSearchPortal extends Component {
                                 selectedPropertyManager={this._selectedPropertyManager}/>
                 </Tab>
                 <Tab eventKey="CQF" title="Customize quick filters">
-                    <h1>Tab 3</h1>
+                    <CQFWrapper filterProvider={this._filterProvider}
+                        selectedPropertyManager={this._selectedPropertyManager} />
                 </Tab>
                 <Tab tabClassName='tab-hidden' eventKey="CLR" title="^"/>
             </Tabs>

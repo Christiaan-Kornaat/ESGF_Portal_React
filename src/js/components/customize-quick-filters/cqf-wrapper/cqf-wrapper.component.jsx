@@ -1,32 +1,16 @@
 import React, { Component } from "react";
-import { QFTile } from "../esgf-qfilter-tile/qf-tile.component";
-import { QFSidebar } from "../qf-sidebar/qfsidebar.component";
-import { createWatchCompilerHost } from "typescript";
+import { QFTile } from "../../quick-filter-search/esgf-qfilter-tile/qf-tile.component";
 
-export class QFWrapper extends Component {
+export class CQFWrapper extends Component {
     constructor(props) {
         super(props);
 
-        let {filterProvider} = this.props;
+        let { filterProvider } = this.props;
         this._filterProvider = filterProvider;
 
-        this.state = {
-            QFSidebarShow: false,
-        }
-
-        this.openNav = this.openNav.bind(this);
-        this.closeNav = this.closeNav.bind(this);
     }
 
-    openNav(){
-        this.setState({ QFSidebarShow: true });
-    }
-
-    closeNav(){
-        this.setState({ QFSidebarShow: false });
-    }
-
-    createTiles(){
+    createTiles() {
 
         let [item] = this._filterProvider.provide();
         let items = item.properties;
@@ -35,7 +19,8 @@ export class QFWrapper extends Component {
             { title: "Wind", color: "#14fc61", icon: "fas fa-wind", properties: items, type: "properties" },
             { title: "Precipitation", color: "#dd14fc", icon: "fas fa-tint", properties: items, type: "properties" },
             { title: "Evaporation", color: "#f91634", icon: "fas fa-cloud-sun-rain", properties: items, type: "properties" },
-            { title: "Radiation", color: "#24ccd8", icon: "fas fa-radiation", properties: items, type: "properties" }
+            { title: "Radiation", color: "#24ccd8", icon: "fas fa-radiation", properties: items, type: "properties" },
+            { title: "Add new", color: "#24ccd8", icon: "fas fa-plus-circle", properties: items, type: "add" }
         ];
 
         const tiles = tilesInfo.map(({ title, color, icon, properties, type }) =>
@@ -44,25 +29,19 @@ export class QFWrapper extends Component {
                 color={color}
                 icon={icon}
                 type={type}
-                properties={properties} 
-                page = "qf"/>
+                properties={properties}
+                page="cqf" />
         );
 
         return tiles;
     }
 
     render() {
-        let { QFSidebarShow } = this.state;
-
         const tiles = this.createTiles();
 
         return (
-            <section className="qf-wrapper">
-                { QFSidebarShow? (
-                     <QFSidebar close={this.closeNav}/>
-                ): ""}
-                <div className="button-open-presets" onClick={this.openNav}>&#9776; Presets</div>
-                <div className="qf-main-container">
+            <section className="cqf-wrapper">
+                <div className="cqf-main-container">
                     <div className="tiles">
                         {tiles}
                     </div>

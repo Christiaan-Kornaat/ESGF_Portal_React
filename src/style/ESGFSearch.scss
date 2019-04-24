@@ -125,7 +125,7 @@
     }
   }
 
-  .qf-wrapper{
+  .qf-wrapper, .cqf-wrapper{
         @extend .row;
         margin: 0 auto;
         background-color: white;
@@ -146,7 +146,7 @@
           margin-left:8px;
         }
 
-          .qf-main-container {
+          .qf-main-container, .cqf-main-container {
             @extend .container;
             
             .button-open-presets{
@@ -214,5 +214,9 @@
           .overlay p {
             color: #495057;
           }
+  }
+  .add-button{
+        font-size: 100px;
+        padding: 10px;
   }
 }

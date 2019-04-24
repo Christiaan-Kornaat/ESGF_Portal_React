@@ -6,14 +6,17 @@ export class QFWrapper extends Component {
     constructor(props) {
         super(props);
 
-        let {filterProvider} = this.props;
+        let {filterProvider, selectedPropertyManager: selectionManager} = this.props;
         this._filterProvider = filterProvider;
+        this._selectedPropertyManager = selectionManager;
 
         this.state = {
             QFSidebarShow: false,
             filters: []
         }
 
+        this.togglePropertySelected = this.togglePropertySelected.bind(this);
+        this.QuickFilterListItemFactory = this.QuickFilterListItemFactory.bind(this);
         this.openNav = this.openNav.bind(this);
         this.closeNav = this.closeNav.bind(this);
     }
@@ -26,18 +29,41 @@ export class QFWrapper extends Component {
         this.setState({ QFSidebarShow: false });
     }
 
+    /**
+     *
+     * @param {ESGFFilterProperty} property
+     */
+    togglePropertySelected(property) {
+        let {select, deselect, isSelected} = this._selectedPropertyManager;
+
+        (isSelected(property) ? deselect : select)(property);
+
+        this.forceUpdate();
+    }
+
+    /**
+     *
+     * @param item
+     * @return {Component}
+     * @constructor
+     */
     QuickFilterListItemFactory(item) {
-        return <li className="qf-property">
-            <span className="name"
-                onClick={() => onClick(item)}>
+        let {isSelected} = this._selectedPropertyManager;
+
+        let selectProperty = () => this.togglePropertySelected(item);
+
+        return <li className="qf-property"
+                   onClick={selectProperty}>
+            <span className="name">
                 <input type={"checkbox"}
-                    /> {item}
+                checked={isSelected(item)}
+                onChange={selectProperty}/> {item}
             </span>
         </li>;
     };
 
     createTiles(){
-        let [item] = this.state.filters; 
+        let [item] = this.state.filters;
 
         let items = item != null ? item.properties : [];
         let tilesInfo = [
@@ -55,7 +81,7 @@ export class QFWrapper extends Component {
                 color={color}
                 icon={icon}
                 type={type}
-                properties={properties} 
+                properties={properties}
                 page = "qf"/>
         );
 

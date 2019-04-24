@@ -27,21 +27,15 @@ export class QFTile extends Component {
     render() {
         let {properties} = this.state;
 
-        if(this.type == "add" && this.page == "cqf"){
-            return (
-                <div className="qf-tile">
-                    <div className="qf-tile-header" style={this.style}><i className={this.icon}></i> {this.title}</div>
-                    <div className="text-center"><i className="fas fa-plus-circle add-button"></i></div>
-                </div>
-            )
-        }else{
-            return (
-                <div className="qf-tile">
-                    <div className="qf-tile-header" style={this.style}><i className={this.icon}></i> {this.title}</div>
+        return (
+            <div className="qf-tile">
+                <div className="qf-tile-header" style={this.style}><i className={this.icon}></i> {this.title}</div>
+                {this.type === "add" && this.page === "cqf" ?
+                    <div className="text-center"><i class="fas fa-plus-circle add-button"></i></div> :
                     <UnorderedList items={properties}
-                                   createListItem={this.createListItem}/>
-                </div>
-            )
-        }
+                        createListItem={this.createListItem} />
+                }
+            </div>
+        )
     }
 }

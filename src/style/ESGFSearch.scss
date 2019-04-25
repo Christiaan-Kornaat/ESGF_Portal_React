@@ -1,5 +1,9 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
+$primary-blue: #007bff;
+$light-blue: lighten($primary-blue, 15);
+$dark-blue: darken($primary-blue, 15);
+
 .ESGFSearchPortal {
   @extend .container;
 
@@ -47,6 +51,10 @@
 
         .checkbox {
           padding: 5px;
+
+          &:hover {
+            cursor: pointer;
+          }
         }
 
         .name {
@@ -56,6 +64,11 @@
         .icon-info {
           @extend .float-right;
           font-size: 1.5em;
+          color: $primary-blue;
+         
+          &:hover {
+            color: $dark-blue;
+          }
         }
 
         &:hover {
@@ -130,11 +143,11 @@
 
         .Button {
           @extend .input-group-text;
-          background-color: #007bff;
-          border: none;
+          color: $primary-blue;
 
           &:hover {
-            background-color: #0056b3;
+            background-color: $primary-blue;
+            color: white;
 
             cursor: pointer;
           }

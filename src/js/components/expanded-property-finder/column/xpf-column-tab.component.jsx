@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import {isNullOrEmpty} from "../../../util/string.util";
 import UnorderedList from "../../shared/list-unordered/list-unordered.component";
 
 class XpfColumnTab extends Component {
     constructor(props) {
         super(props);
 
-        let { searchFunction, items, listItemFactory: createListItem } = props;
+        let { searchFunction, sortFunction, items, listItemFactory: createListItem } = props;
 
         this.search = searchFunction;
+        this.sort = sortFunction || (array => array.sort());
         this.createListItem = createListItem;
 
         this.state = {
@@ -54,9 +56,17 @@ class XpfColumnTab extends Component {
         this.executeSearch(query);
     }
 
+    /**
+     *
+     * @param {string}query
+     */
     executeSearch(query) {
+
+
+        let items = this.search(query, this.state.items);
+
         this.setState({
-            renderItems: this.search(query, [...this.state.items])
+            renderItems: items
         })
     }
 
@@ -83,7 +93,7 @@ class XpfColumnTab extends Component {
                     <SearchButton onClick={this.handleSubmit} />
                 </div>
                 <UnorderedList className="List"
-                    items={renderItems}
+                    items={this.sort(renderItems)}
                     createListItem={this.createListItem} />
             </div>
         );

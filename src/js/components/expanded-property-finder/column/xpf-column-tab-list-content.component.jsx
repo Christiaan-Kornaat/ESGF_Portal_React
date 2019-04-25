@@ -77,7 +77,7 @@ class XpfColumnTabListContent extends Component {
             <div className="SearchButton">
                 <span onClick={onClick}
                       className="Button">
-                    <i className="fas fa-search text-grey"
+                    <i className="fas fa-search text-white"
                        aria-hidden="true"/>
                 </span>
             </div>);

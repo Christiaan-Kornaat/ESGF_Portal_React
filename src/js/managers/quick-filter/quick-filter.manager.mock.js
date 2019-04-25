@@ -1,15 +1,24 @@
 import {QFFilterTileDTO} from "../../model/dto/QFFilterTileDTO";
 
-class QuickSelectManager {
+class QuickSelectManagerMock {
 
     constructor() {
         this.tileInfo = [
-            new QFFilterTileDTO()
-            {color: "#f9a718", icon: "fas fa-thermometer-three-quarters", type: "properties"},
-            {color: "#14fc61", icon: "fas fa-wind", type: "properties"},
-            {color: "#dd14fc", icon: "fas fa-tint", type: "properties"},
-            {color: "#f91634", icon: "fas fa-cloud-sun-rain", type: "properties"},
-            {color: "#24ccd8", icon: "fas fa-radiation", type: "properties"}
+            new QFFilterTileDTO("access", "#f9a718", "fas fa-thermometer-three-quarters", [
+                "NetcdfSubset", "HTTPServer", "GridFTP", "OPENDAP", "Globus", "WMS", "LAS"
+            ]),
+            new QFFilterTileDTO("experiment", "#14fc61", "fas fa-wind", [
+                "esmFdbk2", "historicalNat", "L1C26", "esmFdbk1", "commit", "MERRA-reanalysis", "convoffamip4K"
+            ]),
+            new QFFilterTileDTO("time_frequency", "#dd14fc", "fas fa-tint", [
+                "6hr", "subhr", "seasonClim", "monClim-5yr", "mon", "monClim-50yr", "5yr"
+            ]),
+            new QFFilterTileDTO("domain", "#f91634", "fas fa-cloud-sun-rain", [
+                "EUR-05", "NAM-11", "CEU-36km", "EAS-44i", "EUR-44i", "AUS-44", "CAM-44"
+            ]),
+            new QFFilterTileDTO("variable", "#24ccd8", "fas fa-radiation", [
+                "tds", "ccb", "sidmassgrowthwat", "DP_WCLDBASE", "snownc", "tasmaxCrop", "H2O2"
+            ])
         ];
     }
 
@@ -22,9 +31,13 @@ class QuickSelectManager {
     };
 
 
-    getTileInfo() {
+    /**
+     *
+     * @return {Array<QFFilterTileDTO>}
+     */
+    get TileInfo() {
         return this.tileInfo;
     }
 }
 
-export default QuickSelectManager;
+export default QuickSelectManagerMock;

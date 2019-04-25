@@ -1,21 +1,25 @@
 import {firstToUpper} from "../../util/string.util";
 
-class ESGFPropertyDTOFormatter {
+class StringFormatter {
 
     /**
      *
      * @param {ESGFFilterDTO} filterDTO
      */
     constructor(filterDTO) {
-        this.filterDTO = filterDTO;
+        this.string = filterDTO;
     }
 
     toHumanText() {
-        return ESGFPropertyDTOFormatter.toHumanText(this.filterDTO);
+        return StringFormatter.toHumanText(this.string);
     }
 
-
-    static toHumanText(property) {
+    /**
+     *
+     * @param {string} string
+     * @return {string}
+     */
+    static toHumanText(string) {
 
         /**
          *
@@ -26,9 +30,9 @@ class ESGFPropertyDTOFormatter {
             firstToUpper(string)
                 .replace(/_/g, " ");
 
-        return formatString(property);
+        return formatString(string);
     };
 }
 
 
-export default ESGFPropertyDTOFormatter;
+export default StringFormatter;

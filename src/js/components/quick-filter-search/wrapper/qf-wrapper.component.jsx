@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import ESGFFilterDTOFormatter from "../../../model/formatters/esgf-filter-dto.formatter";
 import ESGFPropertyDTOFormatter from "../../../model/formatters/esgf-property-dto.formatter";
+import StringFormatter from "../../../model/formatters/string.formatter";
 import { QFTile } from "../esgf-qfilter-tile/qf-tile.component";
 import { QFSidebar } from "../qf-sidebar/qfsidebar.component";
 
@@ -8,14 +8,15 @@ export class QFWrapper extends Component {
     constructor(props) {
         super(props);
 
-        let {filterProvider, selectedPropertyManager: selectionManager} = this.props;
+        let { filterProvider, selectedPropertyManager: selectionManager, QuickSelectManager} = this.props;
         this._filterProvider = filterProvider;
         this._selectedPropertyManager = selectionManager;
+        this._quickFilterManager = QuickSelectManager;
 
         this.state = {
             QFSidebarShow: false,
-            filters: []
-        }
+            qfTiles: this._quickFilterManager.TileInfo
+        };
 
         this.togglePropertySelected = this.togglePropertySelected.bind(this);
         this.QuickFilterListItemFactory = this.QuickFilterListItemFactory.bind(this);
@@ -66,26 +67,20 @@ export class QFWrapper extends Component {
 
     createTiles(){
         //<DEMO CODE>
-        let [...filters] = this.state.filters.filter(filter => filter.shortName && filter.properties != null && filter.properties.length > 1);
+        let {qfTiles} = this.state;
 
+        if (qfTiles.length ===0) return [];
 
-
-        if (filters.length ===0) return [];
-
-        const tiles = tilesInfo.map(({ color, icon, type }) => {
-            let filter = filters.shift();
-
-            let {properties} = filter;
+        const tiles = qfTiles.map(({ color, icon, title, properties }) => {
              properties = properties.sort().slice(0, 7).map(ESGFPropertyDTOFormatter.toHumanText);
 
-             let {shortName:title} = ESGFFilterDTOFormatter.toHumanText(filter);
+             title = StringFormatter.toHumanText(title);
 
             return <QFTile
                 listItemFactory={this.QuickFilterListItemFactory}
                 title={title}
                 color={color}
                 icon={icon}
-                type={type}
                 properties={properties}
                 page = "qf"/>
                 }
@@ -93,11 +88,6 @@ export class QFWrapper extends Component {
         //</DEMO CODE>
 
         return tiles;
-    }
-
-    componentDidMount() {
-        this._filterProvider.provide()
-            .then(filters => this.setState({ filters: filters })); //FIXME TEMP
     }
 
     render() {

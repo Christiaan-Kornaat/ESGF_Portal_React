@@ -86,7 +86,7 @@ export default class XPFWrapper extends Component {
         let {filters, properties, selectedProperties} = state;
 
         let searchFunctions = {
-            filters: new ESGFFilterSearcher().search,
+            filters: (new ESGFFilterSearcher()).search,
             properties: new ESGFPropertySearcher().search
         };
 

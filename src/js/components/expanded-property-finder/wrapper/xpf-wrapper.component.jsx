@@ -1,85 +1,208 @@
 import React, {Component} from "react";
+import InfoTabVM from "../../../model/view-model/InfoTabVM";
+import XpfColumnTabInfoContent from "../column/xpf-column-tab-info-content.component";
+import XpfColumnTabListContent from "../column/xpf-column-tab-list-content.component";
 import XpfColumn from "../column/xpf-column.component";
 
 export default class XPFWrapper extends Component {
     constructor(props) {
         super(props);
 
+        let {selectedPropertyManager, filterProvider} = props;
+
         this.state = {
-            selectedProperties: [],
-            properties: [
-                "test",
-                "test2"
-            ]
+            selectedFilter: null,
+            selectedProperties: selectedPropertyManager.getSelected(),
+            properties: [],
+            infoTabs: [],
+            selectedTabs: {
+                filterColumn: null,
+                propertyColumn: null,
+                selectedColumn: null
+            }
         };
 
-        this.filterProvider = props.filterProvider;
+        this.filterProvider = filterProvider;
+        this.selectedPropertyManager = selectedPropertyManager;
 
+        this.setState = this.setState.bind(this);
+        this.selectTab = this.selectTab.bind(this);
+        this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
+        this.toggleProperty = this.toggleProperty.bind(this);
+        this.isPropertySelected = this.isPropertySelected.bind(this);
+        this.showPropertyInfo = this.showPropertyInfo.bind(this);
+        this.addInfoTab = this.addInfoTab.bind(this);
     }
 
+    /**
+     *
+     * @param {ESGFFilterDTO}filter
+     */
+    selectFilter(filter) {
+        if (this.state.selectedFilter === filter) return;
+
+        this.setState(() => ({properties: filter.properties}));
+    }
+
+    /**
+     *
+     * @param {string}property
+     */
     selectProperty(property) {
-        if (this.state.selectedProperties.includes(property)) return;
+        this.selectedPropertyManager.select(property);
 
-        let selectedProperties = this.state.selectedProperties.concat(property);
-
-        this.setState(() => ({selectedProperties: selectedProperties}));
+        this.updateProperties();
     };
 
+    /**
+     *
+     * @param {string}property
+     */
     deselectProperty(property) {
-        if (!this.state.selectedProperties.includes(property)) return;
+        this.selectedPropertyManager.deselect(property);
 
-        let selectedProperties = this.state.selectedProperties.filter(item => item !== property);
-
-        this.setState(() => ({selectedProperties: selectedProperties}));
+        this.updateProperties();
     };
+
+    toggleProperty(property) {
+        let selectionAction = this.isPropertySelected(property) ?
+            this.deselectProperty :
+            this.selectProperty;
+
+        selectionAction(property);
+    }
+
+    isPropertySelected(property) {
+        return (this.state.selectedProperties.includes(property));
+    }
+
+    updateProperties() {
+        this.setState({selectedProperties: this.selectedPropertyManager.getSelected()});
+    }
+
+    showPropertyInfo(property) {
+        this.addInfoTab({
+            title: property,
+            paragraphs: {
+                "Paragraph 1!": "Lorem ipsum",
+                "Paragraph 2!": "In enim justo"
+            }
+        });
+    }
+
+    addInfoTab({title, paragraphs}) {
+        let infoTabs = this.state.infoTabs.concat(new InfoTabVM("Info", title, paragraphs));
+
+        this.setState({infoTabs: infoTabs});
+    }
+
+    removeInfoTab(viewModel) {
+        let {state, setState} = this;
+
+        let infoTabs = state.infoTabs.filter(tab => tab.title !== viewModel.title);
+
+        setState({infoTabs: infoTabs});
+    }
+
+    selectTab(columnName, tabName) {
+        let {state: {selectedTabs}, setState} = this;
+
+        selectedTabs[columnName] = tabName;
+
+        setState({selectedTabs});
+    }
 
     render() {
-        let {selectProperty, deselectProperty} = this;
+        let {selectFilter, toggleProperty, deselectProperty, filterProvider, state, selectTab} = this;
 
-        let items = this.filterProvider.provide(); //FIXME TEMP
+        let filters = filterProvider.provide(); //FIXME TEMP
 
-        let {properties, selectedProperties} = this.state;
+        let {properties, selectedProperties, infoTabs, selectedTabs} = state;
 
-        let searchFunc = (query, items) => {
-            return query == null || query.trim() === "" ? items : items.filter(({shortName: name}) => name.includes(query));
+        let isQueryValid = query => !(query == null || query.trim() === "");
+
+        let searchFunctions = {
+            filters: (query, items) => isQueryValid(query) ?
+                items.filter(({shortName}) => shortName.includes(query)) :
+                items,
+            properties: (query, items) => isQueryValid(query) ?
+                items.filter(property => property.includes(query)) :
+                items
         };
-        let searchPropertyFunc = (query, items) =>
-            query == null || query.trim() === "" ? items : items.filter(property => property.includes(query));
 
-            {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */}
-        let filterListItemFactory = item => <li className="list-group-item">{item.shortName}</li>;
+        let filterFactory = property =>
+            <li className="filter"
+                onClick={() => selectFilter(property)}>
+                {property.shortName}
+            </li>;
 
-            {/* Replace bootstrap class with a refrence to scss class with extension to bootstrap */}
-        let propertyListItemFactoryFactory = (onClick) => {
-            return item =>
-                <li className="list-group-item"
-                    onClick={() => onClick(item)}>
-                    {item}
-                </li>;
-        };
+        let showPropertyInfo = this.showPropertyInfo;
+
+        let propertyListItemFactoryFactory = (onClick) =>
+            item => {
+                let checked = this.isPropertySelected(item);
+
+                let onChange = () => onClick(item);
+
+                let onInfoClick = event => {
+                    event.stopPropagation();
+                    new Promise((resolve) => resolve(showPropertyInfo(item)))
+                        .then(() => this.selectTab("selectedColumn", "Info"));
+                };
+
+                return (
+                    <li className="property"
+                        onClick={onChange}>
+                        <input className={"checkbox"}
+                               type={"checkbox"}
+                               checked={checked}/> {item}
+                        <span className={"icon-info"}
+                              onClick={onInfoClick}>
+                            <i className="fas fa-info-circle"></i>
+                        </span>
+
+                    </li>);
+            };
+
+        let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
+                                                  items={filters}
+                                                  listItemFactory={filterFactory}/>;
+
+        let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
+                                                  items={filters}
+                                                  listItemFactory={filterFactory}/>;
+
+        let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
+                                                    items={properties}
+                                                    listItemFactory={propertyListItemFactoryFactory(toggleProperty)}/>;
+        let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
+                                                            items={selectedProperties}
+                                                            listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>;
+
+        let infoTab = Object.values(infoTabs)
+                            .pop();
+        let propertyTabs = infoTab != null ? {"Info": <XpfColumnTabInfoContent model={infoTab.content}/>} : {};
+        propertyTabs["Selected properties"] = SelectedPropertyList;
+
+        let createClearSelected = columnName => newTab => selectTab(columnName, newTab);
 
         return (
             <section className='XPF-Wrapper'>
-                <XpfColumn className="QF"
-                           tabs={["Filters"]}
-                           searchFunction={searchFunc}
-                           items={items}
-                           listItemFactory={filterListItemFactory}/>
-
-                <XpfColumn className="XPF"
-                           tabs={["Properties"]}
-                           searchFunction={searchPropertyFunc}
-                           items={properties}
-                           listItemFactory={propertyListItemFactoryFactory(selectProperty)}/>
-
-                <XpfColumn className="QFC"
-                           tabs={["Selected properties"]}
-                           searchFunction={searchPropertyFunc}
-                           items={selectedProperties}
-                           listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>
+                <XpfColumn className="Filters"
+                           tabs={{"Filters": FilterList, "Presets": PresetList}}
+                           activeTab={selectedTabs.filterColumn}
+                           onSelect={createClearSelected("filterColumn")}/>
+                <XpfColumn className="Properties"
+                           tabs={{"Properties": PropertyList}}
+                           activeTab={selectedTabs.propertyColumn}
+                           onSelect={createClearSelected("propertyColumn")}/>
+                <XpfColumn className="SelectedProperties"
+                           tabs={propertyTabs}
+                           activeTab={selectedTabs.selectedColumn}
+                           onSelect={createClearSelected("selectedColumn")}/>
             </section>
-        )
+        );
     }
 }

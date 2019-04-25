@@ -1,99 +1,59 @@
-import React, {Component} from 'react';
-import UnorderedList from "../../shared/list-unordered/list-unordered.component";
+import React, {Component} from "react";
+import {Tab, Tabs} from "react-bootstrap";
 
 class XpfColumn extends Component {
     constructor(props) {
         super(props);
 
-        let {tabs, searchFunction, items, listItemFactory: createListItem} = props;
+        let {tabs, activeTab, onSelect} = props;
 
-        this.search = searchFunction;
-        this.tabs = tabs;
-        this.createListItem = createListItem;
+        if (activeTab == null) {
+            [activeTab] = Object.keys(tabs);
+        }
 
         this.state = {
-            items: items,
-            renderItems: items
+            activeTab: activeTab,
+            tabs: tabs
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.executeSearch = this.executeSearch.bind(this);
+        this.onSelect = onSelect == null ? () => null : onSelect;
 
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
     }
 
-    componentWillReceiveProps({items}) {
-        let {searchQuery: query, renderItems} = this.state;
-
-        if (query == null || query.trim() === "")
-            renderItems = items;
-
+    componentWillReceiveProps({tabs, activeTab}) {
         this.setState({
-            items: items,
-            renderItems: renderItems
-        })
-    }
-
-    handleChange(event) {
-        let {target: {value}} = event;
-
-        this.changeQuery(value);
-
-        this.executeSearch(value);
-    }
-
-    changeQuery(newQuery) {
-        this.setState({
-            searchQuery: newQuery
+            tabs: tabs,
+            activeTab: activeTab == null ? this.state.activeTab : activeTab
         });
     }
 
-    handleSubmit() {
-        event.preventDefault();
-
-        let {searchQuery: query} = this.state;
-
-        this.executeSearch(query);
-    }
-
-    executeSearch(query) {
-        this.setState({
-            renderItems: this.search(query, [...this.state.items])
-        })
-    }
-
     render() {
-        let [title] = this.tabs;
 
-        let {renderItems} = this.state;
+        let {activeTab, tabs} = this.state;
 
-        let SearchButton = ({onClick}) => (
-            <div className="SearchButton">
-                <span onClick={onClick}
-                      className="Button"
-                      id="basic-text1">
-                    <i className="fas fa-search text-grey"
-                       aria-hidden="true"/>
-                </span>
-            </div>);
+        let tabComponents = Object.keys(tabs)
+                                  .map(name => (
+                                      <Tab
+                                          className="centered-tab"
+                                          eventKey={name}
+                                          title={name}>
+                                          {tabs[name]}
+                                      </Tab>
+                                  ));
+
+        let handleSelect = selectedTab => {
+            this.onSelect(selectedTab);
+            this.setState({activeTab: selectedTab});
+        };
 
         return (
             <div className={this.props.className}>
-
-                {/* Deze title wordt vervangen door een meegegeven object */}
-                <h3 className='Center-Title'>{title}</h3>
-
-                <div className="Search">
-                    <input className="SearchBar"
-                           type="text"
-                           placeholder="Search"
-                           aria-label="Search"
-                           onChange={this.handleChange}/>
-                    <SearchButton onClick={this.handleSubmit}/>
-                </div>
-                <UnorderedList className="List"
-                               items={renderItems}
-                               createListItem={this.createListItem}/>
+                <Tabs className="nav-center"
+                      activeKey={activeTab}
+                      onSelect={handleSelect}>
+                    {tabComponents}
+                </Tabs>
             </div>
         );
     }

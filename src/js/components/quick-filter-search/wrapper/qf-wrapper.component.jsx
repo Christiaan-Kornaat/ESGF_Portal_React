@@ -6,13 +6,15 @@ export class QFWrapper extends Component {
     constructor(props) {
         super(props);
 
-        let {filterProvider, selectedPropertyManager: selectionManager} = this.props;
+        let { filterProvider, selectedPropertyManager: selectionManager, QuickSelectManager} = this.props;
         this._filterProvider = filterProvider;
         this._selectedPropertyManager = selectionManager;
+        this._QuickSelectManager = QuickSelectManager;
 
         this.state = {
             QFSidebarShow: false,
-            filters: []
+            filters: [],
+            tilesInfo: []
         }
 
         this.togglePropertySelected = this.togglePropertySelected.bind(this);
@@ -63,9 +65,6 @@ export class QFWrapper extends Component {
     };
 
     createTiles(){
-        let [item] = this.state.filters;
-
-        let items = item != null ? item.properties : [];
         let tilesInfo = [
             { title: "Temperature", color: "#f9a718", icon: "fas fa-thermometer-three-quarters", properties: items, type: "properties" },
             { title: "Wind", color: "#14fc61", icon: "fas fa-wind", properties: items, type: "properties" },
@@ -74,15 +73,16 @@ export class QFWrapper extends Component {
             { title: "Radiation", color: "#24ccd8", icon: "fas fa-radiation", properties: items, type: "properties" }
         ];
 
-        const tiles = tilesInfo.map(({ title, color, icon, properties, type }) =>
+        this.state.tilesInfo = tilesInfo;
+
+        const tiles = this.state.tilesInfo.map(({ title, color, icon, properties }) =>
             <QFTile
                 listItemFactory={this.QuickFilterListItemFactory}
                 title={title}
                 color={color}
                 icon={icon}
-                type={type}
                 properties={properties}
-                page = "qf"/>
+                />
         );
 
         return tiles;

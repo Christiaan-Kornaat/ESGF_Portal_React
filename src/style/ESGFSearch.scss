@@ -142,7 +142,23 @@ $dark-blue: darken($primary-blue, 15);
         @extend .input-group-append;
 
         .Button {
-          @extend .input-group-text;
+          @extend .input-group-text, .rounded-right;
+          color: $primary-blue;
+
+          &:hover {
+            background-color: $primary-blue;
+            color: white;
+
+            cursor: pointer;
+          }
+        }
+      }
+
+      .OptionsButton {
+        @extend .input-group-append;
+
+        .Button {
+          @extend .input-group-text, .ml-2, .rounded;
           color: $primary-blue;
 
           &:hover {

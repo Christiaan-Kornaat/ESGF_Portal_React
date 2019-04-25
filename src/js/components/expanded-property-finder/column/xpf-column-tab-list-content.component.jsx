@@ -77,8 +77,15 @@ class XpfColumnTabListContent extends Component {
             <div className="SearchButton">
                 <span onClick={onClick}
                       className="Button">
-                    <i className="fas fa-search"
-                       aria-hidden="true"/>
+                    <i className="fas fa-search" />
+                </span>
+            </div>);
+        
+        let OptionsButton = ({onClick}) => (
+            <div className="OptionsButton">
+                <span onClick={onClick}
+                      className="Button">
+                    <i class="fas fa-ellipsis-h" />
                 </span>
             </div>);
 
@@ -91,6 +98,7 @@ class XpfColumnTabListContent extends Component {
                            aria-label="Search"
                            onChange={this.handleChange}/>
                     <SearchButton onClick={this.handleSubmit}/>
+                    <OptionsButton onClick={this.handleSubmit}/>
                 </div>
                 <UnorderedList className="List"
                                items={this.sort(renderItems)}

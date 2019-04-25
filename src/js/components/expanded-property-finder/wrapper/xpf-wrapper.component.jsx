@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import StringFormatter from "../../../model/formatters/string.formatter";
 import ESGFFilterSearcher from "../../../searchers/esgf-filter.searcher";
 import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
+import XpfColumnTabInfoContent from "../column/xpf-column-tab-info-content.component";
+import XpfColumnTabListContent from "../column/xpf-column-tab-list-content.component";
 
 import XpfColumn from "../column/xpf-column.component";
 
@@ -123,11 +125,9 @@ export default class XPFWrapper extends Component {
     }
 
     render() {
-        let {selectFilter, toggleProperty, deselectProperty, filterProvider, state, selectTab} = this;
+        let {selectFilter, toggleProperty, deselectProperty, state, selectTab} = this;
 
-        let filters = filterProvider.provide(); //FIXME TEMP
-
-        let {properties, selectedProperties, infoTabs, selectedTabs} = state;
+        let {properties, selectedProperties, infoTabs, selectedTabs, filters} = state;
 
         let searchFunctions = {
             filters: (new ESGFFilterSearcher()).search,
@@ -137,7 +137,7 @@ export default class XPFWrapper extends Component {
         let filterFactory = property =>
             <li className="filter"
                 onClick={() => selectFilter(property)}>
-                {StringFormatter.toHumanText(item.shortName)}
+                {StringFormatter.toHumanText(property.shortName)}
             </li>;
 
         let showPropertyInfo = this.showPropertyInfo;

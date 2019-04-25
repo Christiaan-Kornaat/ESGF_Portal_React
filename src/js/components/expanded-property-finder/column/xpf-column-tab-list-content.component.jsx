@@ -61,9 +61,8 @@ class XpfColumnTabListContent extends Component {
      * @param {string}query
      */
     executeSearch(query) {
-
-
         let items = this.search(query, this.state.items);
+
 
         this.setState({
             renderItems: items

@@ -1,0 +1,222 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
+.ESGFSearchPortal {
+  @extend .container;
+
+  .tab-hidden {
+    @extend .ml-auto, .active;
+  }
+
+  a.nav-item.nav-link {
+    background-color: white;
+    border: 1px solid #dee2e6;
+  }
+
+  a.nav-item.nav-link.active {
+    background-color: white;
+    border: none;
+  }
+
+  .XPF-Wrapper {
+    @extend .row;
+    margin: 0 auto;
+    background-color: white;
+
+    .Filters {
+      @extend .col-sm;
+
+      .filter {
+        @extend .list-group-item;
+      }
+
+      .filter:hover {
+        cursor: pointer;
+        background-color: #dee2e6;
+      }
+
+    }
+    
+    .Properties {
+      @extend .border-right, .border-left;
+    }
+
+    .Properties , .SelectedProperties {
+      @extend .col-sm;
+
+      .property {
+        @extend .list-group-item, .py-2;
+
+        .name {
+          margin: auto 0;
+        }
+
+        .icon-info {
+          @extend .float-right;
+          font-size: 1.5em;
+        }
+
+        .icon-info:hover, .name {
+          cursor: pointer;
+        }
+
+      }
+
+      .property:hover {
+        background-color: #dee2e6;
+      }
+
+    }
+
+    .nav-center {
+      @extend .mt-2;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      border: none;
+      padding: 0;
+      border-bottom: 1px solid #dee2e6;
+
+      a.nav-item.nav-link {
+        font-weight: bold;
+        border: none;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      a.nav-item.nav-link.active {
+        cursor: default;
+        border: 1px solid #dee2e6;
+        border-bottom: none;
+      }
+    }
+
+    .Search {
+      @extend .input-group;
+      @extend .input-group-sm;
+      @extend .pl-0;
+      @extend .my-3;
+
+      .SearchBar {
+        @extend .form-control, .my-0, .py-1;
+        @extend .form-control-sm;
+        font-size: 12px;
+      }
+
+      .SearchButton {
+        @extend .input-group-append;
+
+
+        .Button {
+          @extend .input-group-text;
+        }
+
+        .Button:hover {
+          cursor: pointer;
+        }
+
+      }
+
+    }
+
+    .List {
+      @extend .list-group, .list-group-flush;
+      font-size: 12px;
+    }
+  }
+
+  .qf-wrapper, .cqf-wrapper{
+        @extend .row;
+        margin: 0 auto;
+        background-color: white;
+        
+        .qf-root {
+          position: fixed;
+        }
+
+        ol,
+        li {
+          margin: 0;
+          padding: 0;
+          list-style-type: none
+        }
+
+        ul{
+          @extend .list-unstyled, .p-0;
+          margin-left:8px;
+        }
+
+          .qf-main-container, .cqf-main-container {
+            @extend .container;
+            
+            .button-open-presets{
+              margin: 10px;
+              font-size: 20;
+              cursor: "pointer";
+            }
+
+            .tiles {
+              @extend .w-100, .d-flex, .justify-content-center, .flex-wrap;
+            }
+
+            .qf-tile {
+              @extend .p-0, .shadow;
+
+              $background-colour: #E0EBEB;
+
+              width: 200px;
+              margin: 6px;
+              background-color: $background-colour;
+
+              &:hover {
+                background-color:darken($color: $background-colour, $amount: 5);
+              }
+            }
+
+            .qf-tile-header {
+              @extend .w-100, .h5, .text-center;
+              height: 32px;
+              line-height: 32px;
+              color: white;
+            }
+
+          }
+          /* Sidebar & overlay */
+          /* Sidebar & overlay */
+
+          .overlay {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #dee2e6;
+            overflow-x: hidden;
+            transition: 0.5s;
+          }
+
+
+
+          .overlay a:hover,
+          .overlay a:focus {
+            color: #495057;
+          }
+
+          .overlay .closebtn {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            color: #495057;
+            font-size: 60px;
+          }
+
+          .overlay h2,
+          .overlay p {
+            color: #495057;
+          }
+  }
+  .add-button{
+        font-size: 100px;
+        padding: 10px;
+  }
+}

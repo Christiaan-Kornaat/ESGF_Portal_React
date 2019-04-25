@@ -6,9 +6,11 @@ export class ESGFFilterDTO {
      *
      * @param {string}shortName
      * @param {number}itemCount
+     * @param {string[]}properties //FIXME to ESGFProperty[]
      */
-    constructor(shortName = undefined, itemCount = undefined) {
+    constructor(shortName = undefined, itemCount = undefined, properties = []) {
         this.shortName = shortName;
-        this.itemCount = itemCount;
+        this.propertyCount = itemCount;
+        this.properties = properties;
     }
 }

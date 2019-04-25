@@ -30,7 +30,7 @@ export class ESGFSearchPortal extends Component {
                 </Tab>
                 <Tab eventKey="CQF" title="Customize quick filters">
                     <QFWrapper filterProvider={this._filterProvider}
-                         />
+                               selectedPropertyManager={this._selectedPropertyManager}/>
                 </Tab>
                 <Tab tabClassName='tab-hidden' eventKey="CLR" title="^"/>
             </Tabs>

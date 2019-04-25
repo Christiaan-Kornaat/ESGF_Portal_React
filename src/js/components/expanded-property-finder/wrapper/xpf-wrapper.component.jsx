@@ -16,9 +16,6 @@ export default class XPFWrapper extends Component {
         this.filterProvider = props.filterProvider;
         this.selectedPropertyManager = props.selectedPropertyManager;
 
-
-        this.updateProperties();
-
         this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
@@ -69,12 +66,13 @@ export default class XPFWrapper extends Component {
     }
 
     updateProperties() {
-        this.setState(() => ({selectedProperties: this.selectedPropertyManager.getSelected()}));
+        this.setState(() => ({selectedProperties: this.selectedPropertyManager.selected}));
     }
 
     componentDidMount() {
-        this.filterProvider.provide()
-            .then(filters => this.setState({ filters: filters })); //FIXME TEMP
+        this.filterProvider.provide().then(filters => this.setState({ filters: filters })); //FIXME TEMP
+
+        this.updateProperties();
     }
 
     render() {

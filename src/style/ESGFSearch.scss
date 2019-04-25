@@ -29,6 +29,7 @@
 
     .Properties, .SelectedProperties, .Filters {
       @extend .col-sm-4;
+      height: 500px;
 
       .filter {
         @extend .list-group-item;
@@ -79,6 +80,12 @@
             font-size: 12px;
           }
         }
+      }
+
+      .List {
+        @extend .list-group, .list-group-flush, .overflow-auto;
+        height: 375px;
+        font-size: 12px;
       }
     }
 
@@ -134,11 +141,6 @@
         }
       }
 
-    }
-
-    .List {
-      @extend .list-group, .list-group-flush;
-      font-size: 12px;
     }
   }
 

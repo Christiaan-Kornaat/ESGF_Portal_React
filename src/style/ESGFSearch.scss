@@ -21,6 +21,7 @@
     @extend .row;
     margin: 0 auto;
     background-color: white;
+    height: 500px;
     
     .Properties {
       @extend .border-right, .border-left;
@@ -145,6 +146,7 @@
         @extend .row;
         margin: 0 auto;
         background-color: white;
+        height: 500px;
         
         .qf-root {
           position: fixed;

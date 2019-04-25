@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import {isNullOrEmpty} from "../../../util/string.util";
+import React, {Component} from "react";
 import UnorderedList from "../../shared/list-unordered/list-unordered.component";
 
-class XpfColumnTab extends Component {
+class XpfColumnTabListContent extends Component {
     constructor(props) {
         super(props);
 
-        let { searchFunction, sortFunction, items, listItemFactory: createListItem } = props;
+        let {searchFunction, sortFunction, items, listItemFactory: createListItem} = props;
 
         this.search = searchFunction;
         this.sort = sortFunction || (array => array.sort());
@@ -22,20 +21,21 @@ class XpfColumnTab extends Component {
         this.executeSearch = this.executeSearch.bind(this);
     }
 
-    componentWillReceiveProps({ items }) {
-        let { searchQuery: query, renderItems } = this.state;
+    componentWillReceiveProps({items}) {
+        let {searchQuery: query, renderItems} = this.state;
 
-        if (query == null || query.trim() === "")
+        if (query == null || query.trim() === "") {
             renderItems = items;
+        }
 
         this.setState({
             items: items,
             renderItems: renderItems
-        })
+        });
     }
 
     handleChange(event) {
-        let { target: { value } } = event;
+        let {target: {value}} = event;
 
         this.changeQuery(value);
 
@@ -51,7 +51,7 @@ class XpfColumnTab extends Component {
     handleSubmit() {
         event.preventDefault();
 
-        let { searchQuery: query } = this.state;
+        let {searchQuery: query} = this.state;
 
         this.executeSearch(query);
     }
@@ -67,38 +67,39 @@ class XpfColumnTab extends Component {
 
         this.setState({
             renderItems: items
-        })
+        });
     }
 
-    render(){
-        let { renderItems } = this.state;
 
-        let SearchButton = ({ onClick }) => (
+    render() {
+        let {state: {renderItems}} = this;
+
+        let SearchButton = ({onClick}) => (
             <div className="SearchButton">
                 <span onClick={onClick}
-                    className="Button">
+                      className="Button">
                     <i className="fas fa-search text-grey"
-                        aria-hidden="true"/>
+                       aria-hidden="true"/>
                 </span>
             </div>);
 
-        return(
+        return (
             <div>
                 <div className="Search">
                     <input className="SearchBar"
-                        type="text"
-                        placeholder="Search"
-                        aria-label="Search"
-                        onChange={this.handleChange} />
-                    <SearchButton onClick={this.handleSubmit} />
+                           type="text"
+                           placeholder="Search"
+                           aria-label="Search"
+                           onChange={this.handleChange}/>
+                    <SearchButton onClick={this.handleSubmit}/>
                 </div>
                 <UnorderedList className="List"
-                    items={this.sort(renderItems)}
-                    createListItem={this.createListItem} />
+                               items={this.sort(renderItems)}
+                               createListItem={this.createListItem}/>
             </div>
         );
     }
 
 }
 
-export default XpfColumnTab;
+export default XpfColumnTabListContent;

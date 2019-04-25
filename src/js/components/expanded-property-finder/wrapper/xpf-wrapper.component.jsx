@@ -1,30 +1,39 @@
 import React, {Component} from "react";
-import ESGFFilterDTOFormatter from "../../../model/formatters/esgf-filter-dto.formatter";
-import ESGFPropertyDTOFormatter from "../../../model/formatters/esgf-property-dto.formatter";
+import StringFormatter from "../../../model/formatters/string.formatter";
 import ESGFFilterSearcher from "../../../searchers/esgf-filter.searcher";
 import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
-import XpfColumnTab from "../column/xpf-column-tab.component";
+
 import XpfColumn from "../column/xpf-column.component";
 
 export default class XPFWrapper extends Component {
     constructor(props) {
         super(props);
 
+        let {selectedPropertyManager, filterProvider} = props;
+
         this.state = {
             selectedFilter: null,
-            selectedProperties: [],
+            selectedProperties: selectedPropertyManager.selected,
             properties: [],
+            infoTabs: [],
+            selectedTabs: {
+                filterColumn: null,
+                propertyColumn: null,
+                selectedColumn: null
+            },
             filters: []
         };
 
-        this.filterProvider = props.filterProvider;
-        this.selectedPropertyManager = props.selectedPropertyManager;
+        this.filterProvider = filterProvider;
+        this.selectedPropertyManager = selectedPropertyManager;
 
         this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
         this.toggleProperty = this.toggleProperty.bind(this);
         this.isPropertySelected = this.isPropertySelected.bind(this);
+        this.showPropertyInfo = this.showPropertyInfo.bind(this);
+        this.addInfoTab = this.addInfoTab.bind(this);
     }
 
     /**
@@ -80,74 +89,126 @@ export default class XPFWrapper extends Component {
         this.updateProperties();
     }
 
-    render() {
-        let {toggleProperty, deselectProperty, filterProvider, state} = this;
 
-        let {filters, properties, selectedProperties} = state;
+    showPropertyInfo(property) {
+        this.addInfoTab({
+            title: property,
+            paragraphs: {
+                "Paragraph 1!": "Lorem ipsum",
+                "Paragraph 2!": "In enim justo"
+            }
+        });
+    }
+
+    addInfoTab({title, paragraphs}) {
+        let infoTabs = this.state.infoTabs.concat(new InfoTabVM("Info", title, paragraphs));
+
+        this.setState({infoTabs: infoTabs});
+    }
+
+    removeInfoTab(viewModel) {
+        let {state, setState} = this;
+
+        let infoTabs = state.infoTabs.filter(tab => tab.title !== viewModel.title);
+
+        setState({infoTabs: infoTabs});
+    }
+
+    selectTab(columnName, tabName) {
+        let {state: {selectedTabs}, setState} = this;
+
+        selectedTabs[columnName] = tabName;
+
+        setState({selectedTabs});
+    }
+
+    render() {
+        let {selectFilter, toggleProperty, deselectProperty, filterProvider, state, selectTab} = this;
+
+        let filters = filterProvider.provide(); //FIXME TEMP
+
+        let {properties, selectedProperties, infoTabs, selectedTabs} = state;
 
         let searchFunctions = {
             filters: (new ESGFFilterSearcher()).search,
             properties: new ESGFPropertySearcher().search
         };
 
-        let filterListItemFactory = item =>
+        let filterFactory = property =>
             <li className="filter"
-                onClick={() => this.selectFilter(item)}>
-                {ESGFFilterDTOFormatter.toHumanText(item).shortName}
+                onClick={() => selectFilter(property)}>
+                {StringFormatter.toHumanText(item.shortName)}
             </li>;
 
-        let showPropertyInfo = console.log;
+        let showPropertyInfo = this.showPropertyInfo;
 
-        let propertyListItemFactoryFactory = (onClick) => {
-            return item => {
-                let name = ESGFPropertyDTOFormatter.toHumanText(item);
+        let propertyListItemFactoryFactory = (onClick) =>
+            item => {
+                let name = StringFormatter.toHumanText(item);
 
                 let checked = this.isPropertySelected(item);
 
-                return <li className="property">
-                    <span className="name"
-                          onClick={() => onClick(item)}>
-                        <input type={"checkbox"}
+                let onChange = () => onClick(item);
+
+                let onInfoClick = event => {
+                    event.stopPropagation();
+                    new Promise((resolve) => resolve(showPropertyInfo(item)))
+                        .then(() => this.selectTab("selectedColumn", "Info"));
+                };
+
+                return (
+                    <li className="property"
+                        onClick={onChange}>
+                        <input className={"checkbox"}
+                               type={"checkbox"}
                                checked={checked}/> {name}
-                    </span>
-                    <span className={"icon-info"}
-                          onClick={() => showPropertyInfo(item)}><i className="fas fa-info-circle"></i></span>
-                </li>;
+                        <span className={"icon-info"}
+                              onClick={onInfoClick}>
+                            <i className="fas fa-info-circle"></i>
+                        </span>
+
+                    </li>);
             };
-        };
 
-        let FilterList = <XpfColumnTab
-            searchFunction={searchFunctions.filters}
-            sortFunction={(array => array.sort(({shortName: item1}, {shortName: item2}) => (item1 !== item2) ?
-                ((item1 > item2) ? 1 : -1) :
-                0))}
-            items={filters}
-            listItemFactory={filterListItemFactory}
-        />;
+        let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
+                                                  items={filters}
+                                                  sortFunction={(array => array.sort(({shortName: item1}, {shortName: item2}) => (item1 !== item2) ?
+                                                      ((item1 > item2) ? 1 : -1) :
+                                                      0))}
+                                                  listItemFactory={filterFactory}/>;
 
-        let PresetList = <XpfColumnTab
-            searchFunction={searchFunctions.properties}
-            items={filters}
-            listItemFactory={filterListItemFactory}
-        />;
+        let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
+                                                  items={filters}
+                                                  listItemFactory={filterFactory}/>;
 
-        let PropertyFilterList = <XpfColumnTab
-            searchFunction={searchFunctions.properties}
-            items={properties}
-            listItemFactory={propertyListItemFactoryFactory(toggleProperty, "O")}
-        />;
+        let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
+                                                    items={properties}
+                                                    listItemFactory={propertyListItemFactoryFactory(toggleProperty)}/>;
+        let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
+                                                            items={selectedProperties}
+                                                            listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>;
 
-        let SelectedPropertyFilterList = <XpfColumnTab
-            searchFunction={searchFunctions.properties}
-            items={selectedProperties}
-            listItemFactory={propertyListItemFactoryFactory(deselectProperty, "X")}
-        />;
+        let infoTab = Object.values(infoTabs)
+                            .pop();
+        let propertyTabs = infoTab != null ? {"Info": <XpfColumnTabInfoContent model={infoTab.content}/>} : {};
+        propertyTabs["Selected properties"] = SelectedPropertyList;
+
+        let createClearSelected = columnName => newTab => selectTab(columnName, newTab);
 
         return (
             <section className='XPF-Wrapper'>
-                <XpfColumn className="Filters" tabs={{"Filters": FilterList, "Presets": PresetList}}/>
-                <XpfColumn className="Properties" tabs={{"Properties": PropertyFilterList}}/>
-                <XpfColumn className="SelectedProperties" tabs={{"Selected properties": SelectedPropertyFilterList}}/>
+                <XpfColumn className="Filters"
+                           tabs={{"Filters": FilterList, "Presets": PresetList}}
+                           activeTab={selectedTabs.filterColumn}
+                           onSelect={createClearSelected("filterColumn")}/>
+                <XpfColumn className="Properties"
+                           tabs={{"Properties": PropertyList}}
+                           activeTab={selectedTabs.propertyColumn}
+                           onSelect={createClearSelected("propertyColumn")}/>
+                <XpfColumn className="SelectedProperties"
+                           tabs={propertyTabs}
+                           activeTab={selectedTabs.selectedColumn}
+                           onSelect={createClearSelected("selectedColumn")}/>
             </section>
         );
     }

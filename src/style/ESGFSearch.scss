@@ -46,6 +46,10 @@
       .property {
         @extend .list-group-item, .py-2;
 
+        .checkbox {
+          padding: 5px;
+        }
+
         .name {
           margin: auto 0;
         }
@@ -55,7 +59,7 @@
           font-size: 1.5em;
         }
 
-        .icon-info:hover, .name {
+        .icon-info:hover, .name, .checkbox {
           cursor: pointer;
         }
 
@@ -151,8 +155,8 @@
             
             .button-open-presets{
               margin: 10px;
-              font-size: 20;
-              cursor: "pointer";
+              font-size: 20px;
+              cursor: pointer;
             }
 
             .tiles {

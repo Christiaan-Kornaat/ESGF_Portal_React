@@ -1,4 +1,8 @@
 import React, {Component} from "react";
+import ESGFFilterDTOFormatter from "../../../model/formatters/esgf-filter-dto.formatter";
+import ESGFPropertyDTOFormatter from "../../../model/formatters/esgf-property-dto.formatter";
+import ESGFFilterSearcher from "../../../searchers/esgf-filter.searcher";
+import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
 import XpfColumnTab from "../column/xpf-column-tab.component";
 import XpfColumn from "../column/xpf-column.component";
 
@@ -70,7 +74,8 @@ export default class XPFWrapper extends Component {
     }
 
     componentDidMount() {
-        this.filterProvider.provide().then(filters => this.setState({ filters: filters })); //FIXME TEMP
+        this.filterProvider.provide()
+            .then(filters => this.setState({filters: filters})); //FIXME TEMP
 
         this.updateProperties();
     }
@@ -80,34 +85,30 @@ export default class XPFWrapper extends Component {
 
         let {filters, properties, selectedProperties} = state;
 
-        let isQueryValid = query => !(query == null || query.trim() === "");
-
         let searchFunctions = {
-            filters: (query, items) => isQueryValid(query) ?
-                items.filter(({shortName}) => shortName.includes(query)) :
-                items,
-            properties: (query, items) => isQueryValid(query) ?
-                items.filter(property => property.includes(query)) :
-                items
+            filters: new ESGFFilterSearcher().search,
+            properties: new ESGFPropertySearcher().search
         };
 
         let filterListItemFactory = item =>
             <li className="filter"
                 onClick={() => this.selectFilter(item)}>
-                {item.shortName}
+                {ESGFFilterDTOFormatter.toHumanText(item).shortName}
             </li>;
 
         let showPropertyInfo = console.log;
 
         let propertyListItemFactoryFactory = (onClick) => {
             return item => {
+                let name = ESGFPropertyDTOFormatter.toHumanText(item);
+
                 let checked = this.isPropertySelected(item);
 
                 return <li className="property">
-                    <span className="name" 
-                        onClick={() => onClick(item)}>
+                    <span className="name"
+                          onClick={() => onClick(item)}>
                         <input type={"checkbox"}
-                               checked={checked}/> {item}
+                               checked={checked}/> {name}
                     </span>
                     <span className={"icon-info"}
                           onClick={() => showPropertyInfo(item)}><i className="fas fa-info-circle"></i></span>
@@ -117,6 +118,9 @@ export default class XPFWrapper extends Component {
 
         let FilterList = <XpfColumnTab
             searchFunction={searchFunctions.filters}
+            sortFunction={(array => array.sort(({shortName: item1}, {shortName: item2}) => (item1 !== item2) ?
+                ((item1 > item2) ? 1 : -1) :
+                0))}
             items={filters}
             listItemFactory={filterListItemFactory}
         />;

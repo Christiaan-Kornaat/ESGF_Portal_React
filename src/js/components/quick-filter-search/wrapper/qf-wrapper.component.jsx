@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import ESGFFilterDTOFormatter from "../../../model/formatters/esgf-filter-dto.formatter";
+import ESGFPropertyDTOFormatter from "../../../model/formatters/esgf-property-dto.formatter";
 import { QFTile } from "../esgf-qfilter-tile/qf-tile.component";
 import { QFSidebar } from "../qf-sidebar/qfsidebar.component";
 
@@ -65,25 +67,37 @@ export class QFWrapper extends Component {
     };
 
     createTiles(){
+        //<DEMO CODE>
+        let [...filters] = this.state.filters.filter(filter => filter.shortName && filter.properties != null && filter.properties.length > 1);
         let tilesInfo = [
-            { title: "Temperature", color: "#f9a718", icon: "fas fa-thermometer-three-quarters", properties: items, type: "properties" },
-            { title: "Wind", color: "#14fc61", icon: "fas fa-wind", properties: items, type: "properties" },
-            { title: "Precipitation", color: "#dd14fc", icon: "fas fa-tint", properties: items, type: "properties" },
-            { title: "Evaporation", color: "#f91634", icon: "fas fa-cloud-sun-rain", properties: items, type: "properties" },
-            { title: "Radiation", color: "#24ccd8", icon: "fas fa-radiation", properties: items, type: "properties" }
+            { color: "#f9a718", icon: "fas fa-thermometer-three-quarters", type: "properties" },
+            { color: "#14fc61", icon: "fas fa-wind", type: "properties" },
+            { color: "#dd14fc", icon: "fas fa-tint", type: "properties" },
+            { color: "#f91634", icon: "fas fa-cloud-sun-rain", type: "properties" },
+            { color: "#24ccd8", icon: "fas fa-radiation", type: "properties" }
         ];
 
-        this.state.tilesInfo = tilesInfo;
 
-        const tiles = this.state.tilesInfo.map(({ title, color, icon, properties }) =>
-            <QFTile
+        if (filters.length ===0) return [];
+
+        const tiles = tilesInfo.map(({ color, icon, type }) => {
+            let filter = filters.shift();
+
+            let {properties} = filter;
+             properties = properties.sort().slice(0, 7).map(ESGFPropertyDTOFormatter.toHumanText);
+
+             let {shortName:title} = ESGFFilterDTOFormatter.toHumanText(filter);
+
+            return <QFTile
                 listItemFactory={this.QuickFilterListItemFactory}
                 title={title}
                 color={color}
                 icon={icon}
                 properties={properties}
-                />
+                page = "qf"/>
+                }
         );
+        //</DEMO CODE>
 
         return tiles;
     }

@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import StringFormatter from "../../../model/formatters/string.formatter";
+import InfoTabVM from "../../../model/view-model/InfoTabVM";
 import ESGFFilterSearcher from "../../../searchers/esgf-filter.searcher";
 import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
 import XpfColumnTabInfoContent from "../column/xpf-column-tab-info-content.component";
@@ -29,6 +30,7 @@ export default class XPFWrapper extends Component {
         this.filterProvider = filterProvider;
         this.selectedPropertyManager = selectedPropertyManager;
 
+        this.selectTab = this.selectTab.bind(this);
         this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
@@ -117,17 +119,19 @@ export default class XPFWrapper extends Component {
     }
 
     selectTab(columnName, tabName) {
-        let {state: {selectedTabs}, setState} = this;
+        let {state: {selectedTabs}} = this;
 
         selectedTabs[columnName] = tabName;
 
-        setState({selectedTabs});
+        this.setState({selectedTabs});
     }
 
     render() {
-        let {selectFilter, toggleProperty, deselectProperty, state, selectTab} = this;
+        let {selectFilter, toggleProperty, deselectProperty, state, selectTab, showPropertyInfo, selectedPropertyManager} = this;
 
-        let {properties, selectedProperties, infoTabs, selectedTabs, filters} = state;
+        let {properties, infoTabs, selectedTabs, filters} = state;
+
+        let selectedProperties = selectedPropertyManager.selected;
 
         let searchFunctions = {
             filters: (new ESGFFilterSearcher()).search,
@@ -139,8 +143,6 @@ export default class XPFWrapper extends Component {
                 onClick={() => selectFilter(property)}>
                 {StringFormatter.toHumanText(property.shortName)}
             </li>;
-
-        let showPropertyInfo = this.showPropertyInfo;
 
         let propertyListItemFactoryFactory = (onClick) =>
             item => {

@@ -12,7 +12,7 @@ export class ESGFFilterProvider {
 
     /**
      *
-     * @return {ESGFFilterDTO[]}
+     * @return {Promise<ESGFFilterDTO>}
      */
     provide() {
         if (this.filters == null) {

@@ -53,14 +53,15 @@ export class QFWrapper extends Component {
     QuickFilterListItemFactory(item) {
         let {isSelected} = this._selectedPropertyManager;
 
-        let selectProperty = () => this.togglePropertySelected(item);
+        let selectProperty = () => {
+            this.togglePropertySelected(item);
+        };
 
         return <li className="qf-property"
                    onClick={selectProperty}>
             <span className="name">
                 <input type={"checkbox"}
-                checked={isSelected(item)}
-                onChange={selectProperty}/> {item}
+                checked={isSelected(item)}/> {item}
             </span>
         </li>;
     };

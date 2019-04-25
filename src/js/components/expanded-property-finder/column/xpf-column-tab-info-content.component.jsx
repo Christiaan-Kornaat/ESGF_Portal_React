@@ -21,9 +21,9 @@ class XpfColumnTabInfoContent extends Component {
         let {state: {content: {title, paragraphs}}} = this;
 
         let InfoParagraph = ({title, content}) => (
-            <div>
-                <h5>{title}</h5>
-                <p>
+            <div className="paragraph">
+                <h5 className="header">{title}</h5>
+                <p className="text">
                     {content}
                 </p>
             </div>
@@ -35,8 +35,8 @@ class XpfColumnTabInfoContent extends Component {
                                                         content={paragraphs[key]}/>);
 
         return (
-            <div>
-                <h4>{title}</h4>
+            <div className="infotab">
+                <h4 className="title">{title}</h4>
                 {paragraphObjects}
             </div>
         );

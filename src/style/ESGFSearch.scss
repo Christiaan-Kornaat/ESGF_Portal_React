@@ -61,6 +61,24 @@
           cursor: pointer;
         }
       }
+
+      .infotab {
+
+        .title {
+          @extend .text-center, .py-3;
+        }
+
+        .paragraph {
+
+          .header {
+            font-size: 16px;
+          }
+
+          .text {
+            font-size: 12px;
+          }
+        }
+      }
     }
 
     .nav-center {
@@ -92,9 +110,6 @@
       @extend .input-group-sm;
       @extend .pl-0;
       @extend .my-3;
-      @extend .shadow;
-      border-radius: 7px;
-
 
       .SearchBar {
         @extend .form-control, .my-0, .py-1;

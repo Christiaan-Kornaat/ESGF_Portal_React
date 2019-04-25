@@ -68,13 +68,7 @@ export class QFWrapper extends Component {
         //<DEMO CODE>
         let [...filters] = this.state.filters.filter(filter => filter.shortName && filter.properties != null && filter.properties.length > 1);
 
-        let tilesInfo = [
-            { color: "#f9a718", icon: "fas fa-thermometer-three-quarters", type: "properties" },
-            { color: "#14fc61", icon: "fas fa-wind", type: "properties" },
-            { color: "#dd14fc", icon: "fas fa-tint", type: "properties" },
-            { color: "#f91634", icon: "fas fa-cloud-sun-rain", type: "properties" },
-            { color: "#24ccd8", icon: "fas fa-radiation", type: "properties" }
-        ];
+
 
         if (filters.length ===0) return [];
 

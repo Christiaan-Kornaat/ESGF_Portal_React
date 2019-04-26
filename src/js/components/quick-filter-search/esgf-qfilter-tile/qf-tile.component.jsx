@@ -11,7 +11,7 @@ export class QFTile extends Component {
         this.type = type;
         this.createListItem = createListItem;
 
-        this.style = { 
+        this.style = {
             backgroundColor: props.color,
         };
 
@@ -20,12 +20,12 @@ export class QFTile extends Component {
         }
     }
 
-    componentWillReceiveProps({properties}) {
-        this.setState({properties: properties})
+    componentWillReceiveProps({ properties }) {
+        this.setState({ properties: properties })
     }
 
     render() {
-        let {properties} = this.state;
+        let { properties } = this.state;
 
         return (
             <div className="qf-tile">

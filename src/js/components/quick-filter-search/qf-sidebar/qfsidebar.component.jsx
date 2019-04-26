@@ -17,6 +17,7 @@ export class QFSidebar extends React.Component {
     }
 
     render() {
+        //testing items
         let items = range(0, 12);
         
         return (

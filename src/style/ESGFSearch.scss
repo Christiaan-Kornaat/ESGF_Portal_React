@@ -171,101 +171,96 @@ $dark-blue: darken($primary-blue, 15);
           }
         }
       }
-
     }
   }
 
   .qf-wrapper, .cqf-wrapper{
-        @extend .row;
-        margin: 0 auto;
-        background-color: white;
-        height: 500px;
-        
-        .qf-root {
-          position: fixed;
+    @extend .row;
+    margin: 0 auto;
+    background-color: white;
+    height: 500px;
+    
+    .qf-root {
+      position: fixed;
+    }
+
+    ol,
+    li {
+      margin: 0;
+      padding: 0;
+      list-style-type: none
+    }
+
+    ul{
+      @extend .list-unstyled, .p-0;
+      margin-left:8px;
+    }
+
+    .qf-main-container, .cqf-main-container {
+      @extend .container;
+      
+      .button-open-presets{
+        margin: 10px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .tiles {
+        @extend .w-100, .d-flex, .justify-content-center, .flex-wrap;
+      }
+
+      .qf-tile {
+        @extend .p-0, .shadow;
+
+        $background-colour: #E0EBEB;
+
+        width: 200px;
+        margin: 6px;
+        background-color: $background-colour;
+
+        &:hover {
+          background-color:darken($color: $background-colour, $amount: 5);
         }
+      }
 
-        ol,
-        li {
-          margin: 0;
-          padding: 0;
-          list-style-type: none
-        }
+      .qf-tile-header {
+        @extend .w-100, .h5, .text-center;
+        height: 32px;
+        line-height: 32px;
+        color: white;
+      }
+    }
 
-        ul{
-          @extend .list-unstyled, .p-0;
-          margin-left:8px;
-        }
+    /* Sidebar & overlay */
+    .overlay {
+      height: 500px;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      background-color: whitesmoke;
+      overflow-x: hidden;
+      transition: 0.5s;
+    }
 
-          .qf-main-container, .cqf-main-container {
-            @extend .container;
-            
-            .button-open-presets{
-              margin: 10px;
-              font-size: 20px;
-              cursor: pointer;
-            }
+    .overlay a:hover,
+    .overlay a:focus {
+      color: #495057;
+    }
 
-            .tiles {
-              @extend .w-100, .d-flex, .justify-content-center, .flex-wrap;
-            }
+    .overlay .closebtn {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      color: #495057;
+      font-size: 60px;
+    }
 
-            .qf-tile {
-              @extend .p-0, .shadow;
-
-              $background-colour: #E0EBEB;
-
-              width: 200px;
-              margin: 6px;
-              background-color: $background-colour;
-
-              &:hover {
-                background-color:darken($color: $background-colour, $amount: 5);
-              }
-            }
-
-            .qf-tile-header {
-              @extend .w-100, .h5, .text-center;
-              height: 32px;
-              line-height: 32px;
-              color: white;
-            }
-
-          }
-          /* Sidebar & overlay */
-          /* Sidebar & overlay */
-
-          .overlay {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            background-color: rgba(255, 255, 255, 0.9);
-            border: 1px solid #dee2e6;
-            overflow-x: hidden;
-            transition: 0.5s;
-          }
-
-
-
-          .overlay a:hover,
-          .overlay a:focus {
-            color: #495057;
-          }
-
-          .overlay .closebtn {
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            color: #495057;
-            font-size: 60px;
-          }
-
-          .overlay h2,
-          .overlay p {
-            color: #495057;
-          }
+    .overlay h2,
+    .overlay p {
+      color: #495057;
+    }
   }
+
   .add-button{
         font-size: 100px;
         padding: 10px;

@@ -51,14 +51,11 @@ $dark-blue: darken($primary-blue, 15);
 
         .checkbox {
           padding: 5px;
+          margin: 5px 5px 0 0;
 
           &:hover {
             cursor: pointer;
           }
-        }
-
-        .name {
-          margin: auto 0;
         }
 
         .icon-info {
@@ -95,9 +92,14 @@ $dark-blue: darken($primary-blue, 15);
         }
       }
 
+      .selected {
+        color: $primary-blue !important;
+      }
+
       .List {
         @extend .list-group, .list-group-flush, .overflow-auto;
         height: 375px;
+        width: 100%;
         font-size: 12px;
       }
     }

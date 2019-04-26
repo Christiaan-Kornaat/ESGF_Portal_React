@@ -38,6 +38,7 @@ export default class XPFWrapper extends Component {
         this.isPropertySelected = this.isPropertySelected.bind(this);
         this.showPropertyInfo = this.showPropertyInfo.bind(this);
         this.addInfoTab = this.addInfoTab.bind(this);
+        this.removeInfoTab = this.removeInfoTab.bind(this);
     }
 
     /**
@@ -70,6 +71,10 @@ export default class XPFWrapper extends Component {
         this.updateProperties();
     };
 
+    /**
+     * 
+     * @param {string} property 
+     */
     toggleProperty(property) {
         let selectionAction = this.isPropertySelected(property) ?
             this.deselectProperty :
@@ -78,6 +83,11 @@ export default class XPFWrapper extends Component {
         selectionAction(property);
     }
 
+    /**
+     * 
+     * @param {string} property 
+     * @returns {boolean}
+     */
     isPropertySelected(property) {
         return (this.state.selectedProperties.includes(property));
     }
@@ -93,7 +103,10 @@ export default class XPFWrapper extends Component {
         this.updateProperties();
     }
 
-
+    /**
+     * Temp content
+     * @param {string} property 
+     */
     showPropertyInfo(property) {
         this.addInfoTab({
             title: property,
@@ -104,12 +117,20 @@ export default class XPFWrapper extends Component {
         });
     }
 
+    /**
+     * 
+     * @param {viewModel} viewModel 
+     */
     addInfoTab({title, paragraphs}) {
         let infoTabs = this.state.infoTabs.concat(new InfoTabVM("Info", title, paragraphs));
 
         this.setState({infoTabs: infoTabs});
     }
 
+    /**
+     * 
+     * @param {viewModel} viewModel 
+     */
     removeInfoTab(viewModel) {
         let {state, setState} = this;
 
@@ -118,6 +139,11 @@ export default class XPFWrapper extends Component {
         setState({infoTabs: infoTabs});
     }
 
+    /**
+     * 
+     * @param {string} columnName 
+     * @param {string} tabName 
+     */
     selectTab(columnName, tabName) {
         let {state: {selectedTabs}} = this;
 
@@ -190,9 +216,9 @@ export default class XPFWrapper extends Component {
                                                             items={selectedProperties}
                                                             listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>;
 
-        let infoTab = Object.values(infoTabs)
-                            .pop();
-        let propertyTabs = infoTab != null ? {"Info": <XpfColumnTabInfoContent model={infoTab.content}/>} : {};
+        let infoTab = Object.values(infoTabs).pop();
+
+        let propertyTabs = infoTab != null ? { "Info" : <XpfColumnTabInfoContent model={infoTab.content}/>} : {};
         propertyTabs["Selected properties"] = SelectedPropertyList;
 
         let createClearSelected = columnName => newTab => selectTab(columnName, newTab);

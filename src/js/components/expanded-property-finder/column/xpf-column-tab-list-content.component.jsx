@@ -42,6 +42,10 @@ class XpfColumnTabListContent extends Component {
         this.executeSearch(value);
     }
 
+    /**
+     * 
+     * @param {string} newQuery 
+     */
     changeQuery(newQuery) {
         this.setState({
             searchQuery: newQuery

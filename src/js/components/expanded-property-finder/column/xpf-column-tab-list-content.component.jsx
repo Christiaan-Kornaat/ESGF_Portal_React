@@ -86,9 +86,10 @@ class XpfColumnTabListContent extends Component {
             </div>);
         
         let OptionsButton = () => (
-            <div className="Button dropdown show" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i className="fas fa-ellipsis-v" />
-
+            <div className="optionsButton dropdown show" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span className="Button">
+                    <i className="fas fa-ellipsis-h" />
+                </span>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="#">  <input type="checkbox" id="1" name="sort-a-z" ></input><label for="sort-a-z"> Sort A-Z</label></a>
                     <a class="dropdown-item" href="#">  <input type="checkbox" id="2" name="sort-by-size" ></input><label for="sort-by-size"> Sort by size</label></a>

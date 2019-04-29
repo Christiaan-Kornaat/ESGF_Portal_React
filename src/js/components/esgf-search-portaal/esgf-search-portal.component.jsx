@@ -7,7 +7,8 @@ export class ESGFSearchPortal extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            key: "QF"
+            key: "QF",
+            prevKey: "CLR"
         };
 
         let { filterProvider, selectedPropertyManager, QuickSelectManager} = this.props;
@@ -20,7 +21,7 @@ export class ESGFSearchPortal extends Component {
     render() {
         return (
             <Tabs activeKey={this.state.key}
-                  onSelect={key => this.setState({key})}>
+                  onSelect={ key => this.setState({key: key, prevKey: this.state.key})}>
                 <Tab eventKey="QF" title="Quick select">
                     <QFWrapper  filterProvider={this._filterProvider}
                                 selectedPropertyManager={this._selectedPropertyManager}
@@ -35,7 +36,7 @@ export class ESGFSearchPortal extends Component {
                                selectedPropertyManager={this._selectedPropertyManager}
                                QuickSelectManager={this._QuickSelectManager}/>
                 </Tab>
-                <Tab tabClassName='tab-hidden' eventKey="CLR" title="^"/>
+                <Tab tabClassName='tab-hidden' eventKey={ this.state.key === "CLR" ? this.state.prevKey : "CLR"} title={ <i class={ this.state.key === "CLR" ? 'fas fa-angle-down' : 'fas fa-angle-up'}></i> } />
             </Tabs>
         );
     }

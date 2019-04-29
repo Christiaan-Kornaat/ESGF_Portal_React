@@ -77,7 +77,7 @@ $dark-blue: darken($primary-blue, 15);
       .infotab {
 
         .title {
-          @extend .text-center, .py-3;
+          @extend .py-3, .overflow-auto;
         }
 
         .paragraph {
@@ -161,7 +161,6 @@ $dark-blue: darken($primary-blue, 15);
 
         .Button {
           @extend .input-group-text, .ml-2, .rounded;
-          transform: rotate(90deg);
           color: $primary-blue;
 
           &:hover {

@@ -156,36 +156,15 @@ $dark-blue: darken($primary-blue, 15);
         }
       }
 
-      .Button.dropdown {
-        display: flex;
-        align-items: center;
-        padding: 0.175rem 0.4rem;
-        margin-bottom: 0;
-        margin-left: 5px;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        text-align: center;
-        white-space: nowrap;
-        border-radius: 5px;
-        background-color: #e9ecef;
-        border: 1px solid #ced4da;
-      }
+      .Button {
+        @extend .input-group-text, .ml-2, .rounded;
+        color: $primary-blue !important;
 
-      .OptionsButton {
-        @extend .input-group-append;
+        &:hover {
+          background-color: $primary-blue !important;
+          color: white !important;
 
-        .Button {
-          @extend .input-group-text, .ml-2, .rounded;
-          color: $primary-blue;
-
-          &:hover {
-            background-color: $primary-blue;
-            color: white;
-
-            cursor: pointer;
-          }
+          cursor: pointer !important;
         }
       }
     }

@@ -170,6 +170,11 @@ $dark-blue: darken($primary-blue, 15);
             cursor: pointer !important;
           }
         }
+
+        .selectAllButton, .deselectAllButton {
+          @extend .btn, .btn-primary, .btn-block, .btn-sm;
+        }
+
       }
     }
   }

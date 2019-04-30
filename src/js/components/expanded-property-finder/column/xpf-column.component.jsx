@@ -35,10 +35,11 @@ class XpfColumn extends Component {
         let tabComponents = Object.keys(tabs)
                                   .map(name => (
                                       <Tab
-                                          className="centered-tab"
-                                          eventKey={name}
-                                          title={name}>
-                                          {tabs[name]}
+                                        key={name}
+                                        className="centered-tab"
+                                        eventKey={name}
+                                        title={name}>
+                                        {tabs[name]}
                                       </Tab>
                                   ));
 

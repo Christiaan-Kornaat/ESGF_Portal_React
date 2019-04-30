@@ -90,10 +90,12 @@ class XpfColumnTabListContent extends Component {
                 <span className="Button">
                     <i className="fas fa-ellipsis-h" />
                 </span>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">  <input type="checkbox" id="1" name="sort-a-z" ></input><label for="sort-a-z"> Sort A-Z</label></a>
-                    <a class="dropdown-item" href="#">  <input type="checkbox" id="2" name="sort-by-size" ></input><label for="sort-by-size"> Sort by size</label></a>
-                    <a class="dropdown-item" href="#">  <input type="checkbox" id="3" name="date" ></input><label for="data"> Sort by date</label></a>
+                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                    <a className="dropdown-item" href="#">  <input type="radio" id="sort-a-z" name="sort-a-z" /><label htmlFor="sort-a-z"> Sort A-Z</label></a>
+                    <a className="dropdown-item" href="#">  <input type="radio" id="sort-z-a" name="sort-z-a" /><label htmlFor="sort-z-a"> Sort Z-A</label></a>
+                    
+                    <a className="dropdown-item" href="#">  <input className="selectAllButton" type="button" value="Select all" /></a>
+                    <a className="dropdown-item" href="#">  <input className="deselectAllButton" type="button" value="Deselect all" /></a>
                 </div>
             </div>
         );

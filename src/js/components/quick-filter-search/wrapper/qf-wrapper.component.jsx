@@ -78,6 +78,7 @@ export class QFWrapper extends Component {
              title = StringFormatter.toHumanText(title);
 
             return <QFTile
+                key={title}
                 listItemFactory={this.QuickFilterListItemFactory}
                 title={title}
                 color={color}

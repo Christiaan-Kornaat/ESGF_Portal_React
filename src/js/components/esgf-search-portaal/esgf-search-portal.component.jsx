@@ -35,7 +35,7 @@ export class ESGFSearchPortal extends Component {
             <Tabs activeKey={key} 
                 onSelect={ key => this.setState({key: key, prevKey: this.state.key})}>
                 {tabComponents}
-                <Tab tabClassName='tab-hidden' eventKey={ key === "CLR" ? prevKey : "CLR"} title={ <i class={ key === "CLR" ? 'fas fa-angle-down' : 'fas fa-angle-up'}></i> } />
+                <Tab tabClassName='tab-hidden' eventKey={ key === "CLR" ? prevKey : "CLR"} title={ <i className={ key === "CLR" ? 'fas fa-angle-down' : 'fas fa-angle-up'}></i> } />
             </Tabs>
         );
     }

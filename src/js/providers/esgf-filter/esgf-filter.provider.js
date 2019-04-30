@@ -3,15 +3,25 @@ import {ESGFFilterDTO} from "../../model/dto/ESGFFilterDTO";
 export class ESGFFilterProvider {
 
     /**
+     * 
+     * @param {ESGFFilterService} filterService 
+     */
+    constructor(filterService) {
+        this.filterService = filterService;
+    }
+
+    /**
      *
-     * @return {ESGFFilterDTO[]}
+     * @return {Promise<ESGFFilterDTO>}
      */
     provide() {
-        let filters = [];
-        for (let i = 0; i < 5; i++) {
-            filters.push(new ESGFFilterDTO("test" + i, i ** 2))
+        if (this.filters == null) {
+            return this.filterService.fetch().then(filters => {
+                this.filters = filters;
+                return filters;
+            });
         }
 
-        return filters;
+        return new Promise(resolve=> resolve(this.filters));
     }
 }

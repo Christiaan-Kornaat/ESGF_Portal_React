@@ -203,8 +203,11 @@ export default class XPFWrapper extends Component {
             };
 
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
-                                                  items={filters}
-                                                  listItemFactory={filterFactory}/>;
+                                                items={filters}
+                                                sortFunction={(array => array.sort(({ shortName: item1 }, { shortName: item2 }) => (item1 !== item2) ?
+                                                ((item1 > item2) ? 1 : -1) :
+                                                0))}
+                                                listItemFactory={filterFactory}/>;
 
         let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
                                                   items={filters}

@@ -9,7 +9,7 @@ export class ESGFFilterServiceDemo {
      * @return {Promise<ESGFFilterDTO[]>}
      */
     fetch() {
-        const url = "http://localhost:3000/facets";
+        const url = "https://json-server-esgf.herokuapp.com/facets";
 
         const createToDTO = resultSet => data => {
         let shortName = data;

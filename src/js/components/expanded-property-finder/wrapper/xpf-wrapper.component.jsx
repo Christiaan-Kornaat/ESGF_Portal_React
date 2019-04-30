@@ -191,6 +191,7 @@ export default class XPFWrapper extends Component {
                         onClick={onChange}>
                         <input className={"checkbox"}
                                type={"checkbox"}
+                               onChange={() => {}} //prevents error message
                                checked={checked}/> 
                                {name}
                         <span className={"icon-info"}

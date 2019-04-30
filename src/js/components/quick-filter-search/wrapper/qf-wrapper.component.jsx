@@ -63,7 +63,9 @@ export class QFWrapper extends Component {
                 onClick={selectProperty}>
                 <span className="name">
                     <input type="checkbox"
-                    checked={isSelected(item)}/> {item}
+                    onChange={() => {}} //prevents error message
+                    checked={isSelected(item)}/> 
+                    {item}
                 </span>
             </li>
         );

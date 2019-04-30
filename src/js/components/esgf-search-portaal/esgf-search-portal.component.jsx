@@ -25,6 +25,7 @@ export class ESGFSearchPortal extends Component {
         let tabComponents = Object.keys(tabs)
         .map(name => (
             <Tab
+                key={name}
                 eventKey={name}
                 title={name}>
                 {tabs[name]}

@@ -57,13 +57,16 @@ export class QFWrapper extends Component {
             this.togglePropertySelected(item);
         };
 
-        return <li className="qf-property"
-                   onClick={selectProperty}>
-            <span className="name">
-                <input type={"checkbox"}
-                checked={isSelected(item)}/> {item}
-            </span>
-        </li>;
+        return (
+            <li key={item}
+                className="qf-property"
+                onClick={selectProperty}>
+                <span className="name">
+                    <input type="checkbox"
+                    checked={isSelected(item)}/> {item}
+                </span>
+            </li>
+        );
     };
 
     createTiles(){

@@ -165,7 +165,8 @@ export default class XPFWrapper extends Component {
         };
 
         let filterFactory = property =>
-            <li className="filter"
+            <li key={property.shortName}
+                className="filter"
                 onClick={() => selectFilter(property)}>
                 {StringFormatter.toHumanText(property.shortName)}
             </li>;
@@ -185,7 +186,8 @@ export default class XPFWrapper extends Component {
                 };
 
                 return (
-                    <li className={checked ? "selected property" : "property" }
+                    <li key={name}
+                        className={checked ? "selected property" : "property" }
                         onClick={onChange}>
                         <input className={"checkbox"}
                                type={"checkbox"}
@@ -195,8 +197,8 @@ export default class XPFWrapper extends Component {
                               onClick={onInfoClick}>
                             <i className="fas fa-info-circle"></i>
                         </span>
-
-                    </li>);
+                    </li>
+                    );
             };
 
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}

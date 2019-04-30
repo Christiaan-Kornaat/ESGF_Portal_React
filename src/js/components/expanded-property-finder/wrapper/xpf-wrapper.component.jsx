@@ -89,7 +89,7 @@ export default class XPFWrapper extends Component {
      * @returns {boolean}
      */
     isPropertySelected(property) {
-        return (this.state.selectedProperties.includes(property));
+        return (this.selectedPropertyManager.selected.includes(property));
     }
 
     updateProperties() {

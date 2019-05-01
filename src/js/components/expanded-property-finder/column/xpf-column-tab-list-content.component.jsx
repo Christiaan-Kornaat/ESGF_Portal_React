@@ -45,11 +45,10 @@ class XpfColumnTabListContent extends Component {
     }
 
     handleRadioButton(SelectedRadioButton,sortDirection) {
-
-        let FilterComparator = (item) => {
-            let _isGreaterThan = (item2) => item.shortName.localeCompare(item2.shortName) == 1;
-            let _isLessThan = (item2) => item.shortName.localeCompare(item2.shortName) == -1;
-            let _isEqualTo = (item2) => item.shortName.localeCompare(item2.shortName) == 0;
+        let alphabeticalComparator = (item) => {
+            let _isGreaterThan = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == 1;
+            let _isLessThan = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == -1;
+            let _isEqualTo = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == 0;
 
             return {
                 isGreaterThan: _isGreaterThan,
@@ -73,7 +72,7 @@ class XpfColumnTabListContent extends Component {
             
         this.setState({
             SelectedRadioButton: SelectedRadioButton,
-            sortFunction: createSortFunc(FilterComparator)(sortDirection)
+            sortFunction: createSortFunc(alphabeticalComparator)(sortDirection)
 
         })
 

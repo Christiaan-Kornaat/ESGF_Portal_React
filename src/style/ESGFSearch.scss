@@ -184,7 +184,7 @@ $default-gray: #dee2e6;
           }
         }
 
-        .selectAllButton, .deselectAllButton {
+        .optionsTabButton {
           @extend .btn, .btn-primary, .btn-block, .btn-sm;
         }
 

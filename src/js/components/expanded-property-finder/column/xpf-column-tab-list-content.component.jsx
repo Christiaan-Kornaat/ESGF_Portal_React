@@ -5,10 +5,12 @@ class XpfColumnTabListContent extends Component {
     constructor(props) {
         super(props);
 
-        let {searchFunction, sortFunction, items, listItemFactory: createListItem} = props;
+        let {searchFunction, sortFunction, items, listItemFactory: createListItem, optionButtons } = props;
 
         this.search = searchFunction;
         this.createListItem = createListItem;
+
+        this.optionButtons = optionButtons || {};
 
         this.state = {
             items: items,
@@ -45,7 +47,7 @@ class XpfColumnTabListContent extends Component {
         this.executeSearch(value);
     }
 
-    handleRadioButton() {
+    handleSortButton() {
         let alphabeticalComparator = (item) => {
             let _isGreaterThan = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == 1;
             let _isLessThan = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == -1;
@@ -118,7 +120,7 @@ class XpfColumnTabListContent extends Component {
     }
 
     render() {
-        let { state: { renderItems, showOptionsButton, sortFunction}} = this;
+        let { state: { renderItems, showOptionsButton, sortFunction}, optionButtons} = this;
         let SearchButton = ({onClick}) => (
             <div className="SearchButton">
                 <span onClick={onClick}
@@ -127,16 +129,18 @@ class XpfColumnTabListContent extends Component {
                 </span>
             </div>);
         
+        let getOptionButtons = Object.keys(optionButtons).map(name => (
+            <a key={name} className="dropdown-item" onClick={() => optionButtons[name](renderItems)}>  <input className="optionsTabButton" type="button" value={name} /></a>
+        ));
+
         let OptionsButton = ({show, onClick}) => (
-            <div className="optionsButton dropdown show" href="#" role="button" id="dropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
+            <div className="optionsButton dropdown show" role="button" id="dropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
                 <span className="Button" onClick={onClick}>
                     <i className="fas fa-ellipsis-h" />
                 </span>
                 <div className={"dropdown-menu dropdown-menu-right " + (show ? "show" : "")} aria-labelledby="dropdownMenuLink">
-                    <a className="dropdown-item" href="#"
-                        onClick={() => this.handleRadioButton()} >Sort a-z <i className={this.state.sortDirection ? 'fas fa-angle-up sortingArrow' : 'fas fa-angle-down sortingArrow'}></i> </a>
-                    <a className="dropdown-item" href="#">  <input className="selectAllButton" type="button" value="Select all" /></a>
-                    <a className="dropdown-item" href="#">  <input className="deselectAllButton" type="button" value="Deselect all" /></a>
+                    <a className="dropdown-item" onClick={() => this.handleSortButton()} >Sort a-z <i className={this.state.sortDirection ? 'fas fa-angle-up sortingArrow' : 'fas fa-angle-down sortingArrow'}></i> </a>
+                    {getOptionButtons}
                 </div>
             </div>
         );

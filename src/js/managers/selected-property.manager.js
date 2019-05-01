@@ -20,12 +20,28 @@ class SelectedPropertyManager {
 
     /**
      *
+     * @param {array}properties
+     */
+    selectMany(properties) {
+        properties.forEach(this.select);
+    };
+
+    /**
+     *
      * @param {string}property
      */
     deselect(property) {
         if (!this.isSelected(property)) return;
 
         this.properties = this.properties.filter(item => item !== property);
+    };
+
+    /**
+     *
+     * @param {array}properties
+     */
+    deselectMany(properties) {
+        properties.forEach(this.deselect);
     };
 
     /**

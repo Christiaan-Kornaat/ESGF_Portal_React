@@ -33,7 +33,9 @@ export default class XPFWrapper extends Component {
         this.selectTab = this.selectTab.bind(this);
         this.selectFilter = this.selectFilter.bind(this);
         this.selectProperty = this.selectProperty.bind(this);
+        this.selectManyProperties = this.selectManyProperties.bind(this);
         this.deselectProperty = this.deselectProperty.bind(this);
+        this.deselectManyProperties = this.deselectManyProperties.bind(this);
         this.toggleProperty = this.toggleProperty.bind(this);
         this.isPropertySelected = this.isPropertySelected.bind(this);
         this.showPropertyInfo = this.showPropertyInfo.bind(this);
@@ -62,6 +64,16 @@ export default class XPFWrapper extends Component {
     };
 
     /**
+     * 
+     * @param {array} properties 
+     */
+    selectManyProperties(properties){
+        this.selectedPropertyManager.selectMany(properties);
+
+        this.updateProperties();
+    }
+
+    /**
      *
      * @param {string}property
      */
@@ -70,6 +82,16 @@ export default class XPFWrapper extends Component {
 
         this.updateProperties();
     };
+
+    /**
+     * 
+     * @param {array} properties 
+     */
+    deselectManyProperties(properties){
+        this.selectedPropertyManager.deselectMany(properties);
+
+        this.updateProperties();
+    }
 
     /**
      * 
@@ -153,7 +175,7 @@ export default class XPFWrapper extends Component {
     }
 
     render() {
-        let {selectFilter, toggleProperty, deselectProperty, state, selectTab, showPropertyInfo, selectedPropertyManager} = this;
+        let {selectFilter, toggleProperty, deselectProperty, state, selectTab, showPropertyInfo, selectedPropertyManager, selectManyProperties, deselectManyProperties} = this;
 
         let {properties, infoTabs, selectedTabs, filters} = state;
 
@@ -163,6 +185,14 @@ export default class XPFWrapper extends Component {
             filters: (new ESGFFilterSearcher()).search,
             properties: new ESGFPropertySearcher().search
         };
+
+        let sortFunction = (array => array.sort(({ shortName: item1 }, { shortName: item2 }) => (item1 !== item2) ?
+        ((item1 > item2) ? 1 : -1) :
+        0));
+
+        let PropertyListButtons = { "Select all": selectManyProperties, "Deselect all": deselectManyProperties };
+
+        let SelectedPropertyListButtons = { "Deselect all": deselectManyProperties };
 
         let filterFactory = property =>
             <li key={property.shortName}
@@ -203,24 +233,24 @@ export default class XPFWrapper extends Component {
             };
 
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
-                                                items={filters}
-                                                sortFunction={(array => array.sort(({ shortName: item1 }, { shortName: item2 }) => (item1 !== item2) ?
-                                                ((item1 > item2) ? 1 : -1) :
-                                                0))}
-                                                listItemFactory={filterFactory}/>;
+                                                  items={filters}
+                                                  sortFunction={sortFunction}
+                                                  listItemFactory={filterFactory}/>;
 
         let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
                                                   items={filters}
+                                                  sortFunction={sortFunction}
                                                   listItemFactory={filterFactory}/>;
 
         let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
                                                     items={properties}
-                                                    sortFunction={(array => array.sort(({ shortName: item1 }, { shortName: item2 }) => (item1 !== item2) ?
-                                                        ((item1 > item2) ? 1 : -1) :
-                                                        0))}
+                                                    sortFunction={sortFunction}
+                                                    optionButtons={PropertyListButtons}
                                                     listItemFactory={propertyListItemFactoryFactory(toggleProperty)}/>;
+                                                    
         let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
                                                             items={selectedProperties}
+                                                            optionButtons={SelectedPropertyListButtons}
                                                             listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>;
 
         let infoTab = Object.values(infoTabs).pop();

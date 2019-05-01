@@ -14,7 +14,8 @@ class XpfColumnTabListContent extends Component {
             items: items,
             renderItems: items,
             sortFunction: sortFunction || (array => array.sort()),
-            showOptionsButton: false
+            showOptionsButton: false,
+            sortDirection : false
         };
 
         this.toggleOptions = this.toggleOptions.bind(this);
@@ -44,7 +45,7 @@ class XpfColumnTabListContent extends Component {
         this.executeSearch(value);
     }
 
-    handleRadioButton(SelectedRadioButton,sortDirection) {
+    handleRadioButton() {
         let alphabeticalComparator = (item) => {
             let _isGreaterThan = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == 1;
             let _isLessThan = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == -1;
@@ -71,9 +72,8 @@ class XpfColumnTabListContent extends Component {
         } 
             
         this.setState({
-            SelectedRadioButton: SelectedRadioButton,
-            sortFunction: createSortFunc(alphabeticalComparator)(sortDirection)
-
+            sortFunction: createSortFunc(alphabeticalComparator)(this.state.sortDirection),
+            sortDirection : !this.state.sortDirection
         })
 
     }
@@ -133,23 +133,8 @@ class XpfColumnTabListContent extends Component {
                     <i className="fas fa-ellipsis-h" />
                 </span>
                 <div className={"dropdown-menu dropdown-menu-right " + (show ? "show" : "")} aria-labelledby="dropdownMenuLink">
-                    <input
-                        className="dropdown-item"
-                        id="sort-a-z" name="sort-a-z"
-                        type="radio"
-                        checked={this.state.SelectedRadioButton === 1}
-                        onChange={() => this.handleRadioButton(1,true)}
-                    />
-                    <label htmlFor="sort-a-z"> Sort A-Z</label>
-                    <input
-                        className="dropdown-item"
-                        id="sort-z-a" name="sort-z-a"                        
-                        type="radio"
-                        checked={this.state.SelectedRadioButton === 2}
-                        onChange={() => this.handleRadioButton(2, false)}
-                    />
-                    <label htmlFor="sort-z-a"> Sort Z-A</label>             
-                    
+                    <a className="dropdown-item" href="#"
+                        onClick={() => this.handleRadioButton()} >Sort a-z <i className={this.state.sortDirection ? 'fas fa-angle-up sortingArrow' : 'fas fa-angle-down sortingArrow'}></i> </a>
                     <a className="dropdown-item" href="#">  <input className="selectAllButton" type="button" value="Select all" /></a>
                     <a className="dropdown-item" href="#">  <input className="deselectAllButton" type="button" value="Deselect all" /></a>
                 </div>

@@ -3,6 +3,7 @@
 $primary-blue: #007bff;
 $light-blue: lighten($primary-blue, 15);
 $dark-blue: darken($primary-blue, 15);
+$default-gray: #dee2e6;
 
 .ESGFSearchPortal {
   @extend .container;
@@ -13,7 +14,7 @@ $dark-blue: darken($primary-blue, 15);
 
   a.nav-item.nav-link {
     background-color: white;
-    border: 1px solid #dee2e6;
+    border: 1px solid $default-gray;
   }
 
   a.nav-item.nav-link.active {
@@ -26,9 +27,21 @@ $dark-blue: darken($primary-blue, 15);
     margin: 0 auto;
     background-color: white;
     height: 500px;
+
+    .dropdown-item{
+      &:hover{
+        background-color: $default-gray;
+        color: black;
+      }
+    }
     
     .Properties {
       @extend .border-right, .border-left;
+    }
+
+    .sortingArrow{
+      @extend .float-right;
+      line-height: inherit;
     }
 
     .Properties, .SelectedProperties, .Filters {
@@ -40,7 +53,7 @@ $dark-blue: darken($primary-blue, 15);
         transition: all 0.2s ease;
 
         &:hover {
-          background-color: #dee2e6;
+          background-color: $default-gray;
           cursor: pointer;
         }
       }
@@ -69,7 +82,7 @@ $dark-blue: darken($primary-blue, 15);
         }
 
         &:hover {
-          background-color: #dee2e6;
+          background-color: $default-gray;
           cursor: pointer;
         }
       }
@@ -113,17 +126,17 @@ $dark-blue: darken($primary-blue, 15);
       flex-wrap: wrap;
       border: none;
       padding: 0;
-      border-bottom: 1px solid #dee2e6;
+      border-bottom: 1px solid $default-gray;
 
       a.nav-item.nav-link {
         font-weight: bold;
         border: none;
-        border-bottom: 1px solid #dee2e6;
+        border-bottom: 1px solid $default-gray;
       }
 
       a.nav-item.nav-link.active {
         cursor: default;
-        border: 1px solid #dee2e6;
+        border: 1px solid $default-gray;
         border-bottom: none;
       }
     }

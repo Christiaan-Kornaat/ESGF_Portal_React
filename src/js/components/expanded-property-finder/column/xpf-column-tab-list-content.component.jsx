@@ -13,11 +13,12 @@ class XpfColumnTabListContent extends Component {
         this.state = {
             items: items,
             renderItems: items,
-            sortFunction: sortFunction || (array => array.sort())
+            sortFunction: sortFunction || (array => array.sort()),
+            showOptionsButton: false
         };
 
+        this.toggleOptions = this.toggleOptions.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleRadioButtons = this.handleRadioButtons.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.executeSearch = this.executeSearch.bind(this);
     }
@@ -31,7 +32,7 @@ class XpfColumnTabListContent extends Component {
 
         this.setState({
             items: items,
-            renderItems: renderItems,
+            renderItems: renderItems
         });
     }
 
@@ -43,8 +44,39 @@ class XpfColumnTabListContent extends Component {
         this.executeSearch(value);
     }
 
-    handleRadioButtons() {
-        console.log("test");
+    handleRadioButton(SelectedRadioButton,sortDirection) {
+
+        let FilterComparator = (item) => {
+            let _isGreaterThan = (item2) => item.shortName.localeCompare(item2.shortName) == 1;
+            let _isLessThan = (item2) => item.shortName.localeCompare(item2.shortName) == -1;
+            let _isEqualTo = (item2) => item.shortName.localeCompare(item2.shortName) == 0;
+
+            return {
+                isGreaterThan: _isGreaterThan,
+                isLessThan: _isLessThan,
+                isEqualTo: _isEqualTo
+            }
+        }
+
+        /**
+         * 
+         * @param {Object} comparator
+         * 
+         * @returns {Function}
+         */
+        let createSortFunc = (comparator) => (ascending) => {
+            let condition = (item, item2) => (ascending ? (comparator(item).isGreaterThan(item2)) : (comparator(item).isLessThan(item2)));
+
+            return (array => array.sort((item1 , item2) => (!comparator(item1).isEqualTo(item2)) ?
+                (condition(item1, item2) ? 1 : -1) : 0));
+        } 
+            
+        this.setState({
+            SelectedRadioButton: SelectedRadioButton,
+            sortFunction: createSortFunc(FilterComparator)(sortDirection)
+
+        })
+
     }
 
     /**
@@ -78,26 +110,16 @@ class XpfColumnTabListContent extends Component {
         });
     }
 
+    toggleOptions() {
+        let show = !this.state.showOptionsButton;
+
+        this.setState({
+            showOptionsButton: show
+        })
+    }
 
     render() {
-        let {state: {renderItems}} = this;
-
-        // let createSortFunc = (comparator) => (ascending) => {
-        //     let condition = ascending ? (comparator(item).isGreaterThan(item2)) : (comparator(item).isLessThan(item2));
-
-        //     return (array => array.sort(({ shortName: item1 }, { shortName: item2 }) => (!comparator(item1).isEqualTo(item2)) ?
-        //         (condition ? 1 : -1) :
-        //         0));
-        // }
-        
-        let sortASC = (array => array.sort(({ shortName: item1 }, { shortName: item2 }) => (item1 !== item2) ?
-            ((item1 > item2) ? 1 : -1) :
-            0));
-
-        let sortDESC = (array => array.sort(({ shortName: item1 }, { shortName: item2 }) => (item1 !== item2) ?
-            ((item1 < item2) ? 1 : -1) :
-            0));
-
+        let { state: { renderItems, showOptionsButton, sortFunction}} = this;
         let SearchButton = ({onClick}) => (
             <div className="SearchButton">
                 <span onClick={onClick}
@@ -106,16 +128,28 @@ class XpfColumnTabListContent extends Component {
                 </span>
             </div>);
         
-        let OptionsButton = () => (
-            <div className="optionsButton dropdown show" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span className="Button">
+        let OptionsButton = ({show, onClick}) => (
+            <div className="optionsButton dropdown show" href="#" role="button" id="dropdownMenuLink"  aria-haspopup="true" aria-expanded="false">
+                <span className="Button" onClick={onClick}>
                     <i className="fas fa-ellipsis-h" />
                 </span>
-                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-
-                    <input className="dropdown-item" type="radio" id="sort-a-z" name="sort-a-z" /><label htmlFor="sort-a-z"> Sort A-Z</label>
-
-                    <a className="dropdown-item" href="#">  <input type="radio" id="sort-z-a" name="sort-z-a" /><label htmlFor="sort-z-a"> Sort Z-A</label></a>
+                <div className={"dropdown-menu dropdown-menu-right " + (show ? "show" : "")} aria-labelledby="dropdownMenuLink">
+                    <input
+                        className="dropdown-item"
+                        id="sort-a-z" name="sort-a-z"
+                        type="radio"
+                        checked={this.state.SelectedRadioButton === 1}
+                        onChange={() => this.handleRadioButton(1,true)}
+                    />
+                    <label htmlFor="sort-a-z"> Sort A-Z</label>
+                    <input
+                        className="dropdown-item"
+                        id="sort-z-a" name="sort-z-a"                        
+                        type="radio"
+                        checked={this.state.SelectedRadioButton === 2}
+                        onChange={() => this.handleRadioButton(2, false)}
+                    />
+                    <label htmlFor="sort-z-a"> Sort Z-A</label>             
                     
                     <a className="dropdown-item" href="#">  <input className="selectAllButton" type="button" value="Select all" /></a>
                     <a className="dropdown-item" href="#">  <input className="deselectAllButton" type="button" value="Deselect all" /></a>
@@ -132,10 +166,11 @@ class XpfColumnTabListContent extends Component {
                            aria-label="Search"
                            onChange={this.handleChange}/>
                     <SearchButton onClick={this.handleSubmit}/>
-                    <OptionsButton onClick={this.handleSubmit}/>
+                    <OptionsButton show={showOptionsButton}
+                                    onClick={this.toggleOptions}/>
                 </div>
                 <UnorderedList className="List"
-                               items={this.state.sortFunction(renderItems)}
+                               items={sortFunction(renderItems)}
                                createListItem={this.createListItem}/>
             </div>
         );

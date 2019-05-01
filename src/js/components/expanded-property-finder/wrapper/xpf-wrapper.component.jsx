@@ -215,6 +215,9 @@ export default class XPFWrapper extends Component {
 
         let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
                                                     items={properties}
+                                                    sortFunction={(array => array.sort(({ shortName: item1 }, { shortName: item2 }) => (item1 !== item2) ?
+                                                        ((item1 > item2) ? 1 : -1) :
+                                                        0))}
                                                     listItemFactory={propertyListItemFactoryFactory(toggleProperty)}/>;
         let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
                                                             items={selectedProperties}

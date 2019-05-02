@@ -194,9 +194,10 @@ class XpfColumnTabListContent extends Component {
 
         let content = (!isLoading) ?
                                          <UnorderedList
+
                                             className="List"
                            items={sortFunction(renderItems)}
-                           createListItem={this.createListItem}/> :
+                                     createListItem={this.createListItem}/> :
                                      <LoadingIcons.Spinner/>;
 
         let OptionsButton = ({show, onClick}) => (
@@ -233,7 +234,6 @@ class XpfColumnTabListContent extends Component {
     }
 
 }
-
 
 
 XpfColumnTabListContent.propTypes = {

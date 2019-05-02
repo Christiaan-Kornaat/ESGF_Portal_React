@@ -1,4 +1,4 @@
-import {ESGFFilterDTO} from "../../../model/dto/ESGFFilterDTO";
+import {ESGFFilterDTO} from "../../../model/dto/esgf-filter.dto";
 
 export class ESGFFilterServiceDemo {
 

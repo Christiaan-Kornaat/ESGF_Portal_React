@@ -17,7 +17,8 @@
     "react-scripts": "latest",
     "react-sidebar": "^3.0.2",
     "react-slide-menu": "^0.5.1",
-    "redux": "latest"
+    "redux": "latest",
+    "prop-types": "latest"
   },
   "devDependencies": {
     "@babel/preset-env": "latest",

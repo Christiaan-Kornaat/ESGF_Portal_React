@@ -24,7 +24,8 @@ export default class XPFWrapper extends Component {
                 propertyColumn: null,
                 selectedColumn: null
             },
-            filters: []
+            filters: [],
+            filtersLoading: true,
         };
 
         this.filterProvider = filterProvider;
@@ -120,7 +121,7 @@ export default class XPFWrapper extends Component {
 
     componentDidMount() {
         this.filterProvider.provide()
-            .then(filters => this.setState({filters: filters})); //FIXME TEMP
+            .then(filters => this.setState({filters: filters, filtersLoading: false})); //FIXME TEMP
 
         this.updateProperties();
     }
@@ -177,7 +178,7 @@ export default class XPFWrapper extends Component {
     render() {
         let {selectFilter, toggleProperty, deselectProperty, state, selectTab, showPropertyInfo, selectedPropertyManager, selectManyProperties, deselectManyProperties} = this;
 
-        let {properties, infoTabs, selectedTabs, filters} = state;
+        let {properties, infoTabs, selectedTabs, filters, filtersLoading} = state;
 
         let selectedProperties = selectedPropertyManager.selected;
 
@@ -235,11 +236,13 @@ export default class XPFWrapper extends Component {
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
                                                   items={filters}
                                                   sortFunction={sortFunction}
+                                                  isLoading={filtersLoading}
                                                   listItemFactory={filterFactory}/>;
 
         let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
                                                   items={filters}
                                                   sortFunction={sortFunction}
+                                                  isLoading={filtersLoading}
                                                   listItemFactory={filterFactory}/>;
 
         let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}

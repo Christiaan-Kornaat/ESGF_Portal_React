@@ -5,7 +5,7 @@ class XpfColumnTabListContent extends Component {
     constructor(props) {
         super(props);
 
-        let {searchFunction, sortFunction, items, listItemFactory: createListItem, optionButtons } = props;
+        let {searchFunction, sortFunction, items, listItemFactory: createListItem, optionButtons, isLoading } = props;
 
         this.search = searchFunction;
         this.createListItem = createListItem;
@@ -17,7 +17,8 @@ class XpfColumnTabListContent extends Component {
             renderItems: items,
             sortFunction: sortFunction || (array => array.sort()),
             showOptionsButton: false,
-            sortDirection : false 
+            sortDirection: false,
+            isLoading: isLoading || false 
         };
 
         this.toggleOptions = this.toggleOptions.bind(this);
@@ -26,7 +27,7 @@ class XpfColumnTabListContent extends Component {
         this.executeSearch = this.executeSearch.bind(this);
     }
 
-    componentWillReceiveProps({items}) {
+    componentWillReceiveProps({items, isLoading}) {
         let {searchQuery: query, renderItems} = this.state;
 
         if (query == null || query.trim() === "") {
@@ -35,7 +36,8 @@ class XpfColumnTabListContent extends Component {
 
         this.setState({
             items: items,
-            renderItems: renderItems
+            renderItems: renderItems,
+            isLoading: isLoading
         });
     }
 
@@ -130,7 +132,7 @@ class XpfColumnTabListContent extends Component {
     }
 
     render() {
-        let { state: { renderItems, showOptionsButton, sortFunction}, optionButtons} = this;
+        let { state: { renderItems, showOptionsButton, sortFunction, isLoading}, optionButtons} = this;
         let SearchButton = ({onClick}) => (
             <div className="SearchButton">
                 <span onClick={onClick}
@@ -139,6 +141,14 @@ class XpfColumnTabListContent extends Component {
                 </span>
             </div>);
         
+        let loadIcon = (
+            <div className="d-flex justify-content-center">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        );
+
         let getOptionButtons = Object.keys(optionButtons).map(name => (
             <a key={name} className="dropdown-item" onClick={() => optionButtons[name](renderItems)}>  <input className="optionsTabButton" type="button" value={name} /></a>
         ));
@@ -167,9 +177,12 @@ class XpfColumnTabListContent extends Component {
                     <OptionsButton show={showOptionsButton}
                                     onClick={this.toggleOptions}/>
                 </div>
+                { isLoading ? 
+                loadIcon :  
                 <UnorderedList className="List"
                                items={sortFunction(renderItems)}
                                createListItem={this.createListItem}/>
+                }
             </div>
         );
     }

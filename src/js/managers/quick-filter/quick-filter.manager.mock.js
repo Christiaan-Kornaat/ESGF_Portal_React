@@ -1,4 +1,4 @@
-import {QFFilterTileDTO} from "../../model/dto/QFFilterTileDTO";
+import {QFFilterTileDTO} from "../../model/dto/qf-filter-tile.dto";
 
 class QuickSelectManagerMock {
 

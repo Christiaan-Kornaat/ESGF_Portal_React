@@ -240,7 +240,7 @@ export default class XPFWrapper extends Component {
                                                   listItemFactory={filterFactory}/>;
 
         let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
-                                                  items={filters}
+                                                  items={[]}
                                                   sortFunction={sortFunction}
                                                   isLoading={filtersLoading}
                                                   listItemFactory={filterFactory}/>;

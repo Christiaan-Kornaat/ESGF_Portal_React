@@ -69,7 +69,7 @@ export default class XPFWrapper extends Component {
      *
      * @param {array} properties
      */
-    selectManyProperties(properties){
+    selectManyProperties(properties) {
         this.selectedPropertyManager.selectMany(properties);
 
         this.updateProperties();
@@ -89,7 +89,7 @@ export default class XPFWrapper extends Component {
      *
      * @param {array} properties
      */
-    deselectManyProperties(properties){
+    deselectManyProperties(properties) {
         this.selectedPropertyManager.deselectMany(properties);
 
         this.updateProperties();
@@ -109,7 +109,7 @@ export default class XPFWrapper extends Component {
 
     /**
      *
-     * @param {string} property
+     * @param {ESGFFilterPropertyDTO} property
      * @returns {boolean}
      */
     isPropertySelected(property) {

@@ -17,7 +17,7 @@ class XpfColumnTabListContent extends Component {
             renderItems: items,
             sortFunction: sortFunction || (array => array.sort()),
             showOptionsButton: false,
-            sortDirection : false
+            sortDirection : false 
         };
 
         this.toggleOptions = this.toggleOptions.bind(this);
@@ -47,14 +47,24 @@ class XpfColumnTabListContent extends Component {
         this.executeSearch(value);
     }
 
+    /**
+    *
+    * @summary Handles the sorting buttons for the extra filter/sorting options
+    */
     handleSortButton() {
+
+        /**
+         * 
+         * @param {*} item 
+         * @summary takes item and compares, returning true or false on Greater, less or equal which the sorting function uses to sort filters and properties alphabetically
+         */
         let alphabeticalComparator = (item) => {
             let _isGreaterThan = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == 1;
             let _isLessThan = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == -1;
             let _isEqualTo = (item2) => ((item.shortName != null) ? item.shortName.localeCompare(item2.shortName) : item.localeCompare(item2)) == 0;
 
             return {
-                isGreaterThan: _isGreaterThan,
+                isGreaterThan: _isGreaterThan,        
                 isLessThan: _isLessThan,
                 isEqualTo: _isEqualTo
             }
@@ -63,8 +73,8 @@ class XpfColumnTabListContent extends Component {
         /**
          * 
          * @param {Object} comparator
-         * 
-         * @returns {Function}
+         * @summary Creates a sort function using a comparator
+         * @returns {Function} function
          */
         let createSortFunc = (comparator) => (ascending) => {
             let condition = (item, item2) => (ascending ? (comparator(item).isGreaterThan(item2)) : (comparator(item).isLessThan(item2)));
@@ -75,7 +85,7 @@ class XpfColumnTabListContent extends Component {
             
         this.setState({
             sortFunction: createSortFunc(alphabeticalComparator)(this.state.sortDirection),
-            sortDirection : !this.state.sortDirection
+            sortDirection : !this.state.sortDirection //sets a-z sort direction to the opposite 
         })
 
     }

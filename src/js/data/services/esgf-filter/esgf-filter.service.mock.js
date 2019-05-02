@@ -1,11 +1,11 @@
-import {ESGFFilterDTO} from "../../model/dto/ESGFFilterDTO";
-import {range} from "../../util/array.util";
+import {ESGFFilterDTO} from "../../../model/dto/ESGFFilterDTO";
+import {range} from "../../../util/array.util";
 
 export class ESGFFilterServiceMock {
 
     /**
      *
-     * @return {ESGFFilterDTO[]}
+     * @return {Promise<ESGFFilterDTO[]>}
      */
     fetch() {
         let createRandomProperties = (number) => range(0, Math.ceil(Math.random() * 10)).map(item => "property" + item + " (test" + number + ")");

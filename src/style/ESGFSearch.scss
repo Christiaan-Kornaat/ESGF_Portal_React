@@ -22,6 +22,19 @@ $default-gray: #dee2e6;
     border: none;
   }
 
+  .loadIcon {
+    @extend .d-flex, .justify-content-center;
+    
+    .spinnerIcon {
+      @extend .spinner-border;
+      color: gray;
+      
+      .text {
+        @extend .sr-only;
+      }
+    }
+  }
+
   .XPF-Wrapper {
     @extend .row;
     margin: 0 auto;

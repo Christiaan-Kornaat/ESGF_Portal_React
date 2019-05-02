@@ -231,11 +231,11 @@ export default class XPFWrapper extends Component {
                                onChange={() => {
                                }} //prevents error message
                                checked={checked}/>
-                        {name}
                         <span className={"icon-info"}
                               onClick={onInfoClick}>
                             <i className="fas fa-info-circle"></i>
                         </span>
+                        {name}
                     </li>
                 );
             };

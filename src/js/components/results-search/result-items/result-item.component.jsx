@@ -25,7 +25,7 @@ export class ResultItem extends Component {
                     <td>{dataset}</td>
                     <td className="clickable">Download</td>
                     <td className="clickable">View</td>
-                    <td className="clickable"><i class="fas fa-cart-plus"></i></td>
+                    <td className="clickable"><i className="fas fa-cart-plus"></i></td>
                 </tr>
             );
         };

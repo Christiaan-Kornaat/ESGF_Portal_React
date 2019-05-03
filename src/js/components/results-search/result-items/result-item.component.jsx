@@ -29,7 +29,7 @@ export class ResultItem extends Component {
         };
 
         return (
-            <Collapsible trigger={<div> <i className={this.state.arrowState ? 'fas fa-angle-down' : 'fas fa-angle-up'}></i>{this.title}</div>} onClick={this.state.arrowState = !this.state.arrowState}>
+            <Collapsible trigger={<div className="triggerHolder"> <i className={this.state.arrowState ? 'fas fa-angle-down' : 'fas fa-angle-up'}></i>{this.title}</div>} onClick={this.state.arrowState = !this.state.arrowState}>
                 <table class="table">
                     <thead>
                         <tr>

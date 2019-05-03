@@ -9,11 +9,15 @@ export class ESGFFilterProvider {
         this.propertyCache = new Map();
     }
 
+    get ready() {
+        return this.filterCache.size > 0;
+    }
+
     /**
      * @return {Promise<Map<String, ESGFFilterDTO>>}
      */
     provideMany() {
-        if (this.filterCache.size <= 0) {
+        if (!this.ready) {
             return this.filterService.fetchList()
                        .then(filters => filters.forEach(filter => {
                            this.filterCache.set(filter.shortName, filter);

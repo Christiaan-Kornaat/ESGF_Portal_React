@@ -3,10 +3,16 @@ import StringFormatter from "../../../model/formatters/string.formatter";
 import InfoTabVM from "../../../model/view-model/InfoTabVM";
 import ESGFFilterSearcher from "../../../searchers/esgf-filter.searcher";
 import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
+import {filterComparator, propertyComparator} from "../../../sorters/comparators/esgf.comparator";
+import {alphabeticalComparator} from "../../../sorters/comparators/primitive.comparator";
+import {SorterFactoryFactory} from "../../../sorters/sorter.factory.factory";
+import SorterManager from "../../../sorters/sorter.manager";
+import Buttons from "../../shared/buttons/buttons.component";
 import XpfColumnTabInfoContent from "../column/xpf-column-tab-info-content.component";
 import XpfColumnTabListContent from "../column/xpf-column-tab-list-content.component";
 
 import XpfColumn from "../column/xpf-column.component";
+import OptionsComponent from "./xpf-list-options.component";
 
 export default class XPFWrapper extends Component {
     constructor(props) {
@@ -14,18 +20,33 @@ export default class XPFWrapper extends Component {
 
         let {selectedPropertyManager, filterProvider} = props;
 
+        let sorterFactoryFactory = new SorterFactoryFactory();
+        let createSortState = (key, defaultAscending, comparator) => [
+            key,
+            new SorterManager(new Map([
+                ["A-Z", sorterFactoryFactory.createSorterFactory(comparator)]
+            ]), "A-Z")
+        ];
+
+        //TODO find a way to solidify the keys
+        /**
+         *
+         * @type {Map<string, SorterManager>}
+         */
+        let sortState = new Map([
+            createSortState("filters", true, filterComparator),
+            createSortState("presets", true, alphabeticalComparator/*FIXME TEMP*/),
+            createSortState("properties", true, propertyComparator),
+            createSortState("properties-selected", true, propertyComparator)
+        ]);
+
         this.state = {
             selectedFilter: null,
-            selectedProperties: selectedPropertyManager.selected,
-            properties: [],
             infoTabs: [],
-            selectedTabs: {
-                filterColumn: null,
-                propertyColumn: null,
-                selectedColumn: null
-            },
-            filters: [],
-            filtersLoading: true,
+            selectedTabs: {filterColumn: null, propertyColumn: null, selectedColumn: null},
+            sortState: sortState,
+            columnState: {},
+            filters: []
         };
 
         this.filterProvider = filterProvider;
@@ -62,7 +83,7 @@ export default class XPFWrapper extends Component {
     selectProperty(property) {
         this.selectedPropertyManager.select(property);
 
-        this.updateProperties();
+        this.update();
     };
 
     /**
@@ -72,7 +93,7 @@ export default class XPFWrapper extends Component {
     selectManyProperties(properties) {
         this.selectedPropertyManager.selectMany(properties);
 
-        this.updateProperties();
+        this.update();
     }
 
     /**
@@ -82,7 +103,7 @@ export default class XPFWrapper extends Component {
     deselectProperty(property) {
         this.selectedPropertyManager.deselect(property);
 
-        this.updateProperties();
+        this.update();
     };
 
     /**
@@ -92,12 +113,12 @@ export default class XPFWrapper extends Component {
     deselectManyProperties(properties) {
         this.selectedPropertyManager.deselectMany(properties);
 
-        this.updateProperties();
+        this.update();
     }
 
     /**
      *
-     * @param {string} property
+     * @param {ESGFFilterPropertyDTO} property
      */
     toggleProperty(property) {
         let selectionAction = this.isPropertySelected(property) ?
@@ -116,15 +137,13 @@ export default class XPFWrapper extends Component {
         return this.selectedPropertyManager.isSelected(property);
     }
 
-    updateProperties() {
-        this.setState(() => ({selectedProperties: this.selectedPropertyManager.selected}));
+    update() {
+        this.forceUpdate();
     }
 
     componentDidMount() {
         this.filterProvider.provideMany()
-            .then(filters => this.setState({filters: Array.from(filters.values()), filtersLoading: false}));
-
-        this.updateProperties();
+            .then(filters => this.setState({filters: Array.from(filters.values())}));
     }
 
     /**
@@ -175,24 +194,15 @@ export default class XPFWrapper extends Component {
     }
 
     render() {
-        let {selectFilter, toggleProperty, deselectProperty, state, selectTab, showPropertyInfo, selectedPropertyManager, selectManyProperties, deselectManyProperties} = this;
+        let {selectFilter, toggleProperty, deselectProperty, selectTab, showPropertyInfo, selectedPropertyManager, selectManyProperties, deselectManyProperties, state: {sortState, infoTabs, selectedTabs, filters, selectedFilter}} = this;
 
-        let {infoTabs, selectedTabs, filters, selectedFilter, filtersLoading} = state;
-
+        let filtersLoading = !this.filterProvider.ready;
         let properties = selectedFilter ? selectedFilter.properties : [];
-
         let selectedProperties = selectedPropertyManager.selected;
-
         let searchFunctions = {
             filters: (new ESGFFilterSearcher()).search,
             properties: new ESGFPropertySearcher().search
         };
-
-        let sortFunction = (array => array.sort(({shortName: item1}, {shortName: item2}) => (item1 !== item2) ?
-            ((item1 > item2) ? 1 : -1) :
-            0));
-
-        let PropertyListButtons = {"Select all": selectManyProperties, "Deselect all": deselectManyProperties};
 
         let SelectedPropertyListButtons = {"Deselect all": deselectManyProperties};
 
@@ -206,60 +216,99 @@ export default class XPFWrapper extends Component {
         /**
          *
          * @param onClick
-         * @return {function(ESGFFilterPropertyDTO): *}
+         * @return {function(ESGFFilterPropertyDTO): Component}
          */
-        let propertyListItemFactoryFactory = (onClick) =>
-            item => {
-                let name = StringFormatter.toHumanText(item.name);
+        let propertyListItemFactoryFactory = (onClick) => item => {
+            let name = StringFormatter.toHumanText(item.name);
 
-                let checked = this.isPropertySelected(item);
+            let checked = this.isPropertySelected(item);
 
-                let onChange = () => onClick(item);
+            let onChange = () => onClick(item);
 
-                let onInfoClick = event => {
-                    event.stopPropagation();
-                    new Promise((resolve) => resolve(showPropertyInfo(item)))
-                        .then(() => this.selectTab("selectedColumn", "Info"));
-                };
-
-                return (
-                    <li key={name}
-                        className={checked ? "selected property" : "property"}
-                        onClick={onChange}>
-                        <input className={"checkbox"}
-                               type={"checkbox"}
-                               onChange={() => {
-                               }} //prevents error message
-                               checked={checked}/>
-                        <span className={"icon-info"}
-                              onClick={onInfoClick}>
-                            <i className="fas fa-info-circle"></i>
-                        </span>
-                        {name}
-                    </li>
-                );
+            let onInfoClick = event => {
+                event.stopPropagation();
+                new Promise((resolve) => resolve(showPropertyInfo(item)))
+                    .then(() => this.selectTab("selectedColumn", "Info"));
             };
+
+            return (
+                <li key={name}
+                    className={checked ? "selected property" : "property"}
+                    onClick={onChange}>
+                    <input className={"checkbox"}
+                           type={"checkbox"}
+                           onChange={() => {
+                           }} //prevents error message
+                           checked={checked}/>
+                    <span className={"icon-info"}
+                          onClick={onInfoClick}>
+                            <i className="fas fa-info-circle"/>
+                        </span>
+                    {name}
+                </li>
+            );
+        };
+
+        let createInvertSort = (columnName) => () => {
+            sortState.get(columnName).invert();
+
+            this.update();
+        };
+
+        let sorterManagers = {
+            filters: sortState.get("filters"),
+            presets: sortState.get("presets"),
+            properties: sortState.get("properties"),
+            selectedProperties: sortState.get("properties-selected")
+        };
+        let sortFunctions = {
+            filters: sorterManagers.filters.getCurrent(),
+            presets: sorterManagers.presets.getCurrent(),
+            properties: sorterManagers.properties.getCurrent(),
+            selectedProperties: sorterManagers.selectedProperties.getCurrent()
+        };
+
+        let createSortButton = (columnName) => <Buttons.Sort title={"Sort A-Z"}
+                                                             onToggle={createInvertSort(columnName)}/>;
+
+        let optionComponents = {
+            filters: <OptionsComponent sortButtons={[createSortButton("filters")]}/>,
+            presets: <OptionsComponent sortButtons={[createSortButton("presets")]}/>,
+            properties: <OptionsComponent sortButtons={[createSortButton("properties")]}
+                                          optionButtons={{
+                                              "Select all": selectManyProperties,
+                                              "Deselect all": deselectManyProperties
+                                          }}/>,
+            propertiesSelected: <OptionsComponent sortButtons={[createSortButton("selected-properties")]}
+                                                  optionButtons={{
+                                                      "Deselect all": deselectManyProperties
+                                                  }}/>
+        };
+
 
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
                                                   items={filters}
-                                                  sortFunction={sortFunction}
+                                                  sortFunction={sortFunctions.filters}
+                                                  headerButtons={[optionComponents.filters]}
                                                   isLoading={filtersLoading}
                                                   listItemFactory={filterFactory}/>;
 
         let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
                                                   items={[]}
-                                                  sortFunction={sortFunction}
+                                                  sortFunction={sortFunctions.filters}
+                                                  headerButtons={[optionComponents.presets]}
                                                   isLoading={filtersLoading}
                                                   listItemFactory={filterFactory}/>;
 
         let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
                                                     items={properties}
-                                                    sortFunction={sortFunction}
-                                                    optionButtons={PropertyListButtons}
+                                                    headerButtons={[optionComponents.properties]}
+                                                    sortFunction={sortFunctions.properties}
                                                     listItemFactory={propertyListItemFactoryFactory(toggleProperty)}/>;
 
         let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
                                                             items={selectedProperties}
+                                                            headerButtons={[optionComponents.propertiesSelected]}
                                                             optionButtons={SelectedPropertyListButtons}
                                                             listItemFactory={propertyListItemFactoryFactory(deselectProperty)}/>;
 

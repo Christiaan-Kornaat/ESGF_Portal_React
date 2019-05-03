@@ -8,13 +8,15 @@ export class ResultItem extends Component {
         this.title = props.title;
         this.dataset = props.dataArray;
 
-        this.state ={
+        this.state = {
             arrowState: true
         }
 
     }
 
     render() {
+        let { state: {arrowState}, title } = this;
+
         //TODO move to somewhere else??
         let createTableRow = (dataset, index) => {
             return (
@@ -23,14 +25,14 @@ export class ResultItem extends Component {
                     <td>{dataset}</td>
                     <td>Download</td>
                     <td>View</td>
-                    <td><i class="fas fa-cart-plus"></i></td>
+                    <td><i className="fas fa-cart-plus"></i></td>
                 </tr>
             );
         };
 
         return (
-            <Collapsible trigger={<div> <i className={this.state.arrowState ? 'fas fa-angle-down' : 'fas fa-angle-up'}></i>{this.title}</div>} onClick={this.state.arrowState = !this.state.arrowState}>
-                <table class="table">
+        <Collapsible trigger={<div> <i className={(arrowState ? 'fas fa-angle-down' : 'fas fa-angle-up')}></i>{title}</div>} onOpening={ () => this.setState( { arrowState: !this.state.arrowState } )} onClosing={ () => this.setState( { arrowState: !this.state.arrowState } )} >
+                <table className="table">
                     <thead>
                         <tr>
                             <th scope="col">#</th>

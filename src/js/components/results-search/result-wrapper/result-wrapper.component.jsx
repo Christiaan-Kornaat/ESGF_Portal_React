@@ -14,9 +14,11 @@ export class ResultWrapper extends Component {
             ]
         }
         
-        let createTableRow = (json) => {
+        let createTableRow = (json, index) => {
             return (
-                <ResultItem title={json.title} dataArray={json.dataset} />
+                <ResultItem key={index} 
+                            title={json.title} 
+                            dataArray={json.dataset} />
             );
         };
 

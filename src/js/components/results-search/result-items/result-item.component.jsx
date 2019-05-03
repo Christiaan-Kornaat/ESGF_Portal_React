@@ -6,13 +6,16 @@ export class ResultItem extends Component {
         super(props);
 
         this.title = props.title;
+        this.dataset = props.dataArray;
+
+        this.state ={
+            arrowState: true
+        }
 
     }
 
     render() {
-        //testcode
-        let datasetsTest = ["cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v20130331", "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v20130331"]
-        //TODO move to shared??
+        //TODO move to somewhere else??
         let createTableRow = (dataset, index) => {
             return (
                 <tr key={index}>
@@ -26,7 +29,7 @@ export class ResultItem extends Component {
         };
 
         return (
-            <Collapsible trigger={<div> <i className={true ? 'fas fa-angle-down' : 'fas fa-angle-up'}></i>{this.title}</div>}>
+            <Collapsible trigger={<div> <i className={this.state.arrowState ? 'fas fa-angle-down' : 'fas fa-angle-up'}></i>{this.title}</div>} onClick={this.state.arrowState = !this.state.arrowState}>
                 <table class="table">
                     <thead>
                         <tr>
@@ -38,7 +41,7 @@ export class ResultItem extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {datasetsTest.map(createTableRow)}
+                        {this.dataset.map(createTableRow)}
                     </tbody>
                 </table>            
             </Collapsible>

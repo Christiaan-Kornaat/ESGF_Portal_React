@@ -315,6 +315,10 @@ $default-gray: #dee2e6;
       padding-left: 18px;
     }
 
+    .clickable{
+      color: $primary-blue;
+    }
+
     .dataset{
       @extend .list-group-item;
       transition: all 0.2s ease;

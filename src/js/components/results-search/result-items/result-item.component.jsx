@@ -23,9 +23,9 @@ export class ResultItem extends Component {
                 <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{dataset}</td>
-                    <td>Download</td>
-                    <td>View</td>
-                    <td><i className="fas fa-cart-plus"></i></td>
+                    <td className="clickable">Download</td>
+                    <td className="clickable">View</td>
+                    <td className="clickable"><i class="fas fa-cart-plus"></i></td>
                 </tr>
             );
         };

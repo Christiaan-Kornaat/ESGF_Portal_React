@@ -1,0 +1,160 @@
+{
+    "dataset": {
+        "property": [
+            {
+                "_name": "dataset_id",
+                "_value": "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1"
+            },
+            {
+                "_name": "dataset_version",
+                "_value": "20130331"
+            },
+            {
+                "_name": "dataset_id_template_",
+                "_value": "cmip5.%(product)s.%(institute)s.%(model)s.%(experiment)s.%(time_frequency)s.%(realm)s.%(ensemble)s"
+            },
+            {
+                "_name": "directory_format_template_",
+                "_value": "%(root)s/%(project)s/%(product)s/%(institute)s/%(model)s/%(experiment)s/%(time_frequency)s/%(realm)s/%(variable)s/%(ensemble)s"
+            },
+            {
+                "_name": "project",
+                "_value": "cmip5"
+            },
+            {
+                "_name": "experiment",
+                "_value": "sstClimSulfate"
+            },
+            {
+                "_name": "product",
+                "_value": "output"
+            },
+            {
+                "_name": "model",
+                "_value": "CanESM2"
+            },
+            {
+                "_name": "time_frequency",
+                "_value": "mon"
+            },
+            {
+                "_name": "realm",
+                "_value": "seaIce"
+            },
+            {
+                "_name": "cmor_table",
+                "_value": "OImon"
+            },
+            {
+                "_name": "ensemble",
+                "_value": "r1i1p1"
+            },
+            {
+                "_name": "institute",
+                "_value": "CCCma"
+            },
+            {
+                "_name": "forcing",
+                "_value": "SA"
+            },
+            {
+                "_name": "title",
+                "_value": "CanESM2 model output prepared for CMIP5 sulfate aerosol forcing"
+            },
+            {
+                "_name": "creation_time",
+                "_value": "2019-03-14 16:36:15"
+            },
+            {
+                "_name": "format",
+                "_value": "netCDF, CF-1.4"
+            },
+            {
+                "_name": "drs_id",
+                "_value": "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.OImon.r1i1p1"
+            }
+        ],
+        "variables": {
+            "variable": [
+                {
+                    "_name": "pr",
+                    "_vocabulary_name": "rainfall_flux",
+                    "_units": "kg m-2 s-1",
+                    "__text": "Surface Rainfall Rate into the Sea Ice Portion of the Grid Cell"
+                },
+                {
+                    "_name": "prsn",
+                    "_vocabulary_name": "snowfall_flux",
+                    "_units": "kg m-2 s-1",
+                    "__text": "Surface Snowfall Rate into the Sea Ice Portion of the Grid Cell"
+                },
+                {
+                    "_name": "rldssi",
+                    "_vocabulary_name": "surface_downwelling_longwave_flux_in_air",
+                    "_units": "W m-2",
+                    "__text": "Downwelling Long Wave over Sea Ice"
+                },
+                {
+                    "_name": "rsdssi",
+                    "_vocabulary_name": "surface_downwelling_shortwave_flux_in_air",
+                    "_units": "W m-2",
+                    "__text": "Downwelling Shortwave over Sea Ice"
+                },
+                {
+                    "_name": "sic",
+                    "_vocabulary_name": "sea_ice_area_fraction",
+                    "_units": "%",
+                    "__text": "Sea Ice Area Fraction"
+                },
+                {
+                    "_name": "sim",
+                    "_vocabulary_name": "sea_ice_and_surface_snow_amount",
+                    "_units": "kg m-2",
+                    "__text": "Sea Ice Plus Surface Snow Amount"
+                },
+                {
+                    "_name": "sit",
+                    "_vocabulary_name": "sea_ice_thickness",
+                    "_units": "m",
+                    "__text": "Sea Ice Thickness"
+                },
+                {
+                    "_name": "snd",
+                    "_vocabulary_name": "surface_snow_thickness",
+                    "_units": "m",
+                    "__text": "Snow Depth"
+                },
+                {
+                    "_name": "snomelt",
+                    "_vocabulary_name": "surface_snow_melt_flux",
+                    "_units": "kg m-2 s-1",
+                    "__text": "Snow Melt Rate"
+                },
+                {
+                    "_name": "strairx",
+                    "_vocabulary_name": "surface_downward_x_stress",
+                    "_units": "N m-2",
+                    "__text": "X-Component of Atmospheric Stress On Sea Ice"
+                },
+                {
+                    "_name": "strairy",
+                    "_vocabulary_name": "surface_downward_y_stress",
+                    "_units": "N m-2",
+                    "__text": "Y-Component of Atmospheric Stress On Sea Ice"
+                },
+                {
+                    "_name": "tsice",
+                    "_vocabulary_name": "surface_temperature",
+                    "_units": "K",
+                    "__text": "Surface Temperature of Sea Ice"
+                }
+            ],
+            "_vocabulary": "CF-1.0"
+        },
+        "metadata": {
+            "dataType": "Grid",
+            "dataFormat": "NetCDF",
+            "_inherited": "true"
+        }
+    }
+}

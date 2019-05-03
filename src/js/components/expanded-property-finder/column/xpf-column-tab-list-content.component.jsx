@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import UnorderedList from "../../shared/list-unordered/list-unordered.component";
+import Spinner from "../../shared/loading-icons/spinner-component";
 
 class XpfColumnTabListContent extends Component {
     constructor(props) {
@@ -140,14 +141,6 @@ class XpfColumnTabListContent extends Component {
                     <i className="fas fa-search" />
                 </span>
             </div>);
-        
-        let loadIcon = (
-            <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                    <span className="sr-only">Loading...</span>
-                </div>
-            </div>
-        );
 
         let getOptionButtons = Object.keys(optionButtons).map(name => (
             <a key={name} className="dropdown-item" onClick={() => optionButtons[name](renderItems)}>  <input className="optionsTabButton" type="button" value={name} /></a>
@@ -178,7 +171,7 @@ class XpfColumnTabListContent extends Component {
                                     onClick={this.toggleOptions}/>
                 </div>
                 { isLoading ? 
-                loadIcon :  
+                <Spinner /> :  
                 <UnorderedList className="List"
                                items={sortFunction(renderItems)}
                                createListItem={this.createListItem}/>

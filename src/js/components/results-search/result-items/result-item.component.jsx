@@ -5,8 +5,7 @@ export class ResultItem extends Component {
     constructor(props){
         super(props);
 
-        this.title = props.title;
-        this.dataset = props.dataArray;
+        this.json = props.json;
 
         this.state = {
             arrowState: true
@@ -15,14 +14,14 @@ export class ResultItem extends Component {
     }
 
     render() {
-        let { state: {arrowState}, title } = this;
+        let { state: {arrowState}, json } = this;
 
         //TODO move to somewhere else??
         let createTableRow = (dataset, index) => {
             return (
                 <tr key={index}>
                     <th scope="row">{index + 1}</th>
-                    <td>{dataset}</td>
+                    <td>{dataset._name}</td>
                     <td>Size</td>
                     <td className="clickable">Download</td>
                     <td className="clickable">View</td>
@@ -32,7 +31,7 @@ export class ResultItem extends Component {
         };
 
         return (
-        <Collapsible trigger={<div> <i className={(arrowState ? 'fas fa-angle-down' : 'fas fa-angle-up')}></i>{title}</div>} onOpening={ () => this.setState( { arrowState: !this.state.arrowState } )} onClosing={ () => this.setState( { arrowState: !this.state.arrowState } )} >
+            <Collapsible trigger={<div> <i className={(arrowState ? 'fas fa-angle-down' : 'fas fa-angle-up')}></i>{json.properties.dataset_id + " V." + json.properties.dataset_version}</div>} onOpening={ () => this.setState( { arrowState: !this.state.arrowState } )} onClosing={ () => this.setState( { arrowState: !this.state.arrowState } )} >
                 <table className="table">
                     <thead>
                         <tr>
@@ -45,7 +44,7 @@ export class ResultItem extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.dataset.map(createTableRow)}
+                        {json.dataset_list.map(createTableRow)}
                     </tbody>
                 </table>            
             </Collapsible>

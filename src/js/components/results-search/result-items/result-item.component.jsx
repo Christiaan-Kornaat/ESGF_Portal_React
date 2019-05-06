@@ -23,9 +23,10 @@ export class ResultItem extends Component {
                 <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{dataset}</td>
+                    <td>Size</td>
                     <td className="clickable">Download</td>
                     <td className="clickable">View</td>
-                    <td className="clickable"><i className="fas fa-cart-plus"></i></td>
+                    <td className="clickable"><i className="fas fa-shopping-basket"></i></td>
                 </tr>
             );
         };
@@ -37,9 +38,10 @@ export class ResultItem extends Component {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Dataset</th>
+                            <th scope="col">Size</th>
                             <th scope="col">Download</th>
                             <th scope="col">View</th>
-                            <th scope="col">Add to cart</th>
+                            <th scope="col">Basket</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -8,7 +8,7 @@ export class ResultWrapper extends Component {
         //testdata
         let json = {
             "datasets": [
-                { "dataset": ["cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v20130331", "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v20130331"], "title": "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v201303432331" },
+                { "dataset": ["pr_OImon_CanESM2_sstClimSulfate_r1i1p1_185001-189912.nc", "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.pr.20130331.aggregation"], "title": "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v201303432331" },
                 { "dataset": ["cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v20130331", "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v20130331"], "title": "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v201303432331" },
                 { "dataset": ["cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v20130331", "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v20130331"], "title": "cmip5.output.CCCma.CanESM2.sstClimSulfate.mon.seaIce.r1i1p1.v201303432331" },
             ]

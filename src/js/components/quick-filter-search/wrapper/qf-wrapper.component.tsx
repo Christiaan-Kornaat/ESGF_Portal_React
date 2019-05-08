@@ -131,7 +131,7 @@ export class QFWrapper extends Component<{ searchResultProvider, selectionManage
                 {/*<div className="button-open-presets" onClick={this.openNav}>&#9776; Presets</div>*/}
                 <div className="qf-main-container">
                     <div className="tiles">
-                        {hasTiles ? qfTiles : <LoadingIcons.Spinner/>}
+                        {hasTiles ? qfTiles : <LoadingIcons.Spinner />}
                     </div>
                 </div>
             </section>

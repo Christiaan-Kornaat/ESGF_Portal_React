@@ -17,6 +17,7 @@ import QFTileServiceDemo from "./data/services/qf-tile/qf-tile.service.demo";
 import QuickSelectManagerMock from "./managers/quick-filter/quick-filter.manager.mock";
 import SelectedPropertyManager from "./managers/selected-property.manager";
 import IESGFFilterService from "./data/services/esgf-filter/esgf-filter.service.interface";
+import {ResultWrapper} from "./components/results-search/result-wrapper/result-wrapper.component";
 
 const Dependencies = {
     dev: {
@@ -91,6 +92,7 @@ class App extends Component {
             <div>
                 <ESGFSearchPortal
                     tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QS}}/>
+                <ResultWrapper />
             </div>
         );
     }

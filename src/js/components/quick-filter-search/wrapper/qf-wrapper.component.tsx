@@ -8,6 +8,7 @@ import IQuickFilterManager from "../../../managers/quick-filter/quick-filter.man
 import {QFTileProvider} from "../../../data/providers/qf-tile/qf-tile.provider";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
+import LoadingIcons from "../../shared/icons/loading-icons.component";
 
 
 export class QFWrapper extends Component<{ searchResultProvider, selectionManager, qfManager, qfProvider }> {
@@ -122,14 +123,15 @@ export class QFWrapper extends Component<{ searchResultProvider, selectionManage
         let {QFSidebarShow, qfTileModels} = this.state;
 
         let qfTiles = this.createTiles(qfTileModels);
+        let hasTiles = qfTiles.length > 0;
 
         return (
             <section className="qf-wrapper">
                 {QFSidebarShow ? <QFSidebar close={this.closeNav}/> : ""}
-                <div className="button-open-presets" onClick={this.openNav}>&#9776; Presets</div>
+                {/*<div className="button-open-presets" onClick={this.openNav}>&#9776; Presets</div>*/}
                 <div className="qf-main-container">
                     <div className="tiles">
-                        {qfTiles}
+                        {hasTiles ? qfTiles : <LoadingIcons.Spinner/>}
                     </div>
                 </div>
             </section>

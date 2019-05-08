@@ -5,10 +5,14 @@ export class ESGFSearchPortal extends Component {
     constructor(props) {
         super(props);
 
+        let { tabs } = props;
+
+        let firstTab = Object.keys(tabs)[0];
+
         this.state = {
-            tabs: this.props.tabs,
-            key: this.props.tabs[0],
-            prevKey: "CLR"
+            tabs: tabs,
+            key: firstTab,
+            prevKey: firstTab
         };
 
     }
@@ -34,7 +38,7 @@ export class ESGFSearchPortal extends Component {
 
         return (
             <Tabs activeKey={key} 
-                onSelect={ key => this.setState({key: key, prevKey: this.state.key})}>
+                onSelect={ newKey => this.setState({prevKey: key, key: newKey})}>
                 {tabComponents}
                 <Tab tabClassName='tab-hidden' eventKey={ key === "CLR" ? prevKey : "CLR"} title={ <i className={ key === "CLR" ? 'fas fa-angle-down' : 'fas fa-angle-up'}></i> } />
             </Tabs>

@@ -52,10 +52,11 @@ class App extends Component {
             filterProvider={filterProvider}
             selectedPropertyManager={selectedPropertyManager}/>;
 
+        let tabs = { "Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QS };
+        
         return (
             <div>
-                <ESGFSearchPortal
-                    tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QS}}/>
+                <ESGFSearchPortal tabs={tabs}/>
                 <ResultWrapper/>    
             </div>
         );

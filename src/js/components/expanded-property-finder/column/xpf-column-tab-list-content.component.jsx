@@ -7,19 +7,16 @@ class XpfColumnTabListContent extends Component {
     constructor(props) {
         super(props);
 
-        let {searchFunction, sortFunction, headerButtons = [], items, listItemFactory: createListItem, optionButtons, isLoading} = props;
+        let {searchFunction, sortFunction, headerButtons = [], items, listItemFactory: createListItem, isLoading} = props;
 
         this.search = searchFunction;
         this.createListItem = createListItem;
-
-        this.optionButtons = optionButtons || {};
 
         this.state = {
             items: items,
             renderItems: items,
             sortFunction: sortFunction || (array => array.sort()),
             headerButtons: headerButtons,
-            showOptionsButton: false,
             sortDirection: false,
             isLoading: isLoading || false
         };

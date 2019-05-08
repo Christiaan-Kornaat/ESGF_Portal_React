@@ -1,9 +1,9 @@
 export class QFFilterTileDTO {
-    
+
     /**
      *
      * @param {string}title
-     * @param {string[]}properties
+     * @param {ESGFFilterPropertyDTO[]}properties
      * @param {string}color
      * @param {string}icon
      */

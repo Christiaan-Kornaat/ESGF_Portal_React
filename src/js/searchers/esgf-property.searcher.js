@@ -5,15 +5,15 @@ class ESGFPropertySearcher {
     /**
      *
      * @param {string}query
-     * @param {string[]}items
-     * @return {string[]}
+     * @param {ESGFFilterPropertyDTO[]}items
+     * @return {ESGFFilterPropertyDTO[]}
      */
     search(query, items) {
         let {isQueryValid} = QueryValidator;
 
         if (!isQueryValid(query)) return items;
 
-        let searcher = query => items.filter(item => item.toLocaleLowerCase()
+        let searcher = query => items.filter(item => item.name.toLocaleLowerCase()
                                                          .includes(query.toLocaleLowerCase()));
 
         let searchedItems = new Set();

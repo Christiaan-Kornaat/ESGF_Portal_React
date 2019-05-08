@@ -11,7 +11,7 @@ body{
 }
 
 .ESGFSearchPortal {
-  @extend .container;
+  @extend .container ;
 
   .tab-hidden {
     @extend .ml-auto, .active;
@@ -28,14 +28,14 @@ body{
   }
 
   .loadIcon {
-    @extend .d-flex, .justify-content-center;
+    @extend .d-flex, .justify-content-center ;
     
     .spinnerIcon {
-      @extend .spinner-border;
+      @extend .spinner-border, .m-auto ;
       color: gray;
       
       .text {
-        @extend .sr-only;
+        @extend .sr-only ;
       }
     }
   }
@@ -54,20 +54,20 @@ body{
     }
     
     .Properties {
-      @extend .border-right, .border-left;
+      @extend .border-right, .border-left ;
     }
 
     .sortingArrow{
-      @extend .float-right;
+      @extend .float-right ;
       line-height: inherit;
     }
 
     .Properties, .SelectedProperties, .Filters {
-      @extend .col-sm-4;
+      @extend .col-sm-4 ;
       height: 500px;
 
       .filter {
-        @extend .list-group-item;
+        @extend .list-group-item ;
         transition: all 0.2s ease;
 
         &:hover {
@@ -77,7 +77,7 @@ body{
       }
 
       .property {
-        @extend .list-group-item, .py-2;
+        @extend .list-group-item, .py-2 ;
         transition: all 0.2s ease;
 
         .checkbox {
@@ -90,7 +90,7 @@ body{
         }
 
         .icon-info {
-          @extend .float-right;
+          @extend .float-right ;
           font-size: 1.5em;
           color: $primary-blue;
          
@@ -108,7 +108,7 @@ body{
       .infotab {
 
         .title {
-          @extend .py-3, .overflow-auto;
+          @extend .py-3, .overflow-auto ;
         }
 
         .paragraph {
@@ -128,15 +128,19 @@ body{
       }
 
       .List {
-        @extend .list-group, .list-group-flush, .overflow-auto;
+        @extend .list-group, .list-group-flush, .overflow-auto ;
         height: 375px;
         width: 100%;
         font-size: 12px;
       }
+
+      .loadIcon {
+        height: 400px;
+      }
     }
 
     .nav-center {
-      @extend .mt-2;
+      @extend .mt-2 ;
 
       display: flex;
       justify-content: center;
@@ -160,22 +164,18 @@ body{
     }
 
     .Search {
-      @extend .input-group;
-      @extend .input-group-sm;
-      @extend .pl-0;
-      @extend .my-3;
+      @extend .input-group, .pl-0, .my-3, .input-group-sm ;
 
       .SearchBar {
-        @extend .form-control, .my-0, .py-1;
-        @extend .form-control-sm;
+        @extend .form-control-sm, .form-control, .my-0, .py-1 ;
         font-size: 12px;
       }
 
       .SearchButton {
-        @extend .input-group-append;
+        @extend .input-group-append ;
 
         .Button {
-          @extend .input-group-text, .rounded-right;
+          @extend .input-group-text, .rounded-right ;
           color: $primary-blue;
 
           &:hover {
@@ -191,7 +191,7 @@ body{
         @extend .input-group-append;
 
         .Button {
-          @extend .input-group-text, .ml-2, .rounded;
+          @extend .input-group-text, .ml-2, .rounded ;
           color: $primary-blue !important;
 
           &:hover {
@@ -203,7 +203,7 @@ body{
         }
 
         .optionsTabButton {
-          @extend .btn, .btn-primary, .btn-block, .btn-sm;
+          @extend .btn, .btn-primary, .btn-block, .btn-sm ;
         }
 
       }
@@ -242,28 +242,29 @@ body{
       }
 
       .tiles {
-        @extend .w-100, .d-flex, .justify-content-center, .flex-wrap;
-      }
+        @extend .w-100, .h-100, .d-flex, .justify-content-center, .flex-wrap ;
 
-      .qf-tile {
-        @extend .p-0, .shadow;
-
-        $background-colour: #E0EBEB;
-
-        width: 200px;
-        margin: 6px;
-        background-color: $background-colour;
-
-        &:hover {
-          background-color:darken($color: $background-colour, $amount: 5);
+        .qf-tile {
+          @extend .p-0, .shadow;
+  
+          $background-colour: #E0EBEB;
+  
+          width: 200px;
+          height: 215px;
+          margin: auto 6px;
+          background-color: $background-colour;
+          
+          .qf-tile-header {
+            @extend .w-100, .h5, .text-center;
+            height: 32px;
+            line-height: 32px;
+            color: white;
+          }
+  
+          &:hover {
+            background-color:darken($color: $background-colour, $amount: 5);
+          }
         }
-      }
-
-      .qf-tile-header {
-        @extend .w-100, .h5, .text-center;
-        height: 32px;
-        line-height: 32px;
-        color: white;
       }
     }
 
@@ -303,13 +304,13 @@ body{
   }
 
   .result-wrapper{
-    @extend .container;
+    @extend .container ;
     background: white;
     margin-top:10px;
     padding: 0px;
 
     .Collapsible{
-      @extend .list-group-item;
+      @extend .list-group-item ;
     }
 
     .result-header{
@@ -325,7 +326,7 @@ body{
     }
 
     .dataset{
-      @extend .list-group-item;
+      @extend .list-group-item ;
       transition: all 0.2s ease;
 
       &:hover {

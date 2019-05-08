@@ -5,6 +5,11 @@ $light-blue: lighten($primary-blue, 15);
 $dark-blue: darken($primary-blue, 15);
 $default-gray: #dee2e6;
 
+// delete after demo
+body{
+  min-height: 3000px;
+}
+
 .ESGFSearchPortal {
   @extend .container;
 

@@ -63,8 +63,8 @@ class XpfColumnTabListContent extends Component {
          *
          * @param {string} item
          *
-         * @return {{isLessThan: (function(ESGFFilterDTO): boolean), isGreaterThan: (function(ESGFFilterDTO): boolean),
-         *     isEqualTo: (function(ESGFFilterDTO): boolean)}}
+         * @return {{isLessThan: (function(ESGFFilterDTO): boolean), isGreaterThan: (function(ESGFFilterDTO): boolean), isEqualTo: (function(ESGFFilterDTO): boolean)}}
+         *     
          */
         let alphabeticalComparator = (item) => {
             let _isGreaterThan = (item2) => item.localeCompare(item2) === 1;
@@ -81,8 +81,8 @@ class XpfColumnTabListContent extends Component {
         /**
          *
          * @param {ESGFFilterDTO}filter
-         * @return {{isLessThan: (function(ESGFFilterDTO): boolean), isGreaterThan: (function(ESGFFilterDTO): boolean),
-         *     isEqualTo: (function(ESGFFilterDTO): boolean)}}
+         * @return {{isLessThan: (function(ESGFFilterDTO): boolean), isGreaterThan: (function(ESGFFilterDTO): boolean), isEqualTo: (function(ESGFFilterDTO): boolean)}}
+         *     
          */
         let filterComparator = filter => {
             let base = alphabeticalComparator(filter.shortName);
@@ -95,8 +95,8 @@ class XpfColumnTabListContent extends Component {
         /**
          *
          * @param {ESGFFilterPropertyDTO}property
-         * @return {{isLessThan: (function(ESGFFilterPropertyDTO): boolean), isGreaterThan:
-         *     (function(ESGFFilterPropertyDTO): boolean), isEqualTo: (function(ESGFFilterPropertyDTO): boolean)}}
+         * @return {{isLessThan: (function(ESGFFilterPropertyDTO): boolean), isGreaterThan: (function(ESGFFilterPropertyDTO): boolean), isEqualTo: (function(ESGFFilterPropertyDTO): boolean)}}
+         *     
          */
         let propertyComparator = property => {
             let base = alphabeticalComparator(property.name);
@@ -109,8 +109,8 @@ class XpfColumnTabListContent extends Component {
 
         /**
          *
-         * @param {function(*): {isLessThan: (function(*): boolean), isGreaterThan: (function(*): boolean), isEqualTo:
-         *     (function(*): boolean)}} comparator
+         * @param {function(*): {isLessThan: (function(*): boolean), isGreaterThan: (function(*): boolean), isEqualTo: (function(*): boolean)}} comparator
+         *     
          * @summary Creates a sort function using a comparator
          * @returns {Function} function
          */
@@ -189,13 +189,12 @@ class XpfColumnTabListContent extends Component {
             </div>
         );
 
-        let content = (!isLoading) ?
-                                         <UnorderedList
-
-                                            className="List"
-                           items={sortFunction(renderItems)}
-                                     createListItem={this.createListItem}/> :
-                                     <LoadingIcons.Spinner/>;
+        let content = (!isLoading) ? 
+            <UnorderedList
+                className="List"
+                items={sortFunction(renderItems)}
+                createListItem={this.createListItem}/> :
+            <LoadingIcons.Spinner/>;
 
         let OptionsButton = ({show, onClick}) => (
             <div className="optionsButton dropdown show" role="button" id="dropdownMenuLink" aria-haspopup="true"

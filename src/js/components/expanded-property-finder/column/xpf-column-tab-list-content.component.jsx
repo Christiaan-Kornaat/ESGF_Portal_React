@@ -1,41 +1,33 @@
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React, {  Component } from "react";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import UnorderedList from "../../shared/list-unordered/list-unordered.component";
+import SearchComponent from "../wrapper/xpf-list-search.component";
 
 class XpfColumnTabListContent extends Component {
     constructor(props) {
         super(props);
 
-        let { searchFunction, sortFunction, headerButtons = [], items, listItemFactory: createListItem, isLoading } = props;
+        let { searchFunction,  sortFunction, headerButtons = [], items, listItemFactory: createListItem, isLoading } = props;
 
-        this.search = searchFunction;
         this.createListItem = createListItem;
 
         this.state = {
             items: items,
-            renderItems: items,
             sortFunction: sortFunction || (array => array.sort()),
             headerButtons: headerButtons,
+            searchFunction: searchFunction,
+            searchQuery: "",
             sortDirection: false,
             isLoading: isLoading || false
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.executeSearch = this.executeSearch.bind(this);
+        this.onSearch = this.onSearch.bind(this);
     }
 
-    componentWillReceiveProps({ items, isLoading, sortFunction }) {
-        let { searchQuery: query, renderItems } = this.state;
-
-        if (query == null || query.trim() === "") {
-            renderItems = items;
-        }
-
+    componentWillReceiveProps({  items, isLoading, sortFunction }) {
         let newState = {
             items: items,
-            renderItems: renderItems,
             isLoading: isLoading
         };
 
@@ -44,71 +36,31 @@ class XpfColumnTabListContent extends Component {
         this.setState(newState);
     }
 
-    handleChange(event) {
-        let { target: { value } } = event;
-
-        this.changeQuery(value);
-
-        this.executeSearch(value);
-    }
-
     /**
-     *
-     * @param {string} newQuery
+     * 
+     * @param {list} items 
      */
-    changeQuery(newQuery) {
+    onSearch(query){
         this.setState({
-            searchQuery: newQuery
-        });
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-
-        let { searchQuery: query } = this.state;
-
-        this.executeSearch(query);
-    }
-
-    /**
-     * @param {string}query
-     */
-    executeSearch(query) {
-        let items = this.search(query, this.state.items);
-
-        this.setState({
-            renderItems: items
+            searchQuery: query
         });
     }
 
     render() {
-        let { state: { renderItems, sortFunction, isLoading, headerButtons } } = this;
-        let SearchButton = ({ onClick }) => (
-            <div className="SearchButton">
-                <span onClick={onClick}
-                    className="Button">
-                    <i className="fas fa-search" />
-                </span>
-            </div>);
-
+        let { state: { items, sortFunction, isLoading, headerButtons, searchFunction, searchQuery }, createListItem, onSearch } = this;
+        
         let content = (!isLoading) ?
             <UnorderedList
                 className="List"
-                items={sortFunction(renderItems)}
-                createListItem={this.createListItem} /> :
+                items={sortFunction(searchFunction(searchQuery, items))}
+                createListItem={createListItem} /> :
             <LoadingIcons.Spinner />;
 
         return (
             <div>
-                <div className="Search">
-                    <input className="SearchBar"
-                        type="text"
-                        placeholder="Search"
-                        aria-label="Search"
-                        onChange={this.handleChange} />
-                    <SearchButton onClick={this.handleSubmit} />
-                    {headerButtons}
-                </div>
+                <SearchComponent
+                    onSearch={onSearch}
+                    headerButtons={headerButtons} />
                 {content}
             </div>
         );

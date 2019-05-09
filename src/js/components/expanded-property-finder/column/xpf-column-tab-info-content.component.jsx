@@ -31,7 +31,9 @@ class XpfColumnTabInfoContent extends Component {
 
         let paragraphObjects = Object.keys(paragraphs)
             .map(key =>
-                <InfoParagraph title={key}
+                <InfoParagraph
+                    key={key}
+                    title={key}
                     content={paragraphs[key]} />);
 
         return (

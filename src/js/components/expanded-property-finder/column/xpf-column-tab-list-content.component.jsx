@@ -81,14 +81,6 @@ class XpfColumnTabListContent extends Component {
         });
     }
 
-    toggleOptions() {
-        let show = !this.state.showOptionsButton;
-
-        this.setState({
-            showOptionsButton: show
-        });
-    }
-
     render() {
         let { state: { renderItems, sortFunction, isLoading, headerButtons } } = this;
         let SearchButton = ({ onClick }) => (

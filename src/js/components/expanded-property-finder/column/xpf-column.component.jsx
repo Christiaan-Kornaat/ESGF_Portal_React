@@ -1,11 +1,11 @@
-import React, {Component} from "react";
-import {Tab, Tabs} from "react-bootstrap";
+import React, { Component } from "react";
+import { Tab, Tabs } from "react-bootstrap";
 
 class XpfColumn extends Component {
     constructor(props) {
         super(props);
 
-        let {tabs, activeTab, onSelect} = props;
+        let { tabs, activeTab, onSelect } = props;
 
         if (activeTab == null) {
             [activeTab] = Object.keys(tabs);
@@ -21,7 +21,7 @@ class XpfColumn extends Component {
         this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
     }
 
-    componentWillReceiveProps({tabs, activeTab}) {
+    componentWillReceiveProps({ tabs, activeTab }) {
         this.setState({
             tabs: tabs,
             activeTab: activeTab == null ? this.state.activeTab : activeTab
@@ -30,29 +30,29 @@ class XpfColumn extends Component {
 
     render() {
 
-        let {activeTab, tabs} = this.state;
+        let { activeTab, tabs } = this.state;
 
         let tabComponents = Object.keys(tabs)
-                                  .map(name => (
-                                      <Tab
-                                        key={name}
-                                        className="centered-tab"
-                                        eventKey={name}
-                                        title={name}>
-                                        {tabs[name]}
-                                      </Tab>
-                                  ));
+            .map(name => (
+                <Tab
+                    key={name}
+                    className="centered-tab"
+                    eventKey={name}
+                    title={name}>
+                    {tabs[name]}
+                </Tab>
+            ));
 
         let handleSelect = selectedTab => {
             this.onSelect(selectedTab);
-            this.setState({activeTab: selectedTab});
+            this.setState({ activeTab: selectedTab });
         };
 
         return (
             <div className={this.props.className}>
                 <Tabs className="nav-center"
-                      activeKey={activeTab}
-                      onSelect={handleSelect}>
+                    activeKey={activeTab}
+                    onSelect={handleSelect}>
                     {tabComponents}
                 </Tabs>
             </div>

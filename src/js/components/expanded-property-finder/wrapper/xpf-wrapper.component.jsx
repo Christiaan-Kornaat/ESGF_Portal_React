@@ -1,11 +1,11 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import StringFormatter from "../../../model/formatters/string.formatter";
 import InfoTabVM from "../../../model/view-model/InfoTabVM";
 import ESGFFilterSearcher from "../../../searchers/esgf-filter.searcher";
 import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
-import {filterComparator, propertyComparator} from "../../../sorters/comparators/esgf.comparator";
-import {alphabeticalComparator} from "../../../sorters/comparators/primitive.comparator";
-import {SorterFactoryFactory} from "../../../sorters/sorter.factory.factory";
+import { filterComparator, propertyComparator } from "../../../sorters/comparators/esgf.comparator";
+import { alphabeticalComparator } from "../../../sorters/comparators/primitive.comparator";
+import { SorterFactoryFactory } from "../../../sorters/sorter.factory.factory";
 import SorterManager from "../../../sorters/sorter.manager";
 import Buttons from "../../shared/buttons/buttons.component";
 import XpfColumnTabInfoContent from "../column/xpf-column-tab-info-content.component";
@@ -18,7 +18,7 @@ export default class XPFWrapper extends Component {
     constructor(props) {
         super(props);
 
-        let {selectedPropertyManager, filterProvider, searchResultProvider} = props;
+        let { selectedPropertyManager, filterProvider, searchResultProvider } = props;
 
         let sorterFactoryFactory = new SorterFactoryFactory();
         let createSortState = (key, defaultAscending, comparator) => [
@@ -43,7 +43,7 @@ export default class XPFWrapper extends Component {
         this.state = {
             selectedFilter: null,
             infoTabs: [],
-            selectedTabs: {filterColumn: null, propertyColumn: null, selectedColumn: null},
+            selectedTabs: { filterColumn: null, propertyColumn: null, selectedColumn: null },
             sortState: sortState,
             columnState: {},
             filters: []
@@ -72,7 +72,7 @@ export default class XPFWrapper extends Component {
         if (this.state.selectedFilter === filter) return;
 
         this.filterProvider.provide(filter.shortName)
-            .then(filter => this.setState(() => ({selectedFilter: filter})));
+            .then(filter => this.setState(() => ({ selectedFilter: filter })));
     }
 
     /**
@@ -80,7 +80,7 @@ export default class XPFWrapper extends Component {
      * @param {ESGFFilterPropertyDTO} property
      */
     toggleProperty(property) {
-        let {select, deselect, isSelected} = this.selectedPropertyManager;
+        let { select, deselect, isSelected } = this.selectedPropertyManager;
 
         (isSelected(property) ? deselect : select)(property);
     }
@@ -103,10 +103,10 @@ export default class XPFWrapper extends Component {
      *
      * @param {InfoTabVM} viewModel
      */
-    addInfoTab({title, paragraphs}) {
+    addInfoTab({ title, paragraphs }) {
         let infoTabs = this.state.infoTabs.concat(new InfoTabVM("Info", title, paragraphs));
 
-        this.setState({infoTabs: infoTabs});
+        this.setState({ infoTabs: infoTabs });
     }
 
     /**
@@ -114,11 +114,11 @@ export default class XPFWrapper extends Component {
      * @param {InfoTabVM} viewModel
      */
     removeInfoTab(viewModel) {
-        let {state, setState} = this;
+        let { state, setState } = this;
 
         let infoTabs = state.infoTabs.filter(tab => tab.title !== viewModel.textTitle);
 
-        setState({infoTabs: infoTabs});
+        setState({ infoTabs: infoTabs });
     }
 
     /**
@@ -126,11 +126,11 @@ export default class XPFWrapper extends Component {
      * @param {string} tabName
      */
     selectTab(columnName, tabName) {
-        let {state: {selectedTabs}} = this;
+        let { state: { selectedTabs } } = this;
 
         selectedTabs[columnName] = tabName;
 
-        this.setState({selectedTabs});
+        this.setState({ selectedTabs });
     }
 
     // Lifecycle methods
@@ -162,7 +162,7 @@ export default class XPFWrapper extends Component {
         let {
             selectFilter, toggleProperty, selectTab, showPropertyInfo,
             selectedPropertyManager: selectedManager,
-            state: {sortState, infoTabs, selectedTabs, filters, selectedFilter}
+            state: { sortState, infoTabs, selectedTabs, filters, selectedFilter }
         } = this;
 
         let filtersLoading = !this.filterProvider.hasFilters;
@@ -217,14 +217,14 @@ export default class XPFWrapper extends Component {
                     className={checked ? "selected property" : "property"}
                     onClick={onChange}>
                     <input className={"checkbox"}
-                           type={"checkbox"}
-                           onChange={() => {
-                           }} //prevents error message
-                           checked={checked}/>
+                        type={"checkbox"}
+                        onChange={() => {
+                        }} //prevents error message
+                        checked={checked} />
                     <span className={"icon-info"}
-                          onClick={onInfoClick}>
-                            <i className="fas fa-info-circle"/>
-                        </span>
+                        onClick={onInfoClick}>
+                        <i className="fas fa-info-circle" />
+                    </span>
                     {name}
                 </li>
             );
@@ -250,51 +250,51 @@ export default class XPFWrapper extends Component {
         };
 
         let createSortButton = (columnName) => <Buttons.Sort title={"Sort A-Z"}
-                                                             onToggle={createInvertSort(columnName)}/>;
+            onToggle={createInvertSort(columnName)} />;
 
         let optionComponents = {
-            filters: <OptionsComponent sortButtons={[createSortButton("filters")]}/>,
-            presets: <OptionsComponent sortButtons={[createSortButton("presets")]}/>,
+            filters: <OptionsComponent sortButtons={[createSortButton("filters")]} />,
+            presets: <OptionsComponent sortButtons={[createSortButton("presets")]} />,
             properties: <OptionsComponent sortButtons={[createSortButton("properties")]}
-                                          optionButtons={{
-                                              "Select all": createSetSelected(true, this.getSelectedFilterProperties),
-                                              "Deselect all": createSetSelected(false, this.getSelectedFilterProperties)
-                                          }}/>,
+                optionButtons={{
+                    "Select all": createSetSelected(true, this.getSelectedFilterProperties),
+                    "Deselect all": createSetSelected(false, this.getSelectedFilterProperties)
+                }} />,
             propertiesSelected: <OptionsComponent sortButtons={[createSortButton("selected-properties")]}
-                                                  optionButtons={{
-                                                      "Deselect all": createSetSelected(false, () => this.selectedPropertyManager.selected)
-                                                  }}/>
+                optionButtons={{
+                    "Deselect all": createSetSelected(false, () => this.selectedPropertyManager.selected)
+                }} />
         };
 
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
-                                                  items={filters}
-                                                  sortFunction={sortFunctions.filters}
-                                                  headerButtons={[optionComponents.filters]}
-                                                  isLoading={filtersLoading}
-                                                  listItemFactory={filterFactory}/>;
+            items={filters}
+            sortFunction={sortFunctions.filters}
+            headerButtons={[optionComponents.filters]}
+            isLoading={filtersLoading}
+            listItemFactory={filterFactory} />;
 
         let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
-                                                  items={[]}
-                                                  sortFunction={sortFunctions.filters}
-                                                  headerButtons={[optionComponents.presets]}
-                                                  isLoading={filtersLoading}
-                                                  listItemFactory={filterFactory}/>;
+            items={[]}
+            sortFunction={sortFunctions.filters}
+            headerButtons={[optionComponents.presets]}
+            isLoading={filtersLoading}
+            listItemFactory={filterFactory} />;
 
         let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
-                                                    items={properties}
-                                                    headerButtons={[optionComponents.properties]}
-                                                    sortFunction={sortFunctions.properties}
-                                                    listItemFactory={propertyListItemFactoryFactory(toggleProperty)}/>;
+            items={properties}
+            headerButtons={[optionComponents.properties]}
+            sortFunction={sortFunctions.properties}
+            listItemFactory={propertyListItemFactoryFactory(toggleProperty)} />;
 
         let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
-                                                            items={selectedProperties}
-                                                            headerButtons={[optionComponents.propertiesSelected]}
-                                                            listItemFactory={propertyListItemFactoryFactory(selectedManager.deselect)}/>;
+            items={selectedProperties}
+            headerButtons={[optionComponents.propertiesSelected]}
+            listItemFactory={propertyListItemFactoryFactory(selectedManager.deselect)} />;
 
         let infoTab = Object.values(infoTabs)
-                            .pop();
+            .pop();
 
-        let propertyTabs = infoTab != null ? {"Info": <XpfColumnTabInfoContent model={infoTab.content}/>} : {};
+        let propertyTabs = infoTab != null ? { "Info": <XpfColumnTabInfoContent model={infoTab.content} /> } : {};
         propertyTabs["Selected properties"] = SelectedPropertyList;
 
         let createClearSelected = columnName => newTab => selectTab(columnName, newTab);
@@ -302,17 +302,17 @@ export default class XPFWrapper extends Component {
         return (
             <section className='XPF-Wrapper'>
                 <XpfColumn className="Filters"
-                           tabs={{"Filters": FilterList, "Presets": PresetList}}
-                           activeTab={selectedTabs.filterColumn}
-                           onSelect={createClearSelected("filterColumn")}/>
+                    tabs={{ "Filters": FilterList, "Presets": PresetList }}
+                    activeTab={selectedTabs.filterColumn}
+                    onSelect={createClearSelected("filterColumn")} />
                 <XpfColumn className="Properties"
-                           tabs={{"Properties": PropertyList}}
-                           activeTab={selectedTabs.propertyColumn}
-                           onSelect={createClearSelected("propertyColumn")}/>
+                    tabs={{ "Properties": PropertyList }}
+                    activeTab={selectedTabs.propertyColumn}
+                    onSelect={createClearSelected("propertyColumn")} />
                 <XpfColumn className="SelectedProperties"
-                           tabs={propertyTabs}
-                           activeTab={selectedTabs.selectedColumn}
-                           onSelect={createClearSelected("selectedColumn")}/>
+                    tabs={propertyTabs}
+                    activeTab={selectedTabs.selectedColumn}
+                    onSelect={createClearSelected("selectedColumn")} />
             </section>
         );
     }

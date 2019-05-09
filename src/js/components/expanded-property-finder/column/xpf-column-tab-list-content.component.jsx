@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, {Component} from "react";
+import React, { Component } from "react";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import UnorderedList from "../../shared/list-unordered/list-unordered.component";
 
@@ -7,7 +7,7 @@ class XpfColumnTabListContent extends Component {
     constructor(props) {
         super(props);
 
-        let {searchFunction, sortFunction, headerButtons = [], items, listItemFactory: createListItem, isLoading} = props;
+        let { searchFunction, sortFunction, headerButtons = [], items, listItemFactory: createListItem, isLoading } = props;
 
         this.search = searchFunction;
         this.createListItem = createListItem;
@@ -26,8 +26,8 @@ class XpfColumnTabListContent extends Component {
         this.executeSearch = this.executeSearch.bind(this);
     }
 
-    componentWillReceiveProps({items, isLoading, sortFunction}) {
-        let {searchQuery: query, renderItems} = this.state;
+    componentWillReceiveProps({ items, isLoading, sortFunction }) {
+        let { searchQuery: query, renderItems } = this.state;
 
         if (query == null || query.trim() === "") {
             renderItems = items;
@@ -45,7 +45,7 @@ class XpfColumnTabListContent extends Component {
     }
 
     handleChange(event) {
-        let {target: {value}} = event;
+        let { target: { value } } = event;
 
         this.changeQuery(value);
 
@@ -87,9 +87,9 @@ class XpfColumnTabListContent extends Component {
         let filterComparator = filter => {
             let base = alphabeticalComparator(filter.shortName);
             return {
-                isGreaterThan: ({shortName}) => base.isGreaterThan(shortName),
-                isLessThan: ({shortName}) => base.isLessThan(shortName),
-                isEqualTo: ({shortName}) => base.isEqualTo(shortName)
+                isGreaterThan: ({ shortName }) => base.isGreaterThan(shortName),
+                isLessThan: ({ shortName }) => base.isLessThan(shortName),
+                isEqualTo: ({ shortName }) => base.isEqualTo(shortName)
             };
         };
         /**
@@ -101,9 +101,9 @@ class XpfColumnTabListContent extends Component {
         let propertyComparator = property => {
             let base = alphabeticalComparator(property.name);
             return {
-                isGreaterThan: ({name}) => base.isGreaterThan(name),
-                isLessThan: ({name}) => base.isLessThan(name),
-                isEqualTo: ({name}) => base.isEqualTo(name)
+                isGreaterThan: ({ name }) => base.isGreaterThan(name),
+                isLessThan: ({ name }) => base.isLessThan(name),
+                isEqualTo: ({ name }) => base.isEqualTo(name)
             };
         };
 
@@ -147,7 +147,7 @@ class XpfColumnTabListContent extends Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        let {searchQuery: query} = this.state;
+        let { searchQuery: query } = this.state;
 
         this.executeSearch(query);
     }
@@ -172,12 +172,12 @@ class XpfColumnTabListContent extends Component {
     }
 
     render() {
-        let {state: {renderItems, sortFunction, isLoading, headerButtons}} = this;
-        let SearchButton = ({onClick}) => (
+        let { state: { renderItems, sortFunction, isLoading, headerButtons } } = this;
+        let SearchButton = ({ onClick }) => (
             <div className="SearchButton">
                 <span onClick={onClick}
-                      className="Button">
-                    <i className="fas fa-search"/>
+                    className="Button">
+                    <i className="fas fa-search" />
                 </span>
             </div>);
 
@@ -189,21 +189,21 @@ class XpfColumnTabListContent extends Component {
             </div>
         );
 
-        let content = (!isLoading) ? 
+        let content = (!isLoading) ?
             <UnorderedList
                 className="List"
                 items={sortFunction(renderItems)}
-                createListItem={this.createListItem}/> :
-            <LoadingIcons.Spinner/>;
+                createListItem={this.createListItem} /> :
+            <LoadingIcons.Spinner />;
 
-        let OptionsButton = ({show, onClick}) => (
+        let OptionsButton = ({ show, onClick }) => (
             <div className="optionsButton dropdown show" role="button" id="dropdownMenuLink" aria-haspopup="true"
-                 aria-expanded="false">
+                aria-expanded="false">
                 <span className="Button" onClick={onClick}>
-                    <i className="fas fa-ellipsis-h"/>
+                    <i className="fas fa-ellipsis-h" />
                 </span>
                 <div className={"dropdown-menu dropdown-menu-right " + (show ? "show" : "")}
-                     aria-labelledby="dropdownMenuLink">
+                    aria-labelledby="dropdownMenuLink">
                     <a className="dropdown-item" onClick={() => this.handleSortButton()}>Sort a-z <i
                         className={this.state.sortDirection ?
                             "fas fa-angle-up sortingArrow" :
@@ -217,11 +217,11 @@ class XpfColumnTabListContent extends Component {
             <div>
                 <div className="Search">
                     <input className="SearchBar"
-                           type="text"
-                           placeholder="Search"
-                           aria-label="Search"
-                           onChange={this.handleChange}/>
-                    <SearchButton onClick={this.handleSubmit}/>
+                        type="text"
+                        placeholder="Search"
+                        aria-label="Search"
+                        onChange={this.handleChange} />
+                    <SearchButton onClick={this.handleSubmit} />
                     {headerButtons}
                 </div>
                 {content}

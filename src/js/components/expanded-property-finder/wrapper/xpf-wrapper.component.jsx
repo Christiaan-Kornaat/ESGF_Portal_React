@@ -249,24 +249,25 @@ export default class XPFWrapper extends Component {
             selectedProperties: sorterManagers.selectedProperties.getCurrent()
         };
 
-        let createSortButton = (columnName) => <Buttons.Sort title={"Sort A-Z"}
+        let createSortButton = (columnName) => <Buttons.Sort key={columnName} title={"Sort A-Z"}
             onToggle={createInvertSort(columnName)} />;
 
         let optionComponents = {
-            filters: <OptionsComponent sortButtons={[createSortButton("filters")]} />,
-            presets: <OptionsComponent sortButtons={[createSortButton("presets")]} />,
-            properties: <OptionsComponent sortButtons={[createSortButton("properties")]}
+            filters: <OptionsComponent key={"filters"} sortButtons={[createSortButton("filters")]} />,
+            presets: <OptionsComponent key={"presets"} sortButtons={[createSortButton("presets")]} />,
+            properties: <OptionsComponent key={"properties"} sortButtons={[createSortButton("properties")]}
                 optionButtons={{
                     "Select all": createSetSelected(true, this.getSelectedFilterProperties),
                     "Deselect all": createSetSelected(false, this.getSelectedFilterProperties)
                 }} />,
-            propertiesSelected: <OptionsComponent sortButtons={[createSortButton("selected-properties")]}
+            propertiesSelected: <OptionsComponent key={"selected-properties"} sortButtons={[createSortButton("selected-properties")]}
                 optionButtons={{
                     "Deselect all": createSetSelected(false, () => this.selectedPropertyManager.selected)
                 }} />
         };
 
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
+            key={"FilterList"}
             items={filters}
             sortFunction={sortFunctions.filters}
             headerButtons={[optionComponents.filters]}
@@ -274,6 +275,7 @@ export default class XPFWrapper extends Component {
             listItemFactory={filterFactory} />;
 
         let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
+            key={"PresetList"}
             items={[]}
             sortFunction={sortFunctions.filters}
             headerButtons={[optionComponents.presets]}
@@ -281,12 +283,14 @@ export default class XPFWrapper extends Component {
             listItemFactory={filterFactory} />;
 
         let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
+            key={"PropertyList"}
             items={properties}
             headerButtons={[optionComponents.properties]}
             sortFunction={sortFunctions.properties}
             listItemFactory={propertyListItemFactoryFactory(toggleProperty)} />;
 
         let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
+            key={"SelectedPropertyList"}
             items={selectedProperties}
             headerButtons={[optionComponents.propertiesSelected]}
             listItemFactory={propertyListItemFactoryFactory(selectedManager.deselect)} />;
@@ -294,7 +298,7 @@ export default class XPFWrapper extends Component {
         let infoTab = Object.values(infoTabs)
             .pop();
 
-        let propertyTabs = infoTab != null ? { "Info": <XpfColumnTabInfoContent model={infoTab.content} /> } : {};
+        let propertyTabs = infoTab != null ? { "Info": <XpfColumnTabInfoContent key={"info"} model={infoTab.content} /> } : {};
         propertyTabs["Selected properties"] = SelectedPropertyList;
 
         let createClearSelected = columnName => newTab => selectTab(columnName, newTab);
@@ -302,14 +306,17 @@ export default class XPFWrapper extends Component {
         return (
             <section className='XPF-Wrapper'>
                 <XpfColumn className="Filters"
+                    key={"Filters"}
                     tabs={{ "Filters": FilterList, "Presets": PresetList }}
                     activeTab={selectedTabs.filterColumn}
                     onSelect={createClearSelected("filterColumn")} />
                 <XpfColumn className="Properties"
+                    key={"Properties"}
                     tabs={{ "Properties": PropertyList }}
                     activeTab={selectedTabs.propertyColumn}
                     onSelect={createClearSelected("propertyColumn")} />
                 <XpfColumn className="SelectedProperties"
+                    key={"SelectedProperties"}
                     tabs={propertyTabs}
                     activeTab={selectedTabs.selectedColumn}
                     onSelect={createClearSelected("selectedColumn")} />

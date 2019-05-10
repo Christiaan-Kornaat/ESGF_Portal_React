@@ -59,6 +59,7 @@ class XpfColumnTabListContent extends Component {
         return (
             <div>
                 <SearchComponent
+                    key={Math.random()}
                     onSearch={onSearch}
                     headerButtons={headerButtons} />
                 {content}

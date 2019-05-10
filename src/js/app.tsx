@@ -18,6 +18,20 @@ import QuickSelectManagerMock from "./managers/quick-filter/quick-filter.manager
 import SelectedPropertyManager from "./managers/selected-property.manager";
 import IESGFFilterService from "./data/services/esgf-filter/esgf-filter.service.interface";
 import {ResultWrapper} from "./components/results-search/result-wrapper/result-wrapper.component";
+import AdagucUrlBuilder from "./data/services/esgf-search/adaguc-url.builder";
+import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
+
+interface AppEnvironment {
+    FilterService: any,
+    FilterProvider: any,
+    SearchService: any,
+    SearchResultsProvider: any,
+    SelectedPropertyManager: any,
+    QFTileService: any,
+    QuickFilterManager: any,
+    QuickFilterTileProvider: any,
+    DATA_HOST: string
+}
 
 const Dependencies = {
     dev: {
@@ -28,7 +42,8 @@ const Dependencies = {
         FilterProvider: ESGFFilterProvider,
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
-        QuickFilterManager: QuickSelectManagerMock
+        QuickFilterManager: QuickSelectManagerMock,
+        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
     },
     demo: {
         SearchService: ESGFSearchServiceDemo,
@@ -38,7 +53,8 @@ const Dependencies = {
         FilterProvider: ESGFFilterProvider,
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
-        QuickFilterManager: QuickSelectManagerMock
+        QuickFilterManager: QuickSelectManagerMock,
+        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
     },
     prod: {
         SearchService: ESGFSearchService,
@@ -48,7 +64,8 @@ const Dependencies = {
         FilterProvider: ESGFFilterProvider,
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
-        QuickFilterManager: QuickSelectManagerMock
+        QuickFilterManager: QuickSelectManagerMock,
+        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
     }
 };
 
@@ -64,10 +81,13 @@ class App extends Component {
             SelectedPropertyManager,
             QFTileService: QuickFilterTileService,
             QuickFilterManager,
-            QuickFilterTileProvider
-        } = Dependencies[environment];
+            QuickFilterTileProvider,
+            DATA_HOST
+        } = Dependencies[environment] as AppEnvironment;
 
-        let searchService = new SearchService();
+        const adagucUrlBuilder = new AdagucUrlBuilder(new URL(DATA_HOST));
+
+        let searchService = new SearchService(adagucUrlBuilder);
         let searchResultProvider = new SearchResultsProvider(searchService);
 
         let filterService: IESGFFilterService = new FilterService();
@@ -78,6 +98,10 @@ class App extends Component {
 
         let selectedPropertyManager = new SelectedPropertyManager();
         let quickFilterManager = new QuickFilterManager(filterProvider);
+
+        let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => searchService.fetch(selection)
+                                                                                      .then(console.log);
+        selectedPropertyManager.events.selectionChanged.subscribe(onSelectionChanged);
 
         let QS = <QFWrapper selectionManager={selectedPropertyManager}
                             searchResultProvider={searchResultProvider}
@@ -92,7 +116,7 @@ class App extends Component {
             <div>
                 <ESGFSearchPortal
                     tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QS}}/>
-                <ResultWrapper />
+                <ResultWrapper resultProvider={searchResultProvider}/>
             </div>
         );
     }

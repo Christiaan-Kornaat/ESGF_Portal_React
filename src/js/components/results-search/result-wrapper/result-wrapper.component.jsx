@@ -1253,12 +1253,8 @@ export class ResultWrapper extends Component {
             ]
         };
 
-        let createTableRow = (json, index) => {
-            return (
-                <ResultItem key={index}
-                            json={json}/>
-            );
-        };
+        let createTableRow = (json, index) => <ResultItem key={index}
+                                                          json={json}/>;
 
         return (
             <div className="result-wrapper">
@@ -1269,4 +1265,4 @@ export class ResultWrapper extends Component {
             </div>
         );
     }
-}
+    }

@@ -11,7 +11,7 @@ import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 
 
-export class QFWrapper extends Component<{ searchResultProvider: any, selectionManager: any, qfManager: any, qfProvider: any }> {
+export class QFWrapper extends Component<{ selectionManager: any, qfManager: any, qfProvider: any }> {
 
     private readonly _selectedPropertyManager: SelectedPropertyManager;
     private readonly _quickFilterManager: IQuickFilterManager;
@@ -19,10 +19,9 @@ export class QFWrapper extends Component<{ searchResultProvider: any, selectionM
 
     state: { QFSidebarShow: boolean, qfTileModels: Array<QFFilterTileDTO> };
 
-    constructor(props: { searchResultProvider: any, selectionManager: any, qfManager: any, qfProvider: any }) {
+    constructor(props) {
         super(props);
 
-        // @ts-ignore
         let {selectionManager, qfManager, qfProvider} = props;
         this._selectedPropertyManager = selectionManager;
         this._quickFilterManager = qfManager;
@@ -131,7 +130,7 @@ export class QFWrapper extends Component<{ searchResultProvider: any, selectionM
                 {/*<div className="button-open-presets" onClick={this.openNav}>&#9776; Presets</div>*/}
                 <div className="qf-main-container">
                     <div className="tiles">
-                        {hasTiles ? qfTiles : <LoadingIcons.Spinner />}
+                        {hasTiles ? qfTiles : <LoadingIcons.Spinner/>}
                     </div>
                 </div>
             </section>

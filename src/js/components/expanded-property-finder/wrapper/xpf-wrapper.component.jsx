@@ -18,7 +18,7 @@ export default class XPFWrapper extends Component {
     constructor(props) {
         super(props);
 
-        let { selectedPropertyManager, filterProvider, searchResultProvider } = props;
+        let { selectedPropertyManager, filterProvider } = props;
 
         let sorterFactoryFactory = new SorterFactoryFactory();
         let createSortState = (key, defaultAscending, comparator) => [
@@ -50,7 +50,6 @@ export default class XPFWrapper extends Component {
         };
 
         this.filterProvider = filterProvider;
-        this.searchResultProvider = searchResultProvider;
         /** @type SelectedPropertyManager */
         this.selectedPropertyManager = selectedPropertyManager;
 

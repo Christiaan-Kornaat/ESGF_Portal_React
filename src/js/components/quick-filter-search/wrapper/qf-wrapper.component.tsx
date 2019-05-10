@@ -11,7 +11,7 @@ import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 
 
-export class QFWrapper extends Component<{ searchResultProvider, selectionManager, qfManager, qfProvider }> {
+export class QFWrapper extends Component<{ searchResultProvider: any, selectionManager: any, qfManager: any, qfProvider: any }> {
 
     private readonly _selectedPropertyManager: SelectedPropertyManager;
     private readonly _quickFilterManager: IQuickFilterManager;
@@ -19,7 +19,7 @@ export class QFWrapper extends Component<{ searchResultProvider, selectionManage
 
     state: { QFSidebarShow: boolean, qfTileModels: Array<QFFilterTileDTO> };
 
-    constructor(props) {
+    constructor(props: { searchResultProvider: any, selectionManager: any, qfManager: any, qfProvider: any }) {
         super(props);
 
         // @ts-ignore
@@ -51,7 +51,7 @@ export class QFWrapper extends Component<{ searchResultProvider, selectionManage
      *
      * @param {ESGFFilterPropertyDTO} property
      */
-    togglePropertySelected(property) {
+    togglePropertySelected(property: ESGFFilterPropertyDTO) {
         let {select, deselect, isSelected} = this._selectedPropertyManager;
 
         (isSelected(property) ? deselect : select)(property);

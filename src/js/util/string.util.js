@@ -29,21 +29,16 @@ export function firstToLower(string) {
               .toLocaleLowerCase() + string.slice(1) : "";
 }
 
-export function trimCharsRight(string, ...charsToTrim) {
+export function trimCharsLeft(string, ...charsToTrim) {
     let regex = new RegExp("^" + charsToTrim.join("|"), "g");
     return string.replace(regex, "");
 }
 
-export function trimCharsLeft(string, ...charsToTrim) {
+export function trimCharsRight(string, ...charsToTrim) {
     let regex = new RegExp(charsToTrim.join("|") + "$", "g");
     return string.replace(regex, "");
 }
 
 export function trimChars(string, ...charsToTrim) {
-    trimCharsRight(trimCharsLeft(string, charsToTrim), charsToTrim);
+    return trimCharsRight(trimCharsLeft(string, charsToTrim), charsToTrim);
 }
-
-export default {
-    isNullOrEmpty: isNullOrEmpty,
-    firstToUpper: firstToUpper
-};

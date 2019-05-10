@@ -2,22 +2,30 @@ import React, {Component} from "react";
 import Collapsible from "react-collapsible";
 import ArrowIcons from "../../shared/icons/arrow-icons.component";
 import ResultIcons from "../../shared/icons/result-icons.component";
+import EsgfCatalogItem from "../../../model/dto/esgf-catalog-item.dto";
+import ESGFDataNodeResultDTO from "../../../model/dto/esgf-data-node-result.dto";
 
-export class ResultItem extends Component {
+export default class ResultItem extends Component<{ labelModel: ESGFDataNodeResultDTO}> {
+    private readonly _labelModel: ESGFDataNodeResultDTO;
+    private _contentModel: EsgfCatalogItem;
+    state: { isOpen: boolean };
+
     constructor(props) {
         super(props);
 
-        this.json = props.json;
+        this._labelModel = props.labelModel;
+
 
         this.state = {
-            arrowState: true
+            isOpen: true
         };
 
     }
 
     render() {
-        let {state: {arrowState}, json} = this;
-        let {dataset_id, dataset_version} = json.properties;
+        let {state: {isOpen}} = this;
+
+        // this._contentModel = props.contentModel; //TODO add resultcontentprovider
 
         //TODO move to somewhere else??
         let createTableRow = (dataset, index) => {
@@ -33,11 +41,14 @@ export class ResultItem extends Component {
             );
         };
 
-        let Arrow = arrowState ? ArrowIcons.Down : ArrowIcons.Up;
-        let toggleArrow = () => this.setState({arrowState: !this.state.arrowState});
+        let Arrow = isOpen ? ArrowIcons.Down : ArrowIcons.Up;
+        let toggleArrow = () => this.setState({isOpen: !this.state.isOpen});
+
+        let {esgfid} = this._labelModel;
 
         return (
-            <Collapsible trigger={<div><Arrow/>{dataset_id + " V." + dataset_version}</div>}
+            <Collapsible lazyRender={true}
+                         trigger={<div><Arrow/>{esgfid}</div>}
                          onOpening={toggleArrow}
                          onClosing={toggleArrow}>
                 <table className="table">
@@ -52,7 +63,7 @@ export class ResultItem extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {json.dataset_list.map(createTableRow)}
+                    {/*{json.dataset_list.map(createTableRow)}*/}
                     </tbody>
                 </table>
             </Collapsible>

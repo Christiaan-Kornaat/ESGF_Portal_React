@@ -20,6 +20,8 @@ import IESGFFilterService from "./data/services/esgf-filter/esgf-filter.service.
 import {ResultWrapper} from "./components/results-search/result-wrapper/result-wrapper.component";
 import AdagucUrlBuilder from "./data/services/esgf-search/adaguc-url.builder";
 import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
+import EsgfSearchManager from "./managers/esgf-search.manager";
+import EsgfSearchQuery from "./model/dto/esgf-search-query";
 
 interface AppEnvironment {
     FilterService: any,
@@ -89,6 +91,7 @@ class App extends Component {
 
         let searchService = new SearchService(adagucUrlBuilder);
         let searchResultProvider = new SearchResultsProvider(searchService);
+        let searchManager = new EsgfSearchManager(searchResultProvider);
 
         let filterService: IESGFFilterService = new FilterService();
         let filterProvider = new FilterProvider(filterService);
@@ -99,24 +102,22 @@ class App extends Component {
         let selectedPropertyManager = new SelectedPropertyManager();
         let quickFilterManager = new QuickFilterManager(filterProvider);
 
-        let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => searchService.fetch(selection)
+        let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => searchManager.search(new EsgfSearchQuery(selection))
                                                                                       .then(console.log);
         selectedPropertyManager.events.selectionChanged.subscribe(onSelectionChanged);
 
         let QS = <QFWrapper selectionManager={selectedPropertyManager}
-                            searchResultProvider={searchResultProvider}
                             qfProvider={tileProvider}
                             qfManager={quickFilterManager}/>;
 
         let XPF = <XPFWrapper filterProvider={filterProvider}
-                              searchResultProvider={searchResultProvider}
                               selectedPropertyManager={selectedPropertyManager}/>;
 
         return (
             <div>
                 <ESGFSearchPortal
                     tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QS}}/>
-                <ResultWrapper resultProvider={searchResultProvider}/>
+                <ResultWrapper searchResultsManager={searchManager}/>
             </div>
         );
     }

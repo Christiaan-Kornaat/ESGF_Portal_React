@@ -1,31 +1,30 @@
-import test from "jest";
-import {firstToLower, firstToUpper, isNullOrEmpty} from "../../src/js/util/string.util";
+import {firstToLower, firstToUpper, isNullOrEmpty, trimChars, trimCharsLeft, trimCharsRight } from "../../src/js/util/string.util";
 
 test("isNullOrEmpty returns true if null", () => {
     let string = null;
 
     let actual = isNullOrEmpty(string);
-    expect(actual).toBeTrue();
+    expect(actual).toBe(true);
 });
 test("isNullOrEmpty returns true if undefined", () => {
     let string = undefined;
 
     let actual = isNullOrEmpty(string);
-    expect(actual).toBeTrue();
+    expect(actual).toBe(true);
 });
 
 test("isNullOrEmpty returns true if empty", () => {
     let string = "";
 
     let actual = isNullOrEmpty(string);
-    expect(actual).toBeTrue();
+    expect(actual).toBe(true);
 });
 
 test("isNullOrEmpty returns false if not", () => {
     let string = "not empty";
 
     let actual = isNullOrEmpty(string);
-    expect(actual).not.toBeTrue();
+    expect(actual).not.toBe(true);
 });
 
 test("firstToUpper returns string with first letter to upper", () => {
@@ -42,23 +41,27 @@ test("firstToUpper returns string with first letter to lower", () => {
     expect(actual).toBe("test-string");
 });
 
-test("firstToUpper returns string with first letter to lower", () => {
-    let string = "Test-string";
+test("trimCharsLeft trims char left", () => {
+    let string = "_test-string_";
 
-    let actual = firstToLower(string);
+    let actual = trimCharsLeft(string, "_");
+    expect(actual).toBe("test-string_");
+});
+test("trimCharsRight trims char right", () => {
+    let string = "_test-string_";
+
+    let actual = trimCharsRight(string, "_");
+    expect(actual).toBe("_test-string");
+});
+test("trimChars trims char left and right", () => {
+    let string = "_test-string_";
+
+    let actual = trimChars(string, "_");
     expect(actual).toBe("test-string");
 });
+test("trimChars trims char left and right", () => {
+    let string = "_test_string_";
 
-export function trimCharsRight(string, ...charsToTrim) {
-    let regex = new RegExp("^" + charsToTrim.join("|"), "g");
-    return string.replace(regex, "");
-}
-
-export function trimCharsLeft(string, ...charsToTrim) {
-    let regex = new RegExp(charsToTrim.join("|") + "$", "g");
-    return string.replace(regex, "");
-}
-
-export function trimChars(string, ...charsToTrim) {
-    trimCharsRight(trimCharsLeft(string, charsToTrim), charsToTrim);
-}
+    let actual = trimChars(string, "_");
+    expect(actual).toBe("test_string");
+});

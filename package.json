@@ -42,7 +42,11 @@
     "sass-loader": "latest",
     "style-loader": "latest",
     "typescript": "latest",
-    "webpack": "latest",
-    "webpack-cli": "latest"
+    "webpack-cli": "latest",
+    "jest": "latest",
+    "@types/jest": "latest"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

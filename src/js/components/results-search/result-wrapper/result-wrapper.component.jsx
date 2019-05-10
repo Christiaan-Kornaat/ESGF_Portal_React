@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ResultItem } from "../result-items/result-item.component";
 
 export class ResultWrapper extends Component {
-    
+
     render() {
 
         //testdata
@@ -1250,13 +1250,8 @@ export class ResultWrapper extends Component {
                 }
             ]
         }
-        
-        let createTableRow = (json) => {
-            return (
-                <ResultItem 
-                    json={json}/>
-            );
-        };
+
+        let createTableRow = (json) => <ResultItem json={json}/>
 
         return (
             <div className="result-wrapper">

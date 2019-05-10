@@ -42,7 +42,7 @@ const EventEmitter = function () {
         if (!eventCallbacks.has(eventName)) return;
 
         eventCallbacks.get(eventName)
-                      .forEach(item => item.call(...payload));
+                      .forEach(item => item(...payload));
     };
 };
 

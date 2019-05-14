@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Buttons from "../../shared/buttons/buttons.component";
 import Popovers from "../../shared/popovers/search-popovers";
 
@@ -7,7 +7,7 @@ class OptionsComponent extends Component {
     constructor(props) {
         super(props);
 
-        let {show = false, sortButtons, optionButtons = []} = props;
+        let { show = false, sortButtons, optionButtons = [] } = props;
 
         this.state = {
             show: show,
@@ -28,26 +28,28 @@ class OptionsComponent extends Component {
     }
 
     render() {
-        let {toggleShow, state: {show, sortButtons, optionButtons: actionButtons}} = this;
+        let { toggleShow, state: { show, sortButtons, optionButtons: actionButtons } } = this;
 
         let OptionsPopover = Popovers.SearchOptions;
 
         let ActionButton = Buttons.Dropdown.Primary;
 
         let actionButtonComponents = Object.keys(actionButtons)
-                                           .map(name => <ActionButton name={name}
-                                                                      onClick={actionButtons[name]}/>);
+            .map(name => <ActionButton
+                key={name}
+                name={name}
+                onClick={actionButtons[name]} />);
 
         return (
             <div className="optionsButton dropdown show"
-                 role="button"
-                 id="dropdownMenuLink"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                <Buttons.Options onClick={toggleShow}/>
+                role="button"
+                id="dropdownMenuLink"
+                aria-haspopup="true"
+                aria-expanded="false">
+                <Buttons.Options onClick={toggleShow} />
                 <OptionsPopover sortButtons={sortButtons}
-                                actionButtons={actionButtonComponents}
-                                show={show}/>
+                    actionButtons={actionButtonComponents}
+                    show={show} />
             </div>
         );
     }

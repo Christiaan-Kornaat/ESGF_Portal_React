@@ -8,5 +8,10 @@ LoadingIcons.Spinner = () =>
             <span className="text">Loading...</span>
         </div>
     </div>;
+
+LoadingIcons.SpinnerInline = () =>
+    <div className="spinnerInline" role="status">
+        <span className="text">Loading...</span>
+    </div>;
     
 export default LoadingIcons;

@@ -41,7 +41,7 @@ export class ResultWrapper extends Component<{ searchResultsManager: EsgfSearchM
         let resultComponents = !isLoading ? searchResult.results.map(createResultItem) : <LoadingIcons.Spinner/>;
         let numFoundComponent = !isLoading ?
             `(${new Intl.NumberFormat("en-US").format(searchResult.numfound)})` :
-            <LoadingIcons.Spinner/>;
+            <LoadingIcons.SpinnerInline/>;
 
         return (
             <div className="result-wrapper">

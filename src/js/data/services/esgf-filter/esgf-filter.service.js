@@ -4,20 +4,13 @@ import ESGFFilterFactory from "../../../model/factories/esgf-filter.factory";
 
 export default class ESGFFilterService {
 
-
-    constructor() {
+    /**
+     *
+     * @param {AdagucUrlBuilder}urlBuilder
+     */
+    constructor(urlBuilder) {
         this._filterFactory = new ESGFFilterFactory();
-    }
-
-    createUrl() {
-        const baseUrl = "http://jan-mouwes-2.knmi.nl:8080/esgfsearch/search";
-
-        let url = new URL(baseUrl);
-
-        url.searchParams.append("service", "search");
-        url.searchParams.append("request", "getfacets");
-
-        return url;
+        this._urlBuilder = urlBuilder;
     }
 
 
@@ -37,7 +30,7 @@ export default class ESGFFilterService {
             return this._filterFactory.create(shortName, properties);
         };
 
-        const url = this.createUrl();
+        const url = this._urlBuilder.buildSearchUrl([]);
 
         return window.fetch(url.toString(), {
             method: "GET"

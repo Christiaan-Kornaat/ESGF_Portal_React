@@ -5,25 +5,31 @@ import ResultIcons from "../../shared/icons/result-icons.component";
 import EsgfCatalogItem from "../../../model/dto/esgf-catalog-item.dto";
 import ESGFDataNodeResultDTO from "../../../model/dto/esgf-data-node-result.dto";
 
-export default class ResultItem extends Component<{ labelModel: ESGFDataNodeResultDTO}> {
-    private readonly _labelModel: ESGFDataNodeResultDTO;
+export default class ResultItem extends Component<{ labelModel: ESGFDataNodeResultDTO }> {
     private _contentModel: EsgfCatalogItem;
-    state: { isOpen: boolean };
+    state: { isOpen: boolean, labelModel: ESGFDataNodeResultDTO };
 
     constructor(props) {
         super(props);
 
-        this._labelModel = props.labelModel;
-
 
         this.state = {
-            isOpen: true
+            isOpen: true,
+            labelModel: props.labelModel
         };
 
     }
 
+    setArrowIsOpen(isOpen: boolean) {
+        this.setState({isOpen: isOpen});
+    }
+
+    componentWillReceiveProps({labelModel}): void {
+        this.setState({labelModel: labelModel});
+    }
+
     render() {
-        let {state: {isOpen}} = this;
+        let {state: {isOpen, labelModel}} = this;
 
         // this._contentModel = props.contentModel; //TODO add resultcontentprovider
 
@@ -42,15 +48,17 @@ export default class ResultItem extends Component<{ labelModel: ESGFDataNodeResu
         };
 
         let Arrow = isOpen ? ArrowIcons.Down : ArrowIcons.Up;
-        let toggleArrow = () => this.setState({isOpen: !this.state.isOpen});
 
-        let {esgfid} = this._labelModel;
+        let openArrow = () => this.setArrowIsOpen(true);
+        let closeArrow = () => this.setArrowIsOpen(false);
+
+        let {esgfid} = labelModel;
 
         return (
             <Collapsible lazyRender={true}
                          trigger={<div><Arrow/>{esgfid}</div>}
-                         onOpening={toggleArrow}
-                         onClosing={toggleArrow}>
+                         onOpening={openArrow}
+                         onClosing={closeArrow}>
                 <table className="table">
                     <thead>
                     <tr>

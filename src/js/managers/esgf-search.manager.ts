@@ -24,12 +24,18 @@ export default class EsgfSearchManager {
     }
 
     async search(query: EsgfSearchQuery) {
+        console.log("Searching for " + query.id);
+
         this._currentQuery = query.id;
-        this._currentResults = await this._resultsProvider.provide(query);
+        let results = await this._resultsProvider.provide(query);
 
-        this._eventEmitter.emit(this._eventNames.searched, this._currentResults);
+        /* Check if request has changed in the meantime to ensure only the most recent query emits an event */
+        if (this._currentQuery != query.id) return results;
 
-        return this._currentResults;
+        this._currentResults = results;
+        this._eventEmitter.emit(this._eventNames.searched, results);
+
+        return results;
     }
 
     get currentResults(): ESGFSearchResultDTO {

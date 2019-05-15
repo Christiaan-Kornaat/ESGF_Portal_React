@@ -45,7 +45,7 @@ const Dependencies = {
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
         QuickFilterManager: QuickSelectManagerMock,
-        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
+        DATA_HOST: "http://localhost:8080"
     },
     demo: {
         SearchService: ESGFSearchServiceDemo,
@@ -56,7 +56,7 @@ const Dependencies = {
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
         QuickFilterManager: QuickSelectManagerMock,
-        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
+        DATA_HOST: "http://localhost:8080"
     },
     prod: {
         SearchService: ESGFSearchService,
@@ -93,7 +93,7 @@ class App extends Component {
         let searchResultProvider = new SearchResultsProvider(searchService);
         let searchManager = new EsgfSearchManager(searchResultProvider);
 
-        let filterService: IESGFFilterService = new FilterService();
+        let filterService: IESGFFilterService = new FilterService(adagucUrlBuilder);
         let filterProvider = new FilterProvider(filterService);
 
         let tileService = new QuickFilterTileService(filterProvider);
@@ -102,8 +102,7 @@ class App extends Component {
         let selectedPropertyManager = new SelectedPropertyManager();
         let quickFilterManager = new QuickFilterManager(filterProvider);
 
-        let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => searchManager.search(new EsgfSearchQuery(selection))
-                                                                                      .then(console.log);
+        let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => searchManager.search(new EsgfSearchQuery(selection));
         selectedPropertyManager.events.selectionChanged.subscribe(onSelectionChanged);
 
         let QS = <QFWrapper selectionManager={selectedPropertyManager}

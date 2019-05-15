@@ -1,8 +1,9 @@
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import {SorterFactoryFactory} from "../../../sorters/sorter.factory.factory";
 import {propertyComparator} from "../../../sorters/comparators/esgf.comparator";
+import IAdagucUrlBuilder from "./adaguc-url.builder.interface";
 
-export default class AdagucUrlBuilder {
+export default class AdagucUrlBuilder implements IAdagucUrlBuilder {
 
     private readonly hostUrl: URL;
 
@@ -11,7 +12,7 @@ export default class AdagucUrlBuilder {
     }
 
     /*
-     * /esgfsearch/search?service=search&request=getfacets&query=project%3Dc3s-cordex%26project%3Dc3s-cmip5%26&pagelimit=25&pagenumber=0&callback=jQuery112408304695826026522_1557395202794&_=1557395202903
+     * /esgfsearch/search?service=search&request=getfacets&query=project%3Dc3s-cordex%26project%3Dc3s-cmip5%26&pagelimit=25&pagenumber=0
      *
      * */
     public buildSearchUrl(selectedProperties: ESGFFilterPropertyDTO[]): URL {

@@ -39,6 +39,17 @@ body{
       }
     }
   }
+      .spinnerInline {
+        @extend .spinner-border;
+        height:1rem;
+        width:1rem;
+        vertical-align: middle;
+        font-size: 10px;
+
+        .text {
+          @extend .sr-only;
+        }
+      }
 
   .XPF-Wrapper {
     @extend .row;

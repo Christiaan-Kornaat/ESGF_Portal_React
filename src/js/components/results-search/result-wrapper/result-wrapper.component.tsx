@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import ResultItem from "../result-items/result-item.component";
 import EsgfSearchManager from "../../../managers/esgf-search.manager";
 import ESGFDataNodeResultDTO from "../../../model/dto/esgf-data-node-result.dto";
+import { Spinner } from "react-bootstrap";
+import LoadingIcons from "../../shared/icons/loading-icons.component";
 
 export class ResultWrapper extends Component<{ searchResultsManager: EsgfSearchManager }> {
     private _searchManager: EsgfSearchManager;
@@ -30,10 +32,11 @@ export class ResultWrapper extends Component<{ searchResultsManager: EsgfSearchM
         return (
             <div className="result-wrapper">
                 <div className="result-header">
-                    Results
+                    Results <LoadingIcons.SpinnerInline />
                 </div>
                 {results.map(createTableRow)}
             </div>
         );
     }
 }
+ 

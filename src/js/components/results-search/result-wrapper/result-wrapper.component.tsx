@@ -8,7 +8,7 @@ import LoadingIcons from "../../shared/icons/loading-icons.component";
 export class ResultWrapper extends Component<{ searchResultsManager: EsgfSearchManager }> {
     private _searchManager: EsgfSearchManager;
 
-    state: { searchResult: ESGFSearchResultDTO };
+    state: { searchResult: ESGFSearchResultDTO, isLoading: boolean };
 
     constructor(props) {
         super(props);
@@ -16,25 +16,31 @@ export class ResultWrapper extends Component<{ searchResultsManager: EsgfSearchM
         let {searchResultsManager} = props;
 
         this.state = {
-            searchResult: null
+            searchResult: null,
+            isLoading: false
         };
 
         this._searchManager = searchResultsManager;
 
-        this._searchManager.events.searched.subscribe(this.setResults.bind(this));
-
         this.forceUpdate = this.forceUpdate.bind(this);
         this.setResults = this.setResults.bind(this);
+        this.setLoading = this.setLoading.bind(this);
+
+        this._searchManager.events.searchStarted.subscribe(this.setLoading);
+        this._searchManager.events.searched.subscribe(this.setResults);
+    }
+
+    setLoading(isLoading = true) {
+        this.setState(() => ({isLoading: isLoading}));
     }
 
     setResults(searchResult): void {
-        this.setState(() => ({searchResult: searchResult}));
+        this.setState(() => ({searchResult: searchResult, isLoading: false}));
     }
 
-
     render() {
-        let {searchResult} = this.state;
-        let isLoading = !searchResult;
+        let {searchResult, isLoading} = this.state;
+        isLoading = isLoading || !searchResult;
 
         let createResultItem = (result: ESGFDataNodeResultDTO) => <ResultItem labelModel={result}/>;
 

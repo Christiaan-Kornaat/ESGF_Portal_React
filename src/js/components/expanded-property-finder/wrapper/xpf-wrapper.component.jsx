@@ -266,7 +266,7 @@ export default class XPFWrapper extends Component {
         };
 
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
-            items={filters}
+            items={filters.filter(item => item.properties.length > 1)}
             sortFunction={sortFunctions.filters}
             headerButtons={[optionComponents.filters]}
             isLoading={filtersLoading}

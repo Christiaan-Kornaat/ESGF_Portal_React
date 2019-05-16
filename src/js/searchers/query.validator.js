@@ -1,3 +1,5 @@
+import {isNullOrEmpty} from "../util/string.util";
+
 class QueryValidator {
 
     /**
@@ -6,7 +8,7 @@ class QueryValidator {
      * @return {boolean}
      */
     static isQueryValid(query){
-        return !(query == null || query.trim() === "");
+        return !isNullOrEmpty(query);
     }
 }
 

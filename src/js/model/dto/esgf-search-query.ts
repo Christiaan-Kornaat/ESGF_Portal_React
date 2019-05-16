@@ -13,7 +13,7 @@ export default class EsgfSearchQuery {
 
         let entries = Array.from(map.entries()).sort();
 
-        return entries.reduce((currentString, [filter, properties]) => `${filter}[${properties.join(",")}],`, "search-");
+        return entries.reduce((currentString, [filter, properties]) => currentString + `${filter}[${properties.join(",")}],`, "search-");
     }
 
     public readonly filterProperties: ESGFFilterPropertyDTO[];

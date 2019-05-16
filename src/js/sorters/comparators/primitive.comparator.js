@@ -3,8 +3,7 @@
  *
  * @param {string} item
  *
- * @return {{isLessThan: (function(ESGFFilterDTO): boolean), isGreaterThan: (function(ESGFFilterDTO): boolean),
- *     isEqualTo: (function(ESGFFilterDTO): boolean)}}
+ * @return {ComparatorObject}
  */
 export function alphabeticalComparator(item) {
     let _isGreaterThan = (item2) => item.localeCompare(item2) === 1;

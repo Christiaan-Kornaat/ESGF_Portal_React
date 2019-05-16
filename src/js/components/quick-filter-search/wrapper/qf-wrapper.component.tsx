@@ -11,7 +11,7 @@ import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 
 
-export class QFWrapper extends Component<{ searchResultProvider, selectionManager, qfManager, qfProvider }> {
+export class QFWrapper extends Component<{ selectionManager, qfManager, qfProvider }> {
 
     private readonly _selectedPropertyManager: SelectedPropertyManager;
     private readonly _quickFilterManager: IQuickFilterManager;

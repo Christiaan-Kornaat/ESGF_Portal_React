@@ -1,19 +1,22 @@
-import { Component } from "react";
 import * as React from "react";
+import {PureComponent} from "react";
 
-class SearchComponent extends Component {
+class SearchComponent extends PureComponent {
 
-    private onSearch: Function;
+    private readonly onSearch: Function;
+
+    state: { headerButtons: Element[] };
+    private searchQuery: string;
 
     constructor(props) {
         super(props);
 
-        let { headerButtons, onSearch } = props;
+        let {headerButtons, onSearch} = props;
 
         this.onSearch = onSearch;
 
         this.state = {
-            headerButtons: headerButtons,
+            headerButtons: headerButtons
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -21,11 +24,10 @@ class SearchComponent extends Component {
     }
 
     handleChange(event) {
+        event.preventDefault();
         let query = event.target.value;
 
-        this.setState({
-            searchQuery: query
-        });
+        this.searchQuery = query;
 
         this.onSearch(query);
     }
@@ -33,32 +35,28 @@ class SearchComponent extends Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        //@ts-ignore
-        let { searchQuery } = this.state;
-
-        this.onSearch(searchQuery);
+        this.onSearch(this.searchQuery);
     }
 
     render() {
-        //@ts-ignore
-        let { headerButtons } = this.state;
+        let {headerButtons} = this.state;
 
-        let SearchButton = ({ onClick }) => (
+        let SearchButton = ({onClick}) => (
             <div className="SearchButton">
                 <span onClick={onClick}
-                    className="Button">
-                    <i className="fas fa-search" />
+                      className="Button">
+                    <i className="fas fa-search"/>
                 </span>
             </div>);
 
         return (
             <div className="Search">
                 <input className="SearchBar"
-                    type="text"
-                    placeholder="Search"
-                    aria-label="Search"
-                    onChange={this.handleChange} />
-                <SearchButton onClick={this.handleSubmit} />
+                       type="text"
+                       placeholder="Search"
+                       aria-label="Search"
+                       onChange={this.handleChange}/>
+                <SearchButton onClick={this.handleSubmit}/>
                 {headerButtons}
             </div>
         );

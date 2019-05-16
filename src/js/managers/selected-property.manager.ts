@@ -72,14 +72,14 @@ class SelectedPropertyManager {
 
         properties.forEach(select);
 
-        this.eventEmitter.emit(this.eventNames.selectionChanged);
-        this.eventEmitter.emit(this.eventNames.selected);
+        this.eventEmitter.emit(this.eventNames.selectionChanged, this.selected);
+        this.eventEmitter.emit(this.eventNames.selected, this.selected);
     };
 
     /**
-     * @param {ESGFFilterPropertyDTO}property
+     * @summary TODO summary
      */
-    deselect(property) {
+    deselect(property: ESGFFilterPropertyDTO): void {
         //  Calls selectMany because if it were to be the other way around,
         //      too many events would be thrown
         this.deselectMany([property]);
@@ -97,8 +97,8 @@ class SelectedPropertyManager {
 
         properties.forEach(deselect);
 
-        this.eventEmitter.emit(this.eventNames.selectionChanged);
-        this.eventEmitter.emit(this.eventNames.deselected);
+        this.eventEmitter.emit(this.eventNames.selectionChanged, this.selected);
+        this.eventEmitter.emit(this.eventNames.deselected, this.selected);
     };
 
     /**
@@ -130,10 +130,9 @@ class SelectedPropertyManager {
     }
 
     /**
-     *
-     * @return {Array<ESGFFilterPropertyDTO>}
+     * @summary returns current selection of filter-properties
      */
-    get selected() {
+    get selected(): ESGFFilterPropertyDTO[] {
         let returnArray = [];
 
         Array.from(this.properties.values())

@@ -1,10 +1,10 @@
 {
-  "name": "react-practice",
+  "name": "esgf-search-portal",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/react": "^16.8.16",
-    "@types/react-dom": "^16.8.4",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
     "bootstrap": "^4.3.1",
     "font-awesome": "latest",
     "jquery": "^3.4.0",
@@ -20,16 +20,18 @@
     "react-scripts": "latest",
     "react-sidebar": "^3.0.2",
     "react-slide-menu": "^0.5.1",
-    "redux": "latest"
+    "redux": "latest",
+    "why-did-you-update": "^1.0.6"
   },
   "devDependencies": {
+    "babel-jest": "latest",
     "@babel/preset-env": "latest",
     "@babel/preset-react": "latest",
     "arkit": "^1.5.3",
     "autoprefixer": "latest",
     "babel-register": "latest",
     "babelify": "latest",
-    "ts-loader": "latest",
+    "awesome-typescript-loader": "latest",
     "css-loader": "latest",
     "html-loader": "latest",
     "html-webpack-plugin": "latest",
@@ -43,6 +45,11 @@
     "style-loader": "latest",
     "typescript": "latest",
     "webpack": "latest",
-    "webpack-cli": "latest"
+    "webpack-cli": "latest",
+    "jest": "latest",
+    "@types/jest": "latest"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

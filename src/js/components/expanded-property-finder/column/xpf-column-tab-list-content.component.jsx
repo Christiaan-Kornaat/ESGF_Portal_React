@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, {  Component } from "react";
+import React, {Component} from "react";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import UnorderedList from "../../shared/list-unordered/list-unordered.component";
 import SearchComponent from "../wrapper/xpf-list-search.component";
@@ -8,7 +8,7 @@ class XpfColumnTabListContent extends Component {
     constructor(props) {
         super(props);
 
-        let { searchFunction,  sortFunction, headerButtons = [], items, listItemFactory: createListItem, isLoading } = props;
+        let {searchFunction, sortFunction, headerButtons = [], items, listItemFactory: createListItem, isLoading} = props;
 
         this.createListItem = createListItem;
 
@@ -25,7 +25,7 @@ class XpfColumnTabListContent extends Component {
         this.onSearch = this.onSearch.bind(this);
     }
 
-    componentWillReceiveProps({  items, isLoading, sortFunction }) {
+    componentWillReceiveProps({items, isLoading, sortFunction}) {
         let newState = {
             items: items,
             isLoading: isLoading
@@ -37,31 +37,29 @@ class XpfColumnTabListContent extends Component {
     }
 
     /**
-     * 
-     * @param {list} items 
+     * @param {string} query
      */
-    onSearch(query){
+    onSearch(query) {
         this.setState({
             searchQuery: query
         });
     }
 
     render() {
-        let { state: { items, sortFunction, isLoading, headerButtons, searchFunction, searchQuery }, createListItem, onSearch } = this;
-        
+        let {state: {items, sortFunction, isLoading, headerButtons, searchFunction, searchQuery}, createListItem, onSearch} = this;
+
         let content = (!isLoading) ?
             <UnorderedList
                 className="List"
                 items={sortFunction(searchFunction(searchQuery, items))}
-                createListItem={createListItem} /> :
-            <LoadingIcons.Spinner />;
+                createListItem={createListItem}/> :
+            <LoadingIcons.Spinner/>;
 
         return (
             <div>
                 <SearchComponent
-                    key={Math.random()}
                     onSearch={onSearch}
-                    headerButtons={headerButtons} />
+                    headerButtons={headerButtons}/>
                 {content}
             </div>
         );

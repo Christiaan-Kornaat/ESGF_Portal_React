@@ -32,6 +32,22 @@ import OptionsComponent from "./components/expanded-property-finder/wrapper/xpf-
 import InfoTabVM from "./model/view-model/InfoTabVM";
 import { ESGFFilterDTO } from "./model/dto/esgf-filter.dto";
 import { Comparator } from "./sorters/comparators/comparator";
+import AdagucUrlBuilder from "./data/services/esgf-search/adaguc-url.builder";
+import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
+import EsgfSearchManager from "./managers/esgf-search.manager";
+import EsgfSearchQuery from "./model/dto/esgf-search-query";
+
+interface AppEnvironment {
+    FilterService: any,
+    FilterProvider: any,
+    SearchService: any,
+    SearchResultsProvider: any,
+    SelectedPropertyManager: any,
+    QFTileService: any,
+    QuickFilterManager: any,
+    QuickFilterTileProvider: any,
+    DATA_HOST: string
+}
 
 const Dependencies = {
     dev: {
@@ -42,7 +58,8 @@ const Dependencies = {
         FilterProvider: ESGFFilterProvider,
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
-        QuickFilterManager: QuickSelectManagerMock
+        QuickFilterManager: QuickSelectManagerMock,
+        DATA_HOST: "http://localhost:8080"
     },
     demo: {
         SearchService: ESGFSearchServiceDemo,
@@ -52,7 +69,8 @@ const Dependencies = {
         FilterProvider: ESGFFilterProvider,
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
-        QuickFilterManager: QuickSelectManagerMock
+        QuickFilterManager: QuickSelectManagerMock,
+        DATA_HOST: "http://localhost:8080"
     },
     prod: {
         SearchService: ESGFSearchService,
@@ -62,18 +80,23 @@ const Dependencies = {
         FilterProvider: ESGFFilterProvider,
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
-        QuickFilterManager: QuickSelectManagerMock
+        QuickFilterManager: QuickSelectManagerMock,
+        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
     }
 };
 
 const environment = "prod";
 
 class App extends Component {
+    private filterService: IESGFFilterService;
     private filterProvider: ESGFFilterProvider;
+    private searchService: any;
     private searchResultProvider: ESGFSearchResultsProvider;
+    private searchManager: any;
     private tileProvider: QFTileProvider;
     private selectedPropertyManager: SelectedPropertyManager;
     private quickFilterManager: QuickSelectManagerMock;
+    private readonly adagucUrlBuilder: AdagucUrlBuilder;
 
     state: { 
         selectedFilter: ESGFFilterDTO,
@@ -96,14 +119,18 @@ class App extends Component {
             SelectedPropertyManager,
             QFTileService: QuickFilterTileService,
             QuickFilterManager,
-            QuickFilterTileProvider
-        } = Dependencies[environment];
+            QuickFilterTileProvider,
+            DATA_HOST
+        } = Dependencies[environment] as AppEnvironment;
 
-        let searchService = new SearchService();
-        this.searchResultProvider = new SearchResultsProvider(searchService);
+        this.adagucUrlBuilder = new AdagucUrlBuilder(new URL(DATA_HOST));
 
-        let filterService: IESGFFilterService = new FilterService();
-        this.filterProvider = new FilterProvider(filterService);
+        this.searchService = new SearchService(this.adagucUrlBuilder);
+        this.searchResultProvider = new SearchResultsProvider(this.searchService);
+        this.searchManager = new EsgfSearchManager(this.searchResultProvider);
+
+        this.filterService = new FilterService(this.adagucUrlBuilder);
+        this.filterProvider = new FilterProvider(this.filterService);
 
         let tileService = new QuickFilterTileService(this.filterProvider);
         this.tileProvider = new QuickFilterTileProvider(tileService);
@@ -228,7 +255,7 @@ class App extends Component {
 
     render() {
         let {
-            selectFilter, selectTab, showPropertyInfo, selectedPropertyManager, filterProvider,
+            selectFilter, selectTab, showPropertyInfo, selectedPropertyManager, filterProvider, searchManager,
             state: { sortState, infoTabs, selectedTabs, filters, selectedFilter, columnTabs }
         } = this;
 
@@ -378,9 +405,13 @@ class App extends Component {
 
         const infoTabFactory = (infoTabVM) => <XpfColumnTabInfoContent key={"Info"} model={infoTabVM} />;
 
+
         columnTabs.right["Info"] = infoTab != null ? infoTabFactory(infoTab.content) : null;
 
         let selectNewTab = columnName => newTab => selectTab(columnName, newTab);
+
+        let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => searchManager.search(new EsgfSearchQuery(selection));
+        selectedPropertyManager.events.selectionChanged.subscribe(onSelectionChanged);
 
         let QS = <QFWrapper selectionManager={selectedPropertyManager}
                             qfProvider={this.tileProvider}
@@ -394,7 +425,7 @@ class App extends Component {
             <div>
                 <ESGFSearchPortal
                     tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QS}}/>
-                <ResultWrapper />
+                <ResultWrapper searchResultsManager={searchManager}/>
             </div>
         );
     }

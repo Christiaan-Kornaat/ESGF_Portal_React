@@ -1,5 +1,6 @@
 /**
- * Returns object that takes an item and compares it to others through the methods isGreaterThan, isLessThan, isEqualTo.
+ * Returns object that takes an item and compares it to others through the methods isGreaterThan, isLessThan,
+ * isEqualTo.
  *
  * @param {string} item
  *
@@ -14,5 +15,21 @@ export function alphabeticalComparator(item) {
         isGreaterThan: _isGreaterThan,
         isLessThan: _isLessThan,
         isEqualTo: _isEqualTo
+    };
+}
+
+/**
+ *
+ * @param {string} item
+ *
+ * @return {ComparatorObject}
+ */
+export function alphabeticalIgnoreCaseComparator(item) {
+    let base = alphabeticalComparator(item.toLowerCase());
+
+    return {
+        isGreaterThan: (item2) => base.isGreaterThan(item2.toLowerCase()),
+        isLessThan: (item2) => base.isLessThan(item2.toLowerCase()),
+        isEqualTo: (item2) => base.isEqualTo(item2.toLowerCase())
     };
 }

@@ -1,6 +1,11 @@
-import React, { Component } from "react";
+import { Component } from "react";
+import * as React from "react";
+import InfoTabVM from "../../../model/view-model/InfoTabVM";
 
-class XpfColumnTabInfoContent extends Component {
+class XpfColumnTabInfoContent extends Component<{ model: InfoTabVM}> {
+
+    state:{ content: { title, paragraphs } };
+
     constructor(props) {
         super(props);
 

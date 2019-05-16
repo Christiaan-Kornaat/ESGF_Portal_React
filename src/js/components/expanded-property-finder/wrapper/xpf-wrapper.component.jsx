@@ -57,10 +57,8 @@ export default class XPFWrapper extends Component {
         this.update = this.update.bind(this);
         this.selectTab = this.selectTab.bind(this);
         this.selectFilter = this.selectFilter.bind(this);
-        this.toggleProperty = this.toggleProperty.bind(this);
         this.showPropertyInfo = this.showPropertyInfo.bind(this);
         this.addInfoTab = this.addInfoTab.bind(this);
-        this.removeInfoTab = this.removeInfoTab.bind(this);
         this.getSelectedFilterProperties = this.getSelectedFilterProperties.bind(this);
     }
 
@@ -73,16 +71,6 @@ export default class XPFWrapper extends Component {
 
         this.filterProvider.provide(filter.shortName)
             .then(filter => this.setState(() => ({ selectedFilter: filter })));
-    }
-
-    /**
-     *
-     * @param {ESGFFilterPropertyDTO} property
-     */
-    toggleProperty(property) {
-        let { select, deselect, isSelected } = this.selectedPropertyManager;
-
-        (isSelected(property) ? deselect : select)(property);
     }
 
     /**
@@ -107,18 +95,6 @@ export default class XPFWrapper extends Component {
         let infoTabs = this.state.infoTabs.concat(new InfoTabVM("Info", title, paragraphs));
 
         this.setState({ infoTabs: infoTabs });
-    }
-
-    /**
-     *
-     * @param {InfoTabVM} viewModel
-     */
-    removeInfoTab(viewModel) {
-        let { state, setState } = this;
-
-        let infoTabs = state.infoTabs.filter(tab => tab.title !== viewModel.textTitle);
-
-        setState({ infoTabs: infoTabs });
     }
 
     /**
@@ -160,7 +136,7 @@ export default class XPFWrapper extends Component {
 
     render() {
         let {
-            selectFilter, toggleProperty, selectTab, showPropertyInfo,
+            selectFilter, selectTab, showPropertyInfo,
             selectedPropertyManager: selectedManager,
             state: { sortState, infoTabs, selectedTabs, filters, selectedFilter }
         } = this;
@@ -168,6 +144,7 @@ export default class XPFWrapper extends Component {
         let filtersLoading = !this.filterProvider.hasFilters;
         let properties = selectedFilter ? selectedFilter.properties : [];
         let selectedProperties = selectedManager.selected;
+        
         let searchFunctions = {
             filters: new ESGFFilterSearcher().search,
             properties: new ESGFPropertySearcher().search
@@ -262,7 +239,7 @@ export default class XPFWrapper extends Component {
                 }} />,
             propertiesSelected: <OptionsComponent key={"selected-properties"} sortButtons={[createSortButton("selected-properties")]}
                 optionButtons={{
-                    "Deselect all": createSetSelected(false, () => this.selectedPropertyManager.selected)
+                    "Deselect all": createSetSelected(false, () => this.selectedPropertyManager.selected)                
                 }} />
         };
 
@@ -287,7 +264,7 @@ export default class XPFWrapper extends Component {
             items={properties}
             headerButtons={[optionComponents.properties]}
             sortFunction={sortFunctions.properties}
-            listItemFactory={propertyListItemFactoryFactory(toggleProperty)} />;
+            listItemFactory={propertyListItemFactoryFactory(selectedManager.toggle)} />;
 
         let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
             key={"SelectedPropertyList"}
@@ -295,31 +272,45 @@ export default class XPFWrapper extends Component {
             headerButtons={[optionComponents.propertiesSelected]}
             listItemFactory={propertyListItemFactoryFactory(selectedManager.deselect)} />;
 
-        let infoTab = Object.values(infoTabs)
-            .pop();
 
-        let propertyTabs = infoTab != null ? { "Info": <XpfColumnTabInfoContent key={"info"} model={infoTab.content} /> } : {};
-        propertyTabs["Selected properties"] = SelectedPropertyList;
+        let infoTab = Object.values(infoTabs).pop();
 
-        let createClearSelected = columnName => newTab => selectTab(columnName, newTab);
+        /**
+         * 
+         * @param {ESGFFilterPropertyDTO} property 
+         */
+        const propertyInfoTabVMFactory = ({name, filter}) => new InfoTabVM(name, name, {"Filter": filter.shortName});        
+
+        const infoTabFactory = (infoTabVM) => <XpfColumnTabInfoContent key={"Info"} model={infoTabVM} />;
+
+        let columnTabs = { 
+            "left": { "Filters": FilterList, "Presets": PresetList }, 
+            "center": { "Properties": PropertyList }, 
+            "right": { "Selected properties": SelectedPropertyList }
+        };
+
+        columnTabs.right["Info"] = infoTab != null ? infoTabFactory(infoTab.content) : null;
+
+        let selectNewTab = columnName => newTab => selectTab(columnName, newTab);
+
 
         return (
             <section className='XPF-Wrapper'>
                 <XpfColumn className="Filters"
                     key={"Filters"}
-                    tabs={{ "Filters": FilterList, "Presets": PresetList }}
+                    tabs={columnTabs.left}
                     activeTab={selectedTabs.filterColumn}
-                    onSelect={createClearSelected("filterColumn")} />
+                    onSelect={selectNewTab("filterColumn")} />
                 <XpfColumn className="Properties"
                     key={"Properties"}
-                    tabs={{ "Properties": PropertyList }}
+                    tabs={columnTabs.center}
                     activeTab={selectedTabs.propertyColumn}
-                    onSelect={createClearSelected("propertyColumn")} />
+                    onSelect={selectNewTab("propertyColumn")} />
                 <XpfColumn className="SelectedProperties"
                     key={"SelectedProperties"}
-                    tabs={propertyTabs}
+                    tabs={columnTabs.right}
                     activeTab={selectedTabs.selectedColumn}
-                    onSelect={createClearSelected("selectedColumn")} />
+                    onSelect={selectNewTab("selectedColumn")} />
             </section>
         );
     }

@@ -34,6 +34,7 @@ class SelectedPropertyManager {
         this.deselect = this.deselect.bind(this);
         this.selectMany = this.selectMany.bind(this);
         this.deselectMany = this.deselectMany.bind(this);
+        this.toggle = this.toggle.bind(this);
     }
 
     /**
@@ -99,6 +100,16 @@ class SelectedPropertyManager {
         this.eventEmitter.emit(this.eventNames.selectionChanged);
         this.eventEmitter.emit(this.eventNames.deselected);
     };
+
+    /**
+     *
+     * @param {ESGFFilterPropertyDTO} property
+     */
+    toggle(property) {
+        let { select, deselect, isSelected } = this;
+
+        (isSelected(property) ? deselect : select)(property);
+    }
 
     /**
      * @summary Deselects all properties.

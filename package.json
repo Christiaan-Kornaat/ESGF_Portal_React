@@ -20,7 +20,8 @@
     "react-scripts": "latest",
     "react-sidebar": "^3.0.2",
     "react-slide-menu": "^0.5.1",
-    "redux": "latest"
+    "redux": "latest",
+    "why-did-you-update": "^1.0.6"
   },
   "devDependencies": {
     "babel-jest": "latest",

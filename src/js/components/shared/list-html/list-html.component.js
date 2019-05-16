@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from "react";
 
-class HtmlList extends Component {
+class HtmlList extends PureComponent {
 
     constructor(props, tagName) {
         super(props);
 
         let {items, createListItem} = props;
 
-        let TAG_WHITELIST = ["ol", "ul"];
+        const TAG_WHITELIST = ["ol", "ul"];
 
         if (!TAG_WHITELIST.includes(tagName)) {
             throw new Error("Invalid argument props.tagName. Must be one of " + TAG_WHITELIST.join(", "));
@@ -18,13 +18,17 @@ class HtmlList extends Component {
 
         this.state = {
             items: items
-        }
+        };
     }
 
+    /**
+     *
+     * @param {Array}items
+     */
     componentWillReceiveProps({items}) {
         this.setState({
             items: items
-        })
+        });
     }
 
     render() {

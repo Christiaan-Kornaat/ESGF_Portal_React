@@ -42,7 +42,7 @@ export class ResultWrapper extends Component<{ searchResultsManager: EsgfSearchM
         let {searchResult, isLoading} = this.state;
         isLoading = isLoading || !searchResult;
 
-        let createResultItem = (result: ESGFDataNodeResultDTO) => <ResultItem labelModel={result}/>;
+        let createResultItem = (result: ESGFDataNodeResultDTO) => <ResultItem key={result.esgfid} labelModel={result}/>;
 
         let resultComponents = !isLoading ? searchResult.results.map(createResultItem) : <LoadingIcons.Spinner/>;
         let numFoundComponent = !isLoading ?

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { QFFilterTileDTO } from "../../../model/dto/qf-filter-tile.dto";
 
-export class ActionTile extends Component<{ QFFilterTileDTO: QFFilterTileDTO, onClick: any }> {
+export class IconTile extends Component<{ QFFilterTileDTO: QFFilterTileDTO, onClick: any }> {
     onClick: any;
 
     state: {

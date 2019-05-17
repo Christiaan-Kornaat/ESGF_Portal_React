@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Component} from "react";
 import StringFormatter from "../../../model/formatters/string.formatter";
-import {QFTile} from "../esgf-qfilter-tile/qf-tile.component";
+import {Tile} from "../esgf-qfilter-tile/qf-tile.component";
 import {QFSidebar} from "../qf-sidebar/qfsidebar.component";
 import SelectedPropertyManager from "../../../managers/selected-property.manager";
 import IQuickFilterManager from "../../../managers/quick-filter/quick-filter.manager.interface";
@@ -9,6 +9,7 @@ import {QFTileProvider} from "../../../data/providers/qf-tile/qf-tile.provider";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
+import TileFactory from "../../../model/factories/tile.factory";
 
 
 export class QFWrapper extends Component<{ selectionManager: any, qfManager: any, qfProvider: any }> {
@@ -95,23 +96,17 @@ export class QFWrapper extends Component<{ selectionManager: any, qfManager: any
             .then(qfTileModels => this.setState({qfTileModels: qfTileModels}));
     }
 
+    
+
     createTiles(qfTileModels: QFFilterTileDTO[]): JSX.Element[] {
-        //<DEMO CODE>
+        let tileFactory = new TileFactory();
+        
         if (qfTileModels.length === 0) return [];
 
-        return qfTileModels.map(({color, icon, title, properties}) => {
-                title = StringFormatter.toHumanText(title);
-
-                return <QFTile key={title}
-                               listItemFactory={this.quickFilterListItemFactory}
-                               title={title}
-                               color={color}
-                               icon={icon}
-                               properties={properties}
-                               page="qf"/>;
+        return qfTileModels.map(QFFilterTileDTO => {
+            return tileFactory.createTile(QFFilterTileDTO, this.quickFilterListItemFactory);
             }
         );
-        //</DEMO CODE>
     }
 
     componentDidMount(): void {

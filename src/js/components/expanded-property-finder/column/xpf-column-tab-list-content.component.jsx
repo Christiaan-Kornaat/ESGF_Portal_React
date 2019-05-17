@@ -18,7 +18,6 @@ class XpfColumnTabListContent extends Component {
             headerButtons: headerButtons,
             searchFunction: searchFunction,
             searchQuery: "",
-            sortDirection: false,
             isLoading: isLoading || false
         };
 
@@ -36,13 +35,15 @@ class XpfColumnTabListContent extends Component {
         this.setState(newState);
     }
 
+    componentDidMount() {
+
+    }
+
     /**
      * @param {string} query
      */
     onSearch(query) {
-        this.setState({
-            searchQuery: query
-        });
+        this.setState({searchQuery: query});
     }
 
     render() {

@@ -2,20 +2,16 @@ import * as React from "react";
 import {Component} from "react";
 import XpfColumn from "../column/xpf-column.component";
 
-export default class XPFWrapper extends Component<{columnTabs: any, selectedTabs: any, selectTab: any}> {
-    private selectTab: any;
-
+export default class XPFWrapper extends Component<{columnTabs: any, selectedTabs: any}> {
     constructor(props) {
         super(props);
 
-        let { columnTabs, selectedTabs, selectTab } = props;
+        let { columnTabs, selectedTabs} = props;
 
         this.state = {
             columnTabs: columnTabs,
             selectedTabs: selectedTabs || { filterColumn: null, propertyColumn: null, selectedColumn: null },
         };
-
-        this.selectTab = selectTab;
     }
 
     componentWillReceiveProps({  columnTabs, selectedTabs }) {
@@ -36,18 +32,15 @@ export default class XPFWrapper extends Component<{columnTabs: any, selectedTabs
                 <XpfColumn className="Filters"
                     key={"Filters"}
                     tabs={columnTabs.left}
-                    activeTab={selectedTabs.filterColumn}
-                    onSelect={selectTab("filterColumn")} />
+                    activeTab={selectedTabs.filterColumn} />
                 <XpfColumn className="Properties"
                     key={"Properties"}
                     tabs={columnTabs.center}
-                    activeTab={selectedTabs.propertyColumn}
-                    onSelect={selectTab("propertyColumn")} />
+                    activeTab={selectedTabs.propertyColumn} />
                 <XpfColumn className="SelectedProperties"
                     key={"SelectedProperties"}
                     tabs={columnTabs.right}
-                    activeTab={selectedTabs.selectedColumn}
-                    onSelect={selectTab("selectedColumn")} />
+                    activeTab={selectedTabs.selectedColumn} />
             </section>
         );
     }

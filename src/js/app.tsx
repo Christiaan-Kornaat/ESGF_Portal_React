@@ -21,21 +21,24 @@ import {ResultWrapper} from "./components/results-search/result-wrapper/result-w
 import StringFormatter from "./model/formatters/string.formatter";
 import ESGFFilterSearcher from "./searchers/esgf-filter.searcher";
 import ESGFPropertySearcher from "./searchers/esgf-property.searcher";
-import { filterComparator, propertyComparator } from "./sorters/comparators/esgf.comparator";
-import { alphabeticalComparator } from "./sorters/comparators/primitive.comparator";
-import { SorterFactoryFactory } from "./sorters/sorter.factory.factory";
+import {filterComparator, propertyComparator} from "./sorters/comparators/esgf.comparator";
+import {alphabeticalComparator} from "./sorters/comparators/primitive.comparator";
+import {SorterFactoryFactory} from "./sorters/sorter.factory.factory";
 import SorterManager from "./sorters/sorter.manager";
 import Buttons from "./components/shared/buttons/buttons.component";
-import XpfColumnTabInfoContent from "./components/expanded-property-finder/column/xpf-column-tab-info-content.component";
-import XpfColumnTabListContent from "./components/expanded-property-finder/column/xpf-column-tab-list-content.component";
+import XpfColumnTabInfoContent
+    from "./components/expanded-property-finder/column/xpf-column-tab-info-content.component";
+import XpfColumnTabListContent
+    from "./components/expanded-property-finder/column/xpf-column-tab-list-content.component";
 import OptionsComponent from "./components/expanded-property-finder/wrapper/xpf-list-options.component";
 import InfoTabVM from "./model/view-model/InfoTabVM";
-import { ESGFFilterDTO } from "./model/dto/esgf-filter.dto";
-import { Comparator } from "./sorters/comparators/comparator";
+import {ESGFFilterDTO} from "./model/dto/esgf-filter.dto";
+import {Comparator} from "./sorters/comparators/comparator";
 import AdagucUrlBuilder from "./data/services/esgf-search/adaguc-url.builder";
 import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
 import EsgfSearchManager from "./managers/esgf-search.manager";
 import EsgfSearchQuery from "./model/dto/esgf-search-query";
+import EsgfFilterPropertyVM from "./model/view-model/esgf-filter-property.viewmodel";
 
 interface AppEnvironment {
     FilterService: any,
@@ -98,15 +101,15 @@ class App extends Component {
     private quickFilterManager: QuickSelectManagerMock;
     private readonly adagucUrlBuilder: AdagucUrlBuilder;
 
-    state: { 
+    state: {
         selectedFilter: ESGFFilterDTO,
         selectedTabs: { filterColumn, propertyColumn, selectedColumn },
-        columnTabs: { "left": {}, "center": {}, "right": {}},
+        columnTabs: { "left": {}, "center": {}, "right": {} },
         infoTabs: InfoTabVM[],
         sortState,
         columnState: {},
         filters: []
-     };
+    };
 
     constructor(props) {
         super(props);
@@ -140,16 +143,15 @@ class App extends Component {
 
         this.state = {
             selectedFilter: null,
-            selectedTabs: { filterColumn: null, propertyColumn: null, selectedColumn: null },
+            selectedTabs: {filterColumn: null, propertyColumn: null, selectedColumn: null},
             infoTabs: [],
             sortState: this.createSortState(),
-            columnTabs: { "left": {}, "center": {}, "right": {}},
+            columnTabs: {"left": {}, "center": {}, "right": {}},
             columnState: {},
             filters: []
         };
 
         this.update = this.update.bind(this);
-        this.selectTab = this.selectTab.bind(this);
         this.selectFilter = this.selectFilter.bind(this);
         this.showPropertyInfo = this.showPropertyInfo.bind(this);
         this.addInfoTab = this.addInfoTab.bind(this);
@@ -159,12 +161,12 @@ class App extends Component {
     /**
      * @returns {Map<string, SorterManager>} sortState
      */
-    createSortState(){
+    createSortState() {
         let sorterFactoryFactory = new SorterFactoryFactory();
         let createSortState: ((key: string, comparator: Comparator<any>) => [string, SorterManager]) = (key: string, comparator: Comparator<any>) => [
             key,
             new SorterManager(new Map([
-                ["A-Z", sorterFactoryFactory.createSorterFactory(comparator)] 
+                ["A-Z", sorterFactoryFactory.createSorterFactory(comparator)]
             ]), "A-Z")
         ];
 
@@ -189,7 +191,7 @@ class App extends Component {
         if (this.state.selectedFilter === filter) return;
 
         this.filterProvider.provide(filter.shortName)
-            .then(filter => this.setState(() => ({ selectedFilter: filter })));
+            .then(filter => this.setState(() => ({selectedFilter: filter})));
     }
 
     /**
@@ -210,10 +212,10 @@ class App extends Component {
      *
      * @param {InfoTabVM} viewModel
      */
-    addInfoTab({ title, paragraphs }) {
+    addInfoTab({title, paragraphs}) {
         let infoTabs = this.state.infoTabs.concat(new InfoTabVM("Info", title, paragraphs));
 
-        this.setState({ infoTabs: infoTabs });
+        this.setState({infoTabs: infoTabs});
     }
 
     /**
@@ -221,11 +223,11 @@ class App extends Component {
      * @param {string} tabName
      */
     selectTab(columnName, tabName) {
-        let { state: { selectedTabs } } = this;
+        let {state: {selectedTabs}} = this;
 
         selectedTabs[columnName] = tabName;
 
-        this.setState({ selectedTabs });
+        this.setState({selectedTabs});
     }
 
     getSelectedFilterProperties() {
@@ -255,15 +257,15 @@ class App extends Component {
 
     render() {
         let {
-            selectFilter, selectTab, showPropertyInfo, selectedPropertyManager, filterProvider, searchManager,
-            state: { sortState, infoTabs, selectedTabs, filters, selectedFilter, columnTabs }
+            selectFilter, showPropertyInfo, selectedPropertyManager, filterProvider, searchManager,
+            state: {sortState, infoTabs, selectedTabs, filters, selectedFilter, columnTabs}
         } = this;
 
         let selectedManager = selectedPropertyManager;
         let filtersLoading = !filterProvider.hasFilters;
         let properties = selectedFilter ? selectedFilter.properties : [];
         let selectedProperties = selectedManager.selected;
-        
+
         let searchFunctions = {
             filters: new ESGFFilterSearcher().search,
             properties: new ESGFPropertySearcher().search
@@ -283,11 +285,11 @@ class App extends Component {
                 selectedManager.deselectMany)(propertyGetter());
         };
 
-        let filterFactory = property =>
-            <li key={property.shortName}
+        let filterFactory = filter =>
+            <li key={filter.shortName}
                 className="filter"
-                onClick={() => selectFilter(property)}>
-                {StringFormatter.toHumanText(property.shortName)}
+                onClick={() => selectFilter(filter)}>
+                {StringFormatter.toHumanText(filter.shortName)}
             </li>;
 
         /**
@@ -296,7 +298,7 @@ class App extends Component {
          * @return {function(ESGFFilterPropertyDTO): Component}
          */
         let propertyListItemFactoryFactory = (onClick) => item => {
-            let name = StringFormatter.toHumanText(item.name);
+            let viewModel = new EsgfFilterPropertyVM(item);
 
             let checked = selectedManager.isSelected(item);
 
@@ -304,24 +306,24 @@ class App extends Component {
 
             let onInfoClick = async event => {
                 event.stopPropagation();
-                showPropertyInfo(item)
-                 this.selectTab("selectedColumn", "Info");
+                showPropertyInfo(item);
+                this.selectTab("selectedColumn", "Info");
             };
 
             return (
-                <li key={name}
+                <li key={item.name}
                     className={checked ? "selected property" : "property"}
                     onClick={onChange}>
                     <input className={"checkbox"}
-                        type={"checkbox"}
-                        onChange={() => {
-                        }} //prevents error message
-                        checked={checked} />
+                           type={"checkbox"}
+                           onChange={() => {
+                           }} //prevents error message
+                           checked={checked}/>
                     <span className={"icon-info"}
-                        onClick={onInfoClick}>
-                        <i className="fas fa-info-circle" />
+                          onClick={onInfoClick}>
+                        <i className="fas fa-info-circle"/>
                     </span>
-                    {name}
+                    {viewModel.name}
                 </li>
             );
         };
@@ -332,83 +334,70 @@ class App extends Component {
             this.update();
         };
 
-        let sorterManagers = {
-            filters: sortState.get("filters"),
-            presets: sortState.get("presets"),
-            properties: sortState.get("properties"),
-            selectedProperties: sortState.get("properties-selected")
-        };
         let sortFunctions = {
-            filters: sorterManagers.filters.getCurrent(),
-            presets: sorterManagers.presets.getCurrent(),
-            properties: sorterManagers.properties.getCurrent(),
-            selectedProperties: sorterManagers.selectedProperties.getCurrent()
+            filters: sortState.get("filters").getCurrent(),
+            presets: sortState.get("presets").getCurrent(),
+            properties: sortState.get("properties").getCurrent(),
+            selectedProperties: sortState.get("properties-selected").getCurrent()
         };
 
-        let createSortButton = (columnName) => <Buttons.Sort key={columnName} title={"Sort A-Z"}
-            onToggle={createInvertSort(columnName)} />;
+        let createSortButton = (columnName) => <Buttons.Sort key={columnName}
+                                                             title={"Sort A-Z"}
+                                                             onToggle={createInvertSort(columnName)}/>;
 
         let optionComponents = {
-            filters: <OptionsComponent key={"filters"} sortButtons={[createSortButton("filters")]} />,
-            presets: <OptionsComponent key={"presets"} sortButtons={[createSortButton("presets")]} />,
+            filters: <OptionsComponent key={"filters"} sortButtons={[createSortButton("filters")]}/>,
+            presets: <OptionsComponent key={"presets"} sortButtons={[createSortButton("presets")]}/>,
             properties: <OptionsComponent key={"properties"} sortButtons={[createSortButton("properties")]}
-                optionButtons={{
-                    "Select all": createSetSelected(true, this.getSelectedFilterProperties),
-                    "Deselect all": createSetSelected(false, this.getSelectedFilterProperties)
-                }} />,
-            propertiesSelected: <OptionsComponent key={"selected-properties"} sortButtons={[createSortButton("selected-properties")]}
-                optionButtons={{
-                    "Deselect all": createSetSelected(false, () => this.selectedPropertyManager.selected)                
-                }} />
+                                          optionButtons={{
+                                              "Select all": createSetSelected(true, this.getSelectedFilterProperties),
+                                              "Deselect all": createSetSelected(false, this.getSelectedFilterProperties)
+                                          }}/>,
+            propertiesSelected: <OptionsComponent key={"selected-properties"}
+                                                  sortButtons={[createSortButton("selected-properties")]}
+                                                  optionButtons={{
+                                                      "Deselect all": createSetSelected(false, () => this.selectedPropertyManager.selected)
+                                                  }}/>
         };
 
         let FilterList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
-        key={"FilterList"}
-        items={filters}
-        sortFunction={sortFunctions.filters}
-        headerButtons={[optionComponents.filters]}
-        isLoading={filtersLoading}
-        listItemFactory={filterFactory} />;
+                                                  key={"FilterList"}
+                                                  items={filters}
+                                                  sortFunction={sortFunctions.filters}
+                                                  headerButtons={[optionComponents.filters]}
+                                                  isLoading={filtersLoading}
+                                                  listItemFactory={filterFactory}/>;
 
         let PresetList = <XpfColumnTabListContent searchFunction={searchFunctions.filters}
-        key={"PresetList"}
-        items={[]}
-        sortFunction={sortFunctions.filters}
-        headerButtons={[optionComponents.presets]}
-        isLoading={filtersLoading}
-        listItemFactory={filterFactory} />;
+                                                  key={"PresetList"}
+                                                  items={[]}
+                                                  sortFunction={sortFunctions.filters}
+                                                  headerButtons={[optionComponents.presets]}
+                                                  isLoading={filtersLoading}
+                                                  listItemFactory={filterFactory}/>;
 
         let PropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
-        key={"PropertyList"}
-        items={properties}
-        headerButtons={[optionComponents.properties]}
-        sortFunction={sortFunctions.properties}
-        listItemFactory={propertyListItemFactoryFactory(selectedManager.toggle)} />;
+                                                    key={"PropertyList"}
+                                                    items={properties}
+                                                    headerButtons={[optionComponents.properties]}
+                                                    sortFunction={sortFunctions.properties}
+                                                    listItemFactory={propertyListItemFactoryFactory(selectedManager.toggle)}/>;
 
         let SelectedPropertyList = <XpfColumnTabListContent searchFunction={searchFunctions.properties}
-        key={"SelectedPropertyList"}
-        items={selectedProperties}
-        headerButtons={[optionComponents.propertiesSelected]}
-        listItemFactory={propertyListItemFactoryFactory(selectedManager.deselect)} />;
+                                                            key={"SelectedPropertyList"}
+                                                            items={selectedProperties}
+                                                            headerButtons={[optionComponents.propertiesSelected]}
+                                                            listItemFactory={propertyListItemFactoryFactory(selectedManager.deselect)}/>;
 
-        columnTabs.left = { "Filters": FilterList, "Presets": PresetList };
-        columnTabs.center = { "Properties": PropertyList }; 
-        columnTabs.right = { "Selected properties": SelectedPropertyList };
+        columnTabs.left = {"Filters": FilterList, "Presets": PresetList};
+        columnTabs.center = {"Properties": PropertyList};
+        columnTabs.right = {"Selected properties": SelectedPropertyList};
 
         let infoTab = Object.values(infoTabs).pop();
 
-        /**
-         * 
-         * @param {ESGFFilterPropertyDTO} property 
-         */
-        const propertyInfoTabVMFactory = ({name, filter}) => new InfoTabVM(name, name, {"Filter": filter.shortName});        
+        const infoTabFactory = (infoTabVM) => <XpfColumnTabInfoContent key={"Info"} model={infoTabVM}/>;
 
-        const infoTabFactory = (infoTabVM) => <XpfColumnTabInfoContent key={"Info"} model={infoTabVM} />;
-
-
-        columnTabs.right["Info"] = infoTab != null ? infoTabFactory(infoTab.content) : null;
-
-        let selectNewTab = columnName => newTab => selectTab(columnName, newTab);
+        if (infoTab) columnTabs.right["Info"] = infoTabFactory(infoTab.content);
 
         let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => searchManager.search(new EsgfSearchQuery(selection));
         selectedPropertyManager.events.selectionChanged.subscribe(onSelectionChanged);
@@ -418,8 +407,7 @@ class App extends Component {
                             qfManager={this.quickFilterManager}/>;
 
         let XPF = <XPFWrapper columnTabs={columnTabs}
-                              selectedTabs={selectedTabs}
-                              selectTab={selectTab}/>;
+                              selectedTabs={selectedTabs} />;
 
         return (
             <div>

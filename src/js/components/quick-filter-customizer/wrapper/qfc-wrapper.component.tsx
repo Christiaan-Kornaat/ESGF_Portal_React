@@ -5,47 +5,37 @@ import TileFactory from "../../../model/factories/tile.factory";
 import { QFFilterTileDTO } from "../../../model/dto/qf-filter-tile.dto";
 import { QFTileProvider } from "../../../data/providers/qf-tile/qf-tile.provider";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
-import Overlays from "../../shared/overlay/overlays.component";
 import OverlayFactory from "../../../model/factories/overlay.factory";
-import { QFTileController } from "../../../controllers/localstorage/tiles/tileController-local";
-import { ESGFFilterProvider } from "../../../data/providers/esgf-filter/esgf-filter.provider";
 
-export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any, filterProvider: any}> {
+export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any}> {
 
     private readonly _quickFilterProvider: QFTileProvider;
-    private readonly _filterProvider: ESGFFilterProvider;
-    private readonly _tileController: QFTileController;//TODO IQFTileController
-
-    private qfFilterTileDTOs: QFFilterTileDTO[];
 
     state: { qfTileModels: Array<QFFilterTileDTO> };
 
     constructor(props) {
         super(props);
 
-        let { qfProvider, filterProvider } = props;
+        let { qfProvider } = props;
         this._quickFilterProvider = qfProvider;
-        this._filterProvider = filterProvider;
-
-        this._tileController = new QFTileController(this._filterProvider);
 
         this.state = {
             qfTileModels: []
         };
 
         this.quickFilterListItemFactory = this.quickFilterListItemFactory.bind(this);
-        this.update = this.update.bind(this);
+
     }
 
-    private async update() {
-        let qfTileModels = await Promise.all(this._tileController.getTiles())
-        this.setState({ qfTileModels: qfTileModels });
+    private update() {
+        this._quickFilterProvider.provide()
+            .then(qfTileModels => this.setState({ qfTileModels: qfTileModels }));
     }
-    
+
     componentDidMount(): void {
-        this.update()
+        this.update();
     }
-    
+
     /**
      *
      * @param {ESGFFilterPropertyDTO}item
@@ -76,15 +66,15 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any, fil
         //TODO get with dependency injection
         let tileFactory = new TileFactory();
         let overlayFactory = new OverlayFactory();
-        let overlay = <Overlays.QFTiles.PlusIcon/>;
+
+        let overlay = <div className="h-100"><i className="fa fa-pencil-alt overlayIcon" aria-hidden="true"></i></div>;
+
         if (qfTileModels.length === 0) return [];
 
         return qfTileModels.map( ( QFFilterTileDTO, index ) => {
-
-            let tile = tileFactory.createTile(QFFilterTileDTO, this.quickFilterListItemFactory);
-
-            return overlayFactory.createOverlay(tile, overlay, ()=>{console.log("werkt")} , index);
-        })
+            return overlayFactory.createOverlay(tileFactory.createTile(QFFilterTileDTO, this.quickFilterListItemFactory), overlay, ()=>{console.log("werkt")} , index);
+        }
+        );
     }
 
     render() {
@@ -93,7 +83,7 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any, fil
         let qfTiles = this.createTiles(qfTileModels);
         let hasTiles = qfTiles.length > 0;
         let tileFactory = new TileFactory();
-        let iconTileAdd = new QFFilterTileDTO("test", "#3f3f3f", "fas fa-plus-circle", []); //TODO ergens anders? is kort maar niet mooi 
+        let iconTileAdd = new QFFilterTileDTO("test", "#3f3f3f", "fas fa-plus-circle", []); //TODO ergens anders? is kort maar niet mooi
 
         return (
             <section className="qf-wrapper">
@@ -108,3 +98,4 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any, fil
     }
 }
 
+}

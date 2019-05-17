@@ -267,7 +267,7 @@ body{
             top: 50%;
             transform: translate(-50%, -50%);
           }
-          
+
           .foreground {
             color: white;
             position: absolute;
@@ -287,7 +287,7 @@ body{
             background: rgba($color: #000000, $alpha: 0.4);
           }
         }
-        
+
 
         .qf-tile {
           @extend .p-0, .shadow;

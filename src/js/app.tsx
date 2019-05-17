@@ -204,6 +204,11 @@ class App extends Component {
             qfManager={this.quickFilterManager}
             filterProvider={this.filterProvider} />;                      
 
+
+        let QSC = <QFCWrapper 
+            qfProvider={this.tileProvider}
+            qfManager={this.quickFilterManager} />;                      
+
         return (
             <div>
                 <ESGFSearchPortal

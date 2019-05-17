@@ -99,6 +99,7 @@ export class QFWrapper extends Component<{ selectionManager: any, qfManager: any
     
 
     createTiles(qfTileModels: QFFilterTileDTO[]): JSX.Element[] {
+        //TODO get with dependency injection
         let tileFactory = new TileFactory();
         
         if (qfTileModels.length === 0) return [];

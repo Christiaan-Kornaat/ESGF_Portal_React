@@ -39,6 +39,7 @@ import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
 import EsgfSearchManager from "./managers/esgf-search.manager";
 import EsgfSearchQuery from "./model/dto/esgf-search-query";
 import EsgfFilterPropertyVM from "./model/view-model/esgf-filter-property.viewmodel";
+import { QFCWrapper } from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
 
 interface AppEnvironment {
     FilterService: any,
@@ -409,10 +410,15 @@ class App extends Component {
         let XPF = <XPFWrapper columnTabs={columnTabs}
                               selectedTabs={selectedTabs} />;
 
+
+        let QSC = <QFCWrapper 
+            qfProvider={this.tileProvider}
+            qfManager={this.quickFilterManager} />;                      
+
         return (
             <div>
                 <ESGFSearchPortal
-                    tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QS}}/>
+                    tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QSC}}/>
                 <ResultWrapper searchResultsManager={searchManager}/>
             </div>
         );

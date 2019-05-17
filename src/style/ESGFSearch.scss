@@ -255,6 +255,40 @@ body{
       .tiles {
         @extend .w-100, .h-100, .d-flex, .justify-content-center, .flex-wrap ;
 
+        .overlayContainer{
+          height: 215px;
+          position: relative;
+          margin: auto 6px;
+
+          .overlayIcon{
+            font-size: 75px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+          }
+          
+          .foreground {
+            color: white;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 215px;
+            width: 200px;
+            margin: 0 6px;
+            opacity: 0;
+            transition: .5s ease;
+          }
+
+          &:hover .foreground {
+            opacity: 1;
+            background: rgba($color: #000000, $alpha: 0.4);
+          }
+        }
+        
+
         .qf-tile {
           @extend .p-0, .shadow;
   

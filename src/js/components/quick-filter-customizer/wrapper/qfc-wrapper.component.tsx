@@ -10,7 +10,7 @@ import OverlayFactory from "../../../model/factories/overlay.factory";
 export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any}> {
 
     private readonly _quickFilterProvider: QFTileProvider;
-
+    
     state: { qfTileModels: Array<QFFilterTileDTO> };
 
     constructor(props) {
@@ -31,11 +31,11 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any}> {
         this._quickFilterProvider.provide()
             .then(qfTileModels => this.setState({ qfTileModels: qfTileModels }));
     }
-
+    
     componentDidMount(): void {
         this.update();
     }
-
+    
     /**
      *
      * @param {ESGFFilterPropertyDTO}item
@@ -66,9 +66,7 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any}> {
         //TODO get with dependency injection
         let tileFactory = new TileFactory();
         let overlayFactory = new OverlayFactory();
-
         let overlay = <div className="h-100"><i className="fa fa-pencil-alt overlayIcon" aria-hidden="true"></i></div>;
-
         if (qfTileModels.length === 0) return [];
 
         return qfTileModels.map( ( QFFilterTileDTO, index ) => {
@@ -98,4 +96,3 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any}> {
     }
 }
 
-}

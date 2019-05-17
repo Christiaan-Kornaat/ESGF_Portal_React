@@ -1,7 +1,7 @@
 import { Tile } from "../../components/quick-filter-search/esgf-qfilter-tile/qf-tile.component";
 import React from "react";
 import { QFFilterTileDTO } from "../dto/qf-filter-tile.dto";
-import { ActionTile } from "../../components/quick-filter-search/esgf-qfilter-tile/qf-action-tile.component";
+import { IconTile } from "../../components/quick-filter-search/esgf-qfilter-tile/qf-icon-tile.component";
 
 export default class TileFactory {
     /**
@@ -14,12 +14,13 @@ export default class TileFactory {
             QFFilterTileDTO={QFFilterTileDTO}
         />
     }
+
     /**
      *
      * @summary Creates an add new tile tile
      */
-    createActionTile(QFFilterTileDTO: QFFilterTileDTO, onClick: any): JSX.Element {
-        return <ActionTile key={QFFilterTileDTO.title}
+    createIconTile(QFFilterTileDTO: QFFilterTileDTO, onClick: any): JSX.Element {
+        return <IconTile key={QFFilterTileDTO.title}
             QFFilterTileDTO={QFFilterTileDTO}
             onClick={onClick}
         />

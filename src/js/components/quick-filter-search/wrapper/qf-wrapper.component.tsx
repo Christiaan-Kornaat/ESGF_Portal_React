@@ -1,17 +1,15 @@
 import * as React from "react";
 import {Component} from "react";
 import StringFormatter from "../../../model/formatters/string.formatter";
-import {Tile} from "../esgf-qfilter-tile/qf-tile.component";
 import {QFSidebar} from "../qf-sidebar/qfsidebar.component";
 import SelectedPropertyManager from "../../../managers/selected-property.manager";
-import IQuickFilterManager from "../../../managers/quick-filter/quick-filter.manager.interface";
 import {QFTileProvider} from "../../../data/providers/qf-tile/qf-tile.provider";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
+import {QFTileController} from "../../../controllers/localstorage/tiles/tileController-local";
+import {ESGFFilterProvider} from "../../../data/providers/esgf-filter/esgf-filter.provider";
 import TileFactory from "../../../model/factories/tile.factory";
-import { QFTileController } from "../../../controllers/localstorage/tiles/tileController-local";
-import { ESGFFilterProvider } from "../../../data/providers/esgf-filter/esgf-filter.provider";
 
 
 export class QFWrapper extends Component<{ selectionManager: any, filterProvider: any, qfProvider: any }> {
@@ -27,7 +25,7 @@ export class QFWrapper extends Component<{ selectionManager: any, filterProvider
     constructor(props) {
         super(props);
 
-        let {selectionManager,filterProvider, qfProvider} = props;
+        let {selectionManager, filterProvider, qfProvider} = props;
         this._selectedPropertyManager = selectionManager;
         this._quickFilterProvider = qfProvider;
         this._filterProvider = filterProvider;
@@ -100,22 +98,22 @@ export class QFWrapper extends Component<{ selectionManager: any, filterProvider
     };
 
     private async update() {
-        let qfTileModels = await Promise.all(this._tileController.getTiles())
-        this.setState({ qfTileModels: qfTileModels });
+        let qfTileModels = await Promise.all(this._tileController.getTiles());
+        this.setState({qfTileModels: qfTileModels});
     }
-    
+
     componentDidMount(): void {
-        this.update()
+        this.update();
     }
 
     createTiles(qfTileModels: QFFilterTileDTO[]): JSX.Element[] {
         //TODO get with dependency injection
         let tileFactory = new TileFactory();
-        
+
         if (qfTileModels.length === 0) return [];
 
         return qfTileModels.map(QFFilterTileDTO => {
-            return tileFactory.createTile(QFFilterTileDTO, this.quickFilterListItemFactory);
+                return tileFactory.createTile(QFFilterTileDTO, this.quickFilterListItemFactory);
             }
         );
     }

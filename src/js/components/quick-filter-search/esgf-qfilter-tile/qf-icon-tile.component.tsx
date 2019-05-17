@@ -40,7 +40,7 @@ export class IconTile extends Component<{ QFFilterTileDTO: QFFilterTileDTO, onCl
 
                 <div className="qf-tile-header" style={style}><i className={icon} /> {title}</div>
                 {
-                    <div className="text-center"><i className="icon actionIcon" /></div>
+                    <div className="text-center"><i className={icon + " actionIcon"} /></div>
                 }
 
             </div>

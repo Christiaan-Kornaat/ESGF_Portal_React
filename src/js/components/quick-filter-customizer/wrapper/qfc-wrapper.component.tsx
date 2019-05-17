@@ -66,9 +66,7 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any}> {
         //TODO get with dependency injection
         let tileFactory = new TileFactory();
         let overlayFactory = new OverlayFactory();
-
         let overlay = <div className="h-100"><i className="fa fa-pencil-alt overlayIcon" aria-hidden="true"></i></div>;
-
         if (qfTileModels.length === 0) return [];
 
         return qfTileModels.map( ( QFFilterTileDTO, index ) => {
@@ -83,7 +81,7 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any}> {
         let qfTiles = this.createTiles(qfTileModels);
         let hasTiles = qfTiles.length > 0;
         let tileFactory = new TileFactory();
-        let iconTileAdd = new QFFilterTileDTO("test", "#3f3f3f", "fas fa-plus-circle", []);
+        let iconTileAdd = new QFFilterTileDTO("test", "#3f3f3f", "fas fa-plus-circle", []); //TODO ergens anders? is kort maar niet mooi 
 
         return (
             <section className="qf-wrapper">

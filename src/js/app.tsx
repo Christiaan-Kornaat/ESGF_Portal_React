@@ -413,7 +413,8 @@ class App extends Component {
 
         let QSC = <QFCWrapper 
             qfProvider={this.tileProvider}
-            qfManager={this.quickFilterManager} />;                      
+            qfManager={this.quickFilterManager}
+            filterProvider={this.filterProvider} />;                      
 
         return (
             <div>

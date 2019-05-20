@@ -6,18 +6,23 @@ import { QFFilterTileDTO } from "../../../model/dto/qf-filter-tile.dto";
 import { QFTileProvider } from "../../../data/providers/qf-tile/qf-tile.provider";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import OverlayFactory from "../../../model/factories/overlay.factory";
+import { QFTileController } from "../../../controllers/localstorage/tiles/tileController-local";
 
-export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any}> {
+export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any, filterProvider: any}> {
 
     private readonly _quickFilterProvider: QFTileProvider;
-    
+    private readonly _filterProvider: any;
+
+
+
     state: { qfTileModels: Array<QFFilterTileDTO> };
 
     constructor(props) {
         super(props);
 
-        let { qfProvider } = props;
+        let { qfProvider, filterProvider } = props;
         this._quickFilterProvider = qfProvider;
+        this._filterProvider = filterProvider;
 
         this.state = {
             qfTileModels: []
@@ -78,7 +83,10 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any}> {
     render() {
         let { qfTileModels } = this.state;
 
-        let qfTiles = this.createTiles(qfTileModels);
+        let tileProvider = new QFTileController(this._filterProvider);
+        tileProvider.setTiles(qfTileModels);
+
+        let qfTiles = this.createTiles(tileProvider.getTiles());//this.createTiles(qfTileModels);
         let hasTiles = qfTiles.length > 0;
         let tileFactory = new TileFactory();
         let iconTileAdd = new QFFilterTileDTO("test", "#3f3f3f", "fas fa-plus-circle", []); //TODO ergens anders? is kort maar niet mooi 

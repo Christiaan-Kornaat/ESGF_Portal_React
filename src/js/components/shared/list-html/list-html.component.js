@@ -1,3 +1,4 @@
+import * as PropTypes from "prop-types";
 import React, {PureComponent} from "react";
 
 class HtmlList extends PureComponent {
@@ -45,5 +46,10 @@ class HtmlList extends PureComponent {
         );
     }
 }
+
+HtmlList.propTypes = {
+    items: PropTypes.array.isRequired,
+    createListItem: PropTypes.func.isRequired
+};
 
 export default HtmlList;

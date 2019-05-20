@@ -10,6 +10,11 @@ Buttons.Options = ({onClick}) =>
         <i className="fas fa-ellipsis-h"/>
     </span>;
 
+Buttons.Info = ({onClick}) =>
+    <span className={"icon-info"}
+          onClick={onClick}> <i className="fas fa-info-circle"/>
+</span>;
+
 /**
  *
  * @param {string}title

@@ -258,7 +258,7 @@ body{
         .overlayContainer{
           height: 215px;
           position: relative;
-          margin: auto 6px;
+          margin: auto 0px;
 
           .overlayIcon{
             font-size: 75px;
@@ -296,7 +296,7 @@ body{
   
           width: 200px;
           height: 215px;
-          margin: auto 6px;
+          margin: auto 10px;
           background-color: $background-colour;
           
           .qf-tile-header {

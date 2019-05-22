@@ -199,22 +199,17 @@ class App extends Component {
                               selectedPropertyManager={this.selectedPropertyManager}/>;
 
 
-        let QSC = <QFCWrapper 
+        let QSC = <QFCWrapper
             qfProvider={this.tileProvider}
             qfManager={this.quickFilterManager}
-            filterProvider={this.filterProvider} />;                      
+            filterProvider={this.filterProvider} />;
 
-
-        let QSC = <QFCWrapper 
-            qfProvider={this.tileProvider}
-            qfManager={this.quickFilterManager}
-            filterProvider={this.filterProvider} />;                      
 
         return (
             <div>
                 <ESGFSearchPortal
                     tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QSC}}/>
-                <ResultWrapper searchResultsManager={searchManager}/>
+                <ResultWrapper searchResultsManager={this.searchManager}/>
             </div>
         );
     }

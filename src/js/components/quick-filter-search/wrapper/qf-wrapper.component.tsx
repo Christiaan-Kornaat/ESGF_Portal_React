@@ -7,9 +7,9 @@ import {QFTileProvider} from "../../../data/providers/qf-tile/qf-tile.provider";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
-import {QFTileController} from "../../../controllers/localstorage/tiles/tileController-local";
-import {ESGFFilterProvider} from "../../../data/providers/esgf-filter/esgf-filter.provider";
 import TileFactory from "../../../model/factories/tile.factory";
+import { QFTileController } from "../../../controllers/localstorage/tiles/tileController-local";
+import { ESGFFilterProvider } from "../../../data/providers/esgf-filter/esgf-filter.provider";
 
 
 export class QFWrapper extends Component<{ selectionManager: any, filterProvider: any, qfProvider: any }> {

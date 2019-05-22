@@ -41,11 +41,11 @@ export class QFCWrapper extends Component<{ qfManager: any, qfProvider: any, fil
         let qfTileModels = await Promise.all(this._tileController.getTiles())
         this.setState({ qfTileModels: qfTileModels });
     }
-    
+
     componentDidMount(): void {
         this.update()
     }
-    
+
     /**
      *
      * @param {ESGFFilterPropertyDTO}item

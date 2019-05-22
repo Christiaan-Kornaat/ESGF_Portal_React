@@ -29,8 +29,7 @@ import AdagucUrlBuilder from "./data/services/esgf-search/adaguc-url.builder";
 import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
 import EsgfSearchManager from "./managers/esgf-search.manager";
 import EsgfSearchQuery from "./model/dto/esgf-search-query";
-import EsgfFilterPropertyVM from "./model/view-model/esgf-filter-property.viewmodel";
-import { QFCWrapper } from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
+import {QFCWrapper} from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
 
 interface AppEnvironment {
     FilterService: any,
@@ -193,16 +192,15 @@ class App extends Component {
         let QS = <QFWrapper selectionManager={this.selectedPropertyManager}
                             qfProvider={this.tileProvider}
                             filterProvider={this.filterProvider}
-                            />;
+        />;
 
         let XPF = <XPFWrapper filterProvider={this.filterProvider}
                               selectedPropertyManager={this.selectedPropertyManager}/>;
 
-
         let QSC = <QFCWrapper
             qfProvider={this.tileProvider}
             qfManager={this.quickFilterManager}
-            filterProvider={this.filterProvider} />;
+            filterProvider={this.filterProvider}/>;
 
 
         return (

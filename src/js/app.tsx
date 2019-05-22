@@ -405,7 +405,8 @@ class App extends Component {
 
         let QS = <QFWrapper selectionManager={selectedPropertyManager}
                             qfProvider={this.tileProvider}
-                            qfManager={this.quickFilterManager}/>;
+                            filterProvider={this.filterProvider}
+                            />;
 
         let XPF = <XPFWrapper columnTabs={columnTabs}
                               selectedTabs={selectedTabs} />;

@@ -1,82 +1,83 @@
 import * as React from "react";
-import { Component } from "react";
-import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
-import TileFactory from "../../../model/factories/tile.factory";
-import { QFFilterTileDTO } from "../../../model/dto/qf-filter-tile.dto";
-import { QFTileProvider } from "../../../data/providers/qf-tile/qf-tile.provider";
+import {Component} from "react";
+import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
-import Overlays from "../../shared/overlay/overlays.component";
-import OverlayFactory from "../../../model/factories/overlay.factory";
-import { QFTileController } from "../../../controllers/localstorage/tiles/tileController-local";
-import { ESGFFilterProvider } from "../../../data/providers/esgf-filter/esgf-filter.provider";
+import {QFTileController} from "../../../controllers/localstorage/tiles/tileController-local";
+import TileFactory from "../../../model/factories/tile.factory";
+import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
+import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 
-export class PreviewTab extends Component<{ qfManager: any, qfProvider: any, filterProvider: any }> {
-    private readonly _quickFilterProvider: QFTileProvider;
-    private readonly _filterProvider: ESGFFilterProvider;
+type PreviewTabProps = { qfController: QFTileController, qfTile: QFFilterTileDTO, properties: ESGFFilterPropertyDTO[], onSave?: (QFFilterTileDTO) => void };
+
+export class PreviewTab extends Component<PreviewTabProps> {
     private readonly _tileController: QFTileController;//TODO IQFTileController
 
-    state: { qfTileModels: Array<QFFilterTileDTO> };
+    state: { qfTile };
 
-    constructor(props) {
+    constructor(props: PreviewTabProps) {
         super(props);
 
-        let { qfProvider, filterProvider } = props;
-        this._quickFilterProvider = qfProvider;
-        this._filterProvider = filterProvider;
+        this.handleColourChange = this.handleColourChange.bind(this);
+        this.handleTitleChange = this.handleTitleChange.bind(this);
 
-        this._tileController = new QFTileController(this._filterProvider);
+        let {qfController} = props;
+        this._tileController = qfController;
 
         this.state = {
-            qfTileModels: []
+            qfTile: props.qfTile
         };
     }
 
-    /**
-     *
-     * @param {ESGFFilterPropertyDTO}item
-     * @return {Component}
-     * @constructor
-     */
-    quickFilterListItemFactory(item: ESGFFilterPropertyDTO) {
+    handleColourChange(event) {
+        let qfTile = this.props.qfTile;
+        qfTile.color = event.target.value;
 
-        let createSliceWord = (nLetters: number) => (word: string) => word.split("")
-            .slice(0, nLetters)
-            .join("");
+        this.saveTile(qfTile);
+    }
 
-        let smallWord = createSliceWord(3)(item.filter.shortName);
+    handleTitleChange(event) {
+        let qfTile = this.props.qfTile;
 
-        return (
-            <li key={`${item.filter}-${item.name}`}
-                className="qf-property">
-                <span className="name">
-                    {item.name}
-                    <span
-                        className={"float-right text-right mr-1"}>({smallWord})</span>
-                </span>
-            </li>
-        );
-    };
+        qfTile.title = event.target.value;
+
+        this.saveTile(qfTile);
+    }
+
+    saveTile(tile) {
+        this.setState({qfTile: tile});
+        this.props.onSave(tile);
+    }
 
     render() {
-        let tileFactory = new TileFactory();
-        let iconTileAdd = new QFFilterTileDTO("test", "#3f3f3f", "fas fa-plus-circle", []); //TODO ergens anders? is kort maar niet mooi
 
-        let qfTile = tileFactory.createTile(iconTileAdd, this.quickFilterListItemFactory);
+        let tileFactory = new TileFactory();
+        let createQFListItem = new ListItemFactoryFactory().createQuickFilterListItem;
+
+        this.state.qfTile.properties = this.props.properties;
 
         return (
             <div className="content-tab-customizer-wrapper">
                 <div className="preview">
-                    {qfTile != null ? qfTile : <LoadingIcons.Spinner />}
+                    {this.state.qfTile != null ?
+                        tileFactory.createTile(this.state.qfTile, createQFListItem) :
+                        <LoadingIcons.Spinner/>}
                 </div>
                 <div className="customizer-userinput">
                     <label className="qfc-input-label"> Titel
-                    <input type="text" className="form-control inputfield" placeholder="Quick filter Name"></input>
-                    </label><br></br>
+                        <input type="text"
+                               defaultValue={this.state.qfTile.title}
+                               onChange={this.handleTitleChange}
+                               className="form-control inputfield"
+                               placeholder="Quick filter Name"/>
+                    </label>
                     <label className="qfc-input-label"> Color
-                    <input type="color" className="form-control"></input>
-                    </label><br></br>
+                        <input type="color"
+                               className="form-control"
+                               onChange={this.handleColourChange}
+                               defaultValue={this.props.qfTile.color}/>
+                    </label>
                     <label className="qfc-input-label"> Icon
-                    <input type="text" className="form-control inputfield" placeholder="Font awesome Icon"></input>
+                        <input type="text" className="form-control inputfield" placeholder="Font awesome Icon"/>
                     </label>
                 </div>
             </div>

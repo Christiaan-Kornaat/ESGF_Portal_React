@@ -21,13 +21,14 @@ import {SorterFactoryFactory} from "../../../sorters/sorter.factory.factory";
 import {filterComparator, propertyComparator} from "../../../sorters/comparators/esgf.comparator";
 import OptionsComponent from "../../expanded-property-finder/wrapper/xpf-list-options.component";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
+import {PreviewTab} from "../column/qfc-content-tab-preview.component";
+import {QFTileController} from "../../../controllers/localstorage/tiles/tileController-local";
 
 type QfcCustomiserState = ColumnedPageState & {
     filters: ESGFFilterDTO[],
     selectedFilter: ESGFFilterDTO,
     sortState: Map<SortState, SorterManager>,
-    columns: Map<ColumnPosition, PageColumnModel>,
-    selectedProperties: ESGFFilterPropertyDTO[]
+    columns: Map<ColumnPosition, PageColumnModel>
 };
 type QfcCustomiserProps = {
     className?: string,
@@ -55,8 +56,13 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
         return this.selectedFilter ? this.selectedFilter.properties : [];
     }
 
+    public get selectedProperties() {
+        return this._selectedPropertyManager.selected;
+    }
+
     public state: QfcCustomiserState;
 
+    private readonly _qfController: QFTileController;
     private readonly _filterProvider: ESGFFilterProvider;
     private readonly _selectedPropertyManager: SelectedPropertyManager;
 
@@ -79,6 +85,9 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
         this.update = this.update.bind(this);
 
         this._selectedPropertyManager = new SelectedPropertyManager();
+        this.props.qfTile.properties.forEach(property => this._selectedPropertyManager.select(property));
+
+        this._selectedPropertyManager.events.selectionChanged.subscribe(() => this.forceUpdate());
 
         this._searchFunctions = {
             filters: new ESGFFilterSearcher().search,
@@ -97,8 +106,7 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
                 [ColumnPosition.Right, {tabs: new Map(), id: ColumnPosition.Right, className: "SelectedProperties"}]
             ]),
             sortState: this.createSortState(),
-            selectedFilter: null,
-            selectedProperties: props.qfTile.properties || []
+            selectedFilter: null
         };
 
         this.initOptionComponents();
@@ -198,8 +206,13 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
                                                   headerButtons: [optionComponents.properties]
                                               }}/>;
 
+        let QuickFilterTab = <PreviewTab qfTile={this.props.qfTile}
+                                         qfController={this._qfController}
+                                         properties={this.selectedProperties}/>;
+
         this.state.columns.get(ColumnPosition.Left).tabs.set("Filters", FilterList);
         this.state.columns.get(ColumnPosition.Centre).tabs.set("Properties", PropertyList);
+        this.state.columns.get(ColumnPosition.Right).tabs.set("Quick Filter", QuickFilterTab);
 
         this.state.className += " XPF-Wrapper";
 

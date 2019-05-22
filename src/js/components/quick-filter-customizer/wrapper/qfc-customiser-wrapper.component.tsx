@@ -22,7 +22,6 @@ import {filterComparator, propertyComparator} from "../../../sorters/comparators
 import OptionsComponent from "../../expanded-property-finder/wrapper/xpf-list-options.component";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import {PreviewTab} from "../column/qfc-content-tab-preview.component";
-import {QFTileController} from "../../../controllers/localstorage/tiles/tileController-local";
 
 type QfcCustomiserState = ColumnedPageState & {
     filters: ESGFFilterDTO[],
@@ -33,7 +32,10 @@ type QfcCustomiserState = ColumnedPageState & {
 type QfcCustomiserProps = {
     className?: string,
     filterProvider: ESGFFilterProvider,
-    qfTile: QFFilterTileDTO
+    qfController,
+    qfTile: QFFilterTileDTO,
+    onSave: (QFFilterTileDTO) => void,
+    actionButtons: JSX.Element | JSX.Element[]
 };
 
 enum ColumnPosition {
@@ -62,7 +64,6 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
 
     public state: QfcCustomiserState;
 
-    private readonly _qfController: QFTileController;
     private readonly _filterProvider: ESGFFilterProvider;
     private readonly _selectedPropertyManager: SelectedPropertyManager;
 
@@ -87,7 +88,7 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
         this._selectedPropertyManager = new SelectedPropertyManager();
         this.props.qfTile.properties.forEach(property => this._selectedPropertyManager.select(property));
 
-        this._selectedPropertyManager.events.selectionChanged.subscribe(() => this.forceUpdate());
+        this._selectedPropertyManager.events.selectionChanged.subscribe(() => this.update());
 
         this._searchFunctions = {
             filters: new ESGFFilterSearcher().search,
@@ -207,7 +208,9 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
                                               }}/>;
 
         let QuickFilterTab = <PreviewTab qfTile={this.props.qfTile}
-                                         qfController={this._qfController}
+                                         qfController={this.props.qfController}
+                                         actionButtons={this.props.actionButtons}
+                                         onSave={this.props.onSave}
                                          properties={this.selectedProperties}/>;
 
         this.state.columns.get(ColumnPosition.Left).tabs.set("Filters", FilterList);

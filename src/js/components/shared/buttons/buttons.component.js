@@ -15,6 +15,28 @@ Buttons.Info = ({onClick}) =>
           onClick={onClick}> <i className="fas fa-info-circle"/>
 </span>;
 
+Buttons.Primary = ({title, onClick}) =>
+    <a key={"button-" + title}
+       onClick={onClick}>
+        <input className="btn btn-primary"
+               type="button"
+               value={title}/>
+    </a>;
+Buttons.Success = ({title, onClick}) =>
+    <a key={"button-" + title}
+       onClick={onClick}>
+        <input className="btn btn-success"
+               type="button"
+               value={title}/>
+    </a>;
+Buttons.Danger = ({title, onClick}) =>
+    <a key={"button" + title}
+       onClick={onClick}>
+        <input className="btn btn-danger"
+               type="button"
+               value={title}/>
+    </a>;
+
 /**
  *
  * @param {string}title

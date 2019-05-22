@@ -7,7 +7,7 @@ import TileFactory from "../../../model/factories/tile.factory";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 
-type PreviewTabProps = { qfController: QFTileController, qfTile: QFFilterTileDTO, properties: ESGFFilterPropertyDTO[], onSave?: (QFFilterTileDTO) => void };
+type PreviewTabProps = { qfController: QFTileController, qfTile: QFFilterTileDTO, properties: ESGFFilterPropertyDTO[], onSave?: (QFFilterTileDTO) => void, actionButtons?: JSX.Element[] | JSX.Element };
 
 export class PreviewTab extends Component<PreviewTabProps> {
     private readonly _tileController: QFTileController;//TODO IQFTileController
@@ -39,6 +39,18 @@ export class PreviewTab extends Component<PreviewTabProps> {
         let qfTile = this.props.qfTile;
 
         qfTile.title = event.target.value;
+
+        this.saveTile(qfTile);
+    }
+
+    componentWillReceiveProps({properties}: PreviewTabProps): void {
+        this.handlePropertiesChange(properties);
+    }
+
+    handlePropertiesChange(properties) {
+        let qfTile = this.props.qfTile;
+
+        qfTile.properties = properties;
 
         this.saveTile(qfTile);
     }
@@ -79,6 +91,7 @@ export class PreviewTab extends Component<PreviewTabProps> {
                     <label className="qfc-input-label"> Icon
                         <input type="text" className="form-control inputfield" placeholder="Font awesome Icon"/>
                     </label>
+                    {this.props.actionButtons ? this.props.actionButtons : null}
                 </div>
             </div>
         );

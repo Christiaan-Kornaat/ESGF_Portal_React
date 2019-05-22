@@ -1,17 +1,12 @@
 import React, {Component} from "react";
 import {Tab, Tabs} from "react-bootstrap";
-import PageColumnTab from "./page-column-tab.component";
 
-type PageColumnProps = { tabs: Map<string, PageColumnTab>, activeTab?: string, id: string, className?: string };
+type PageColumnProps = { tabs: Map<string, JSX.Element>, activeTab?: string, id: string, className?: string };
 
-export type PageColumnModel = { tabs: Map<string, PageColumnTab>, activeTab?: string, id: string, className?: string }
+export type PageColumnModel = { tabs: Map<string, JSX.Element>, activeTab?: string, id: string, className?: string }
 
 class PageColumn extends Component<PageColumnProps> {
-    get selectedTab() {
-        return this.state.tabs.get(this.state.activeTabName);
-    }
-
-    public state: { activeTabName: string, tabs: Map<string, PageColumnTab> };
+    public state: { activeTabName: string, tabs: Map<string, JSX.Element> };
 
     constructor(props: PageColumnProps) {
         super(props);
@@ -40,33 +35,31 @@ class PageColumn extends Component<PageColumnProps> {
      * @summary creates tab-component from PageColumnTab
      *
      * @param {string} title
-     * @param {Component} content
+     * @param {JSX.Element} element
      *
      * @return Component
      */
-    private createTab({title, content}: PageColumnTab) {
+    private createTab(title: string, element: JSX.Element) {
         return <Tab key={title}
                     className="centered-tab"
                     eventKey={title}
-                    title={title}>{content}</Tab>;
+                    title={title}>{element}</Tab>;
     };
 
     render() {
         let {activeTabName, tabs} = this.state;
 
-        let tabComponents = Array.from(tabs.values())
-                                 .map(tab => this.createTab(tab));
+        let tabComponents = Array.from(tabs.entries())
+                                 .map(([title, tab]) => this.createTab(title, tab));
 
         let handleSelect = selectedTab => {
             if (selectedTab === this.state.activeTabName) return;
 
-            this.selectedTab.emitDeselected();
             this.setState({activeTabName: selectedTab});
-            this.selectedTab.emitSelected();
         };
 
         return (
-            <div className={this.props.className ? this.props.className : ""}>
+            <div className={this.props.className || ""}>
                 <Tabs id={this.props.id}
                       className="nav-center"
                       activeKey={activeTabName}

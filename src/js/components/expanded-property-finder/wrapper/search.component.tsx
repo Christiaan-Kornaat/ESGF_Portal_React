@@ -1,7 +1,9 @@
 import * as React from "react";
 import {PureComponent} from "react";
 
-class SearchComponent extends PureComponent {
+type SearchComponentProps = { headerButtons: JSX.Element[], onSearch: (query: string) => void };
+
+class SearchComponent extends PureComponent<SearchComponentProps> {
 
     private readonly onSearch: Function;
 

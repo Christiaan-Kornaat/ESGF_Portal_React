@@ -1,12 +1,12 @@
 import * as PropTypes from "prop-types";
-import React, {PureComponent} from "react";
+import React, {Component} from "react";
 
-class HtmlList extends PureComponent {
+class HtmlList extends Component {
 
     constructor(props, tagName) {
         super(props);
 
-        let {items, createListItem} = props;
+        let {createListItem} = props;
 
         const TAG_WHITELIST = ["ol", "ul"];
 
@@ -16,24 +16,10 @@ class HtmlList extends PureComponent {
 
         this.tagName = tagName;
         this.createListItem = createListItem;
-
-        this.state = {
-            items: items
-        };
-    }
-
-    /**
-     *
-     * @param {Array}items
-     */
-    componentWillReceiveProps({items}) {
-        this.setState({
-            items: items
-        });
     }
 
     render() {
-        let {items} = this.state;
+        let {items} = this.props;
 
         let Tag = this.tagName;
 

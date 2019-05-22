@@ -4,19 +4,22 @@ import EsgfSearchManager from "../../../managers/esgf-search.manager";
 import ESGFDataNodeResultDTO from "../../../model/dto/esgf-data-node-result.dto";
 import ESGFSearchResultDTO from "../../../model/dto/esgf-search-result.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
+import EsgfSearchQuery from "../../../model/dto/esgf-search-query";
 
-export class ResultWrapper extends Component<{ searchResultsManager: EsgfSearchManager }> {
+type ResultWrapperProps = { searchResultsManager: EsgfSearchManager };
+
+export class ResultWrapper extends Component<ResultWrapperProps> {
     private _searchManager: EsgfSearchManager;
 
     state: { searchResult: ESGFSearchResultDTO, isLoading: boolean };
 
-    constructor(props) {
+    constructor(props: ResultWrapperProps) {
         super(props);
 
         let {searchResultsManager} = props;
 
         this.state = {
-            searchResult: null,
+            searchResult: searchResultsManager.currentResults,
             isLoading: false
         };
 
@@ -36,6 +39,10 @@ export class ResultWrapper extends Component<{ searchResultsManager: EsgfSearchM
 
     setResults(searchResult): void {
         this.setState(() => ({searchResult: searchResult, isLoading: false}));
+    }
+
+    componentDidMount(): void {
+        this._searchManager.search(new EsgfSearchQuery([]))
     }
 
     render() {

@@ -47,4 +47,29 @@ export default class ListItemFactoryFactory {
         </li>;
     }
 
+    /**
+     *
+     * @param {ESGFFilterPropertyDTO}item
+     * @return {Component}
+     * @constructor
+     */
+    createQuickFilterListItem(item: ESGFFilterPropertyDTO) {
+
+        let createSliceWord = (nLetters: number) => (word: string) => word.split("")
+                                                                          .slice(0, nLetters)
+                                                                          .join("");
+
+        let smallWord = createSliceWord(3)(item.filter.shortName);
+
+        return (
+            <li key={`${item.filter}-${item.name}`}
+                className="qf-property">
+                <span className="name">
+                    {item.name}
+                    <span className={"float-right text-right mr-1"}>({smallWord})</span>
+                </span>
+            </li>
+        );
+    };
+
 }

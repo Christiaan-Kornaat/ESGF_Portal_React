@@ -29,7 +29,7 @@ import AdagucUrlBuilder from "./data/services/esgf-search/adaguc-url.builder";
 import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
 import EsgfSearchManager from "./managers/esgf-search.manager";
 import EsgfSearchQuery from "./model/dto/esgf-search-query";
-import {QFCWrapper} from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
+import QFCWrapper from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
 
 interface AppEnvironment {
     FilterService: any,

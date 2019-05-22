@@ -192,7 +192,8 @@ class App extends Component {
 
         let QS = <QFWrapper selectionManager={this.selectedPropertyManager}
                             qfProvider={this.tileProvider}
-                            qfManager={this.quickFilterManager}/>;
+                            filterProvider={this.filterProvider}
+                            />;
 
         let XPF = <XPFWrapper filterProvider={this.filterProvider}
                               selectedPropertyManager={this.selectedPropertyManager}/>;

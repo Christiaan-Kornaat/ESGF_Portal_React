@@ -10,23 +10,30 @@ import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import TileFactory from "../../../model/factories/tile.factory";
+import { QFTileController } from "../../../controllers/localstorage/tiles/tileController-local";
+import { ESGFFilterProvider } from "../../../data/providers/esgf-filter/esgf-filter.provider";
 
 
-export class QFWrapper extends Component<{ selectionManager: any, qfManager: any, qfProvider: any }> {
+export class QFWrapper extends Component<{ selectionManager: any, filterProvider: any, qfProvider: any }> {
 
     private readonly _selectedPropertyManager: SelectedPropertyManager;
-    private readonly _quickFilterManager: IQuickFilterManager;
     private readonly _quickFilterProvider: QFTileProvider;
+    private readonly _filterProvider: ESGFFilterProvider;
+    private readonly _tileController: QFTileController;//TODO IQFTileController
+
 
     state: { QFSidebarShow: boolean, qfTileModels: Array<QFFilterTileDTO> };
 
     constructor(props) {
         super(props);
 
-        let {selectionManager, qfManager, qfProvider} = props;
+        let {selectionManager,filterProvider, qfProvider} = props;
         this._selectedPropertyManager = selectionManager;
-        this._quickFilterManager = qfManager;
         this._quickFilterProvider = qfProvider;
+        this._filterProvider = filterProvider;
+
+        this._tileController = new QFTileController(this._filterProvider);
+
 
         this.state = {
             QFSidebarShow: false,
@@ -34,6 +41,7 @@ export class QFWrapper extends Component<{ selectionManager: any, qfManager: any
         };
 
         this.togglePropertySelected = this.togglePropertySelected.bind(this);
+        this.update = this.update.bind(this);
         this.quickFilterListItemFactory = this.quickFilterListItemFactory.bind(this);
         this.openNav = this.openNav.bind(this);
         this.closeNav = this.closeNav.bind(this);
@@ -91,12 +99,14 @@ export class QFWrapper extends Component<{ selectionManager: any, qfManager: any
         );
     };
 
-    private update() {
-        this._quickFilterProvider.provide()
-            .then(qfTileModels => this.setState({qfTileModels: qfTileModels}));
+    private async update() {
+        let qfTileModels = await Promise.all(this._tileController.getTiles())
+        this.setState({ qfTileModels: qfTileModels });
     }
-
     
+    componentDidMount(): void {
+        this.update()
+    }
 
     createTiles(qfTileModels: QFFilterTileDTO[]): JSX.Element[] {
         //TODO get with dependency injection
@@ -108,10 +118,6 @@ export class QFWrapper extends Component<{ selectionManager: any, qfManager: any
             return tileFactory.createTile(QFFilterTileDTO, this.quickFilterListItemFactory);
             }
         );
-    }
-
-    componentDidMount(): void {
-        this.update();
     }
 
     render() {

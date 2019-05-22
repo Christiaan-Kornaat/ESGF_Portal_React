@@ -197,7 +197,7 @@ class App extends Component {
 
         let XPF = <XPFWrapper filterProvider={this.filterProvider}
                               selectedPropertyManager={this.selectedPropertyManager}/>;
-
+               
 
         let QSC = <QFCWrapper 
             qfProvider={this.tileProvider}

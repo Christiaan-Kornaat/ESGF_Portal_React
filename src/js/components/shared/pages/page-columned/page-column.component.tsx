@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Tab, Tabs} from "react-bootstrap";
 
-type PageColumnProps = { tabs: Map<string, JSX.Element>, activeTab?: string, id: string, className?: string };
+type PageColumnProps = { tabs: Map<string, JSX.Element>, onTabSelect: (tabName) => void, activeTab?: string, id: string, className?: string };
 
 export type PageColumnModel = { tabs: Map<string, JSX.Element>, activeTab?: string, id: string, className?: string }
 
@@ -48,6 +48,7 @@ class PageColumn extends Component<PageColumnProps> {
 
     render() {
         let {activeTabName, tabs} = this.state;
+        let {onTabSelect} = this.props;
 
         let tabComponents = Array.from(tabs.entries())
                                  .map(([title, tab]) => this.createTab(title, tab));
@@ -55,6 +56,7 @@ class PageColumn extends Component<PageColumnProps> {
         let handleSelect = selectedTab => {
             if (selectedTab === this.state.activeTabName) return;
 
+            if (onTabSelect) onTabSelect(selectedTab);
             this.setState({activeTabName: selectedTab});
         };
 

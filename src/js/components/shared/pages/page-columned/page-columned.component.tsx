@@ -23,14 +23,15 @@ export default class ColumnedPage<P extends ColumnedPageProps = ColumnedPageProp
         this.selectTab = this.selectTab.bind(this);
     }
 
-    private createColumn({id, tabs, className, activeTab}: PageColumnModel): JSX.Element {
+    private createColumn({id, tabs, className, activeTab}: PageColumnModel, onTabSelect: (tabName: string) => void): JSX.Element {
         if (!activeTab) activeTab = null;
 
         return <PageColumn id={id}
                            key={id}
                            tabs={tabs}
                            className={className}
-                           activeTab={activeTab}/>;
+                           activeTab={activeTab}
+                           onTabSelect={onTabSelect}/>;
     }
 
     public columnExists(columnName): boolean {
@@ -75,8 +76,11 @@ export default class ColumnedPage<P extends ColumnedPageProps = ColumnedPageProp
     render() {
         let {columns, className} = this.state;
 
-        const values = columns.values();
-        let columnComponents = Array.from(values).map(model => this.createColumn(model));
+        let createOnTabSelect = (column) => (tabName: string) => this.selectTab(column, tabName);
+
+        const values = columns.entries();
+        let columnComponents = Array.from(values)
+                                    .map(([columnName, model]) => this.createColumn(model, createOnTabSelect(columnName)));
 
         return (
             <section className={className}>

@@ -162,14 +162,14 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
                                                                                                    onToggle={createInvertSort(columnName)}/>;
         let createSortButton = createSortButtonFactory(this.createInvertSort);
         this._optionComponents = {
-            filters: <OptionsComponent sortButtons={[createSortButton(SortState.Filter)]}/>,
-            presets: <OptionsComponent sortButtons={[createSortButton(SortState.Preset)]}/>,
-            properties: <OptionsComponent sortButtons={[createSortButton(SortState.Property)]}
+            filters: <OptionsComponent key={"filters"} sortButtons={[createSortButton(SortState.Filter)]}/>,
+            presets: <OptionsComponent key={"presets"} sortButtons={[createSortButton(SortState.Preset)]}/>,
+            properties: <OptionsComponent key={"properties"} sortButtons={[createSortButton(SortState.Property)]}
                                           optionButtons={{
                                               "Select all": createSetSelected(true, () => this.properties),
                                               "Deselect all": createSetSelected(false, () => this.properties)
                                           }}/>,
-            propertiesSelected: <OptionsComponent sortButtons={[createSortButton(SortState.SelectedProperty)]}
+            propertiesSelected: <OptionsComponent key={"propertiesSelected"} sortButtons={[createSortButton(SortState.SelectedProperty)]}
                                                   optionButtons={{
                                                       "Deselect all": createSetSelected(false, () => this._selectedPropertyManager.selected)
                                                   }}/>
@@ -260,26 +260,6 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         this.state.className += " XPF-Wrapper";
 
         return super.render();
-        //             (
-        //     <section className='XPF-Wrapper'>
-        //         <XpfColumn className="Filters"
-        //                    key={"Filters"}
-        //                    tabs={{"Filters": FilterList, "Presets": PresetList}}
-        //                    activeTab={selectedTabs.filterColumn}
-        //                    onSelect={createClearSelected("filterColumn")}/>
-        //         <XpfColumn className="Properties"
-        //                    key={"Properties"}
-        //                    tabs={{"Properties": PropertyList}}
-        //                    activeTab={selectedTabs.propertyColumn}
-        //                    onSelect={createClearSelected("propertyColumn")}/>
-        //         <XpfColumn className="SelectedProperties"
-        //                    key={"SelectedProperties"}
-        //                    tabs={propertyTabs}
-        //                    activeTab={selectedTabs.selectedColumn}
-        //                    onSelect={createClearSelected("selectedColumn")}/>
-        //     </section>
-        // );
-
     }
 
     createInvertSort(columnName) {

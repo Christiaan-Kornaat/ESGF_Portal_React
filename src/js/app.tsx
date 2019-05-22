@@ -208,7 +208,7 @@ class App extends Component {
             <div>
                 <ESGFSearchPortal
                     tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QSC}}/>
-                <ResultWrapper searchResultsManager={searchManager}/>
+                <ResultWrapper searchResultsManager={this.searchManager}/>
             </div>
         );
     }

@@ -382,3 +382,38 @@ body{
   }
 
 }
+
+.content-tab-customizer-wrapper{
+  @extend .h-100, .d-flex, .justify-content-center, .flex-wrap ;
+  width: 300px;
+  padding: 10px;
+  background-color: white;
+  
+
+    .qf-tile {
+      @extend .p-0, .shadow;
+      $background-colour: #E0EBEB;
+      width: 200px;
+      height: 215px;
+      margin: auto 10px;
+      background-color: $background-colour;
+
+      .qf-tile-header {
+        @extend .w-100, .h5, .text-center;
+        height: 32px;
+        line-height: 32px;
+        color: white;
+      }
+
+      &:hover {
+        background-color: darken($color: $background-colour, $amount: 5);
+      }
+    }
+
+    .customizer-userinput{
+      padding: 10px;
+      .qfc-input-label{
+        width: 100%;
+      }
+    }
+}

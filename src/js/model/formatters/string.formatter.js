@@ -1,5 +1,3 @@
-import {firstToUpper} from "../../util/string.util";
-
 class StringFormatter {
 
     /**
@@ -26,9 +24,7 @@ class StringFormatter {
          * @param {string} string
          * @return {string}
          */
-        let formatString = string =>
-            firstToUpper(string)
-                .replace(/_/g, " ");
+        let formatString = string => string.replace(/_/g, " ");
 
         return formatString(string);
     };

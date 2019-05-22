@@ -1,5 +1,6 @@
-import {firstToUpper} from "../../util/string.util";
-
+/**
+ * @deprecated use (or make) ViewModel instead
+ */
 class ESGFFilterDTOFormatter {
 
     /**
@@ -22,8 +23,7 @@ class ESGFFilterDTOFormatter {
          * @param {string} string
          * @return {string}
          */
-        let formatString = string => firstToUpper(string)
-            .replace(/_/g, " ");
+        let formatString = string => string.replace(/_/g, " ");
 
         return {
             shortName: formatString(shortName)

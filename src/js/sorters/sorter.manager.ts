@@ -1,9 +1,12 @@
 export default class SorterManager {
 
+    sorters;
+    ascending;
+    currentSorterKey;
+
     /**
      *
-     * @param {Map<String,
-     * function(function(boolean): function(Array): Array)>?} sorterFactoryMap
+     * @param {Map<String, function( (boolean) => function(Array): Array)>?} sorterFactoryMap
      * @param {string?}defaultKey
      * @param {boolean?} defaultAscending
      */

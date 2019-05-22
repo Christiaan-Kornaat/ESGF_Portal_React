@@ -1,13 +1,14 @@
-import React, {Component} from 'react';
+import * as PropTypes from "prop-types";
+import React, {Component} from "react";
 
 class HtmlList extends Component {
 
     constructor(props, tagName) {
         super(props);
 
-        let {items, createListItem} = props;
+        let {createListItem} = props;
 
-        let TAG_WHITELIST = ["ol", "ul"];
+        const TAG_WHITELIST = ["ol", "ul"];
 
         if (!TAG_WHITELIST.includes(tagName)) {
             throw new Error("Invalid argument props.tagName. Must be one of " + TAG_WHITELIST.join(", "));
@@ -15,20 +16,10 @@ class HtmlList extends Component {
 
         this.tagName = tagName;
         this.createListItem = createListItem;
-
-        this.state = {
-            items: items
-        }
-    }
-
-    componentWillReceiveProps({items}) {
-        this.setState({
-            items: items
-        })
     }
 
     render() {
-        let {items} = this.state;
+        let {items} = this.props;
 
         let Tag = this.tagName;
 
@@ -41,5 +32,10 @@ class HtmlList extends Component {
         );
     }
 }
+
+HtmlList.propTypes = {
+    items: PropTypes.array.isRequired,
+    createListItem: PropTypes.func.isRequired
+};
 
 export default HtmlList;

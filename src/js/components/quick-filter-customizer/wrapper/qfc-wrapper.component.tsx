@@ -141,6 +141,7 @@ export default class QFCWrapper extends Component<QFCProps> {
             <Tab title={"Overview"}
                  eventKey={QfcTab.Overview}
                  key={QfcTab.Overview}
+                 transition={false}
                  tabClassName={""}>
                 <div className="qf-main-container">
                     <div className="tiles">

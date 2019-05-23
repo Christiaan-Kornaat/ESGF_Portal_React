@@ -32,6 +32,7 @@ export class ESGFSearchPortal extends Component {
                                   .map(name => (
                                       <Tab key={name}
                                            eventKey={name}
+                                           transition={false}
                                            title={name}>
                                           {tabs[name]}
                                       </Tab>

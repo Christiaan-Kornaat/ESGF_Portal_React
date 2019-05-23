@@ -56,6 +56,7 @@ body{
     margin: 0 auto;
     background-color: white;
     height: 500px;
+    width: 100%;
 
     .dropdown-item{
       &:hover{
@@ -226,6 +227,7 @@ body{
     margin: 0 auto;
     background-color: white;
     height: 500px;
+    width: 100%;
     
     .qf-root {
       position: fixed;
@@ -277,8 +279,8 @@ body{
             right: 0;
             height: 215px;
             width: 200px;
-            margin: 0 6px;
-            opacity: 0;
+            margin: 0 10px;
+            opacity: 1;
             transition: .5s ease;
           }
 
@@ -381,4 +383,63 @@ body{
     }
   }
 
+}
+
+.content-tab-customizer-wrapper{
+  @extend .h-100, .d-flex, .justify-content-center, .flex-wrap ;
+  width: 300px;
+  padding: 10px;
+  background-color: white;
+  
+
+    .qf-tile {
+      @extend .p-0, .shadow;
+      $background-colour: #E0EBEB;
+      width: 200px;
+      height: 215px;
+      margin: auto 10px;
+      background-color: $background-colour;
+
+      .qf-tile-header {
+        @extend .w-100, .h5, .text-center;
+        height: 32px;
+        line-height: 32px;
+        color: white;
+      }
+
+      &:hover {
+        background-color: darken($color: $background-colour, $amount: 5);
+      }
+    }
+
+    .customizer-userinput{
+      margin-top: 10px;
+      .qfc-input-label-100{
+        width: 100%;
+        padding: 1px;
+      }
+      .qfc-input-label-75{
+        width: 75%;
+        padding: 1px;
+      }
+      .qfc-input-label-25{
+        width: 25%;
+        padding: 1px;
+      }
+
+      .fas .fa-trash{
+        color: $primary-blue;
+        &:hover{
+          color: red;
+        }
+      }
+
+      .button-container{
+        float: right;
+
+        .btn.btn-primary{
+          margin: 3px;
+        }
+      }
+    }
 }

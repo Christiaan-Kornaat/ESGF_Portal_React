@@ -29,7 +29,7 @@ import AdagucUrlBuilder from "./data/services/esgf-search/adaguc-url.builder";
 import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
 import EsgfSearchManager from "./managers/esgf-search.manager";
 import EsgfSearchQuery from "./model/dto/esgf-search-query";
-import {QFCWrapper} from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
+import QFCWrapper from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
 
 interface AppEnvironment {
     FilterService: any,
@@ -206,7 +206,7 @@ class App extends Component {
         return (
             <div>
                 <ESGFSearchPortal
-                    tabs={{"Quick select": QS, "Extended property finder": XPF, "Customize quick filters": QSC}}/>
+                    tabs={{"Quick filter": QS, "Extended property finder": XPF, "Quick filter customizer": QSC}}/>
                 <ResultWrapper searchResultsManager={this.searchManager}/>
             </div>
         );

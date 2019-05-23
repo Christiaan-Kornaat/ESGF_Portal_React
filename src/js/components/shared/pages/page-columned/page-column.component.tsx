@@ -43,6 +43,7 @@ class PageColumn extends Component<PageColumnProps> {
         return <Tab key={title}
                     className="centered-tab"
                     eventKey={title}
+                    transition={false}
                     title={title}>{element}</Tab>;
     };
 

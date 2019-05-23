@@ -43,6 +43,7 @@ export class ESGFSearchPortal extends Component {
         return (
             <Tabs activeKey={key}
                   mountOnEnter={true}
+                  unmountOnExit={true}
                   onSelect={newKey => this.setState({prevKey: key, key: newKey})}>
                 {tabComponents}
                 <Tab tabClassName='tab-hidden' eventKey={key === "CLR" ? prevKey : "CLR"} title={<Arrow/>}/>

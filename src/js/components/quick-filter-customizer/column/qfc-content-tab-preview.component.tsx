@@ -7,11 +7,9 @@ import TileFactory from "../../../model/factories/tile.factory";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 
-type PreviewTabProps = { qfController: QFTileController, qfTile: QFFilterTileDTO, properties: ESGFFilterPropertyDTO[], onSave?: (QFFilterTileDTO) => void, actionButtons?: JSX.Element[] | JSX.Element };
+type PreviewTabProps = { qfTile: QFFilterTileDTO, properties: ESGFFilterPropertyDTO[], onSave?: (QFFilterTileDTO) => void, actionButtons?: JSX.Element[] | JSX.Element, deselectProperty: (property: ESGFFilterPropertyDTO)=> void };
 
 export class PreviewTab extends Component<PreviewTabProps> {
-    private readonly _tileController: QFTileController;//TODO IQFTileController
-
     state: { qfTile };
 
     constructor(props: PreviewTabProps) {
@@ -19,9 +17,6 @@ export class PreviewTab extends Component<PreviewTabProps> {
 
         this.handleColourChange = this.handleColourChange.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
-
-        let {qfController} = props;
-        this._tileController = qfController;
 
         this.state = {
             qfTile: props.qfTile
@@ -61,9 +56,15 @@ export class PreviewTab extends Component<PreviewTabProps> {
     }
 
     render() {
+        let {deselectProperty} = this.props;
+
+        let handleDeselectProperty = (item) => {
+            deselectProperty(item);
+            this.saveTile(this.props.qfTile);
+        }
 
         let tileFactory = new TileFactory();
-        let createQFListItem = new ListItemFactoryFactory().createQuickFilterListItem;
+        let createQFListItem = (item) => new ListItemFactoryFactory().createQFCTileListItem(item, handleDeselectProperty);
 
         this.state.qfTile.properties = this.props.properties;
 

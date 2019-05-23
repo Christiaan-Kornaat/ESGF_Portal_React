@@ -84,6 +84,7 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
         this.createInvertSort = this.createInvertSort.bind(this);
         this.sortFunctions.sortState = this.sortFunctions.sortState.bind(this);
         this.update = this.update.bind(this);
+        this.deselectFilterProperty = this.deselectFilterProperty.bind(this);
 
         this._selectedPropertyManager = new SelectedPropertyManager();
         this.props.qfTile.properties.forEach(property => this._selectedPropertyManager.select(property));
@@ -170,6 +171,10 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
         this.setState({selectedFilter: filter});
     }
 
+    deselectFilterProperty(property) {
+        this._selectedPropertyManager.deselect(property);
+    }
+
     componentDidMount(): void {
         //FIXME find better way of getting initial data
         this._filterProvider.provideMany()
@@ -208,9 +213,9 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
                                               }}/>;
 
         let QuickFilterTab = <PreviewTab qfTile={this.props.qfTile}
-                                         qfController={this.props.qfController}
                                          actionButtons={this.props.actionButtons}
                                          onSave={this.props.onSave}
+                                         deselectProperty={this.deselectFilterProperty}
                                          properties={this.selectedProperties}/>;
 
         this.state.columns.get(ColumnPosition.Left).tabs.set("Filters", FilterList);

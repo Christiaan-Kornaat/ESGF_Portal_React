@@ -425,6 +425,13 @@ body{
         padding: 1px;
       }
 
+      .fas .fa-trash{
+        color: $primary-blue;
+        &:hover{
+          color: red;
+        }
+      }
+
       .button-container{
         float: right;
 

@@ -56,6 +56,7 @@ body{
     margin: 0 auto;
     background-color: white;
     height: 500px;
+    width: 100%;
 
     .dropdown-item{
       &:hover{
@@ -226,6 +227,7 @@ body{
     margin: 0 auto;
     background-color: white;
     height: 500px;
+    width: 100%;
     
     .qf-root {
       position: fixed;
@@ -278,7 +280,7 @@ body{
             height: 215px;
             width: 200px;
             margin: 0 10px;
-            opacity: 0;
+            opacity: 1;
             transition: .5s ease;
           }
 

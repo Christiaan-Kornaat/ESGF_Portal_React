@@ -20,13 +20,7 @@ type QFCProps =
 type QFCState = {
     qfTileModels: QFFilterTileDTO[],
     currentCustomTile,
-    currentSelectedTab: QfcTab
 } & ColumnedPageProps;
-
-enum QfcTab {
-    Overview = "overview",
-    Customizer = "customizer"
-}
 
 export default class QFCWrapper extends Component<QFCProps> {
 
@@ -39,7 +33,6 @@ export default class QFCWrapper extends Component<QFCProps> {
     constructor(props) {
         super(props);
 
-        this.selectTab = this.selectTab.bind(this);
         this.saveTile = this.saveTile.bind(this);
         this.addTile = this.addTile.bind(this);
 
@@ -52,10 +45,10 @@ export default class QFCWrapper extends Component<QFCProps> {
         this.state = {
             qfTileModels: [],
             currentCustomTile: null,
-            currentSelectedTab: QfcTab.Overview
         };
 
         this.update = this.update.bind(this);
+        this.handleBackClick = this.handleBackClick.bind(this);
     }
 
     private async update() {
@@ -67,13 +60,8 @@ export default class QFCWrapper extends Component<QFCProps> {
         this.update();
     }
 
-    selectTab(tabName: QfcTab) {
-        this.setState({currentSelectedTab: tabName});
-    }
-
     openCustomiser(qfTile) {
-        this.state.currentCustomTile = qfTile;
-        this.selectTab(QfcTab.Customizer);
+        this.setState({currentCustomTile: qfTile});
     };
 
     createTiles(qfTileModels: QFFilterTileDTO[]): JSX.Element[] {
@@ -101,8 +89,6 @@ export default class QFCWrapper extends Component<QFCProps> {
         this.saveTile(tile);
 
         window.alert("tile saved");
-
-        this.selectTab(QfcTab.Overview);
     }
 
     async saveTile(tile) {
@@ -113,8 +99,14 @@ export default class QFCWrapper extends Component<QFCProps> {
 
     handleDeleteClick(tile: QFFilterTileDTO) {
         if (!window.confirm(`Delete tile ${tile.title}?`)) return;
-
         this.deleteTile(tile);
+        this.handleBackClick();
+    }
+
+    handleBackClick(){
+        this.setState({
+            currentCustomTile: null
+        });
     }
 
     deleteTile(tile) {
@@ -123,7 +115,6 @@ export default class QFCWrapper extends Component<QFCProps> {
         this._tileController.setTiles(tiles);
 
         this.setState({qfTileModels: tiles});
-        this.selectTab(QfcTab.Overview);
     }
 
 
@@ -137,47 +128,31 @@ export default class QFCWrapper extends Component<QFCProps> {
         let iconTileAdd = new QFFilterTileDTO("Add Quick Filter", "#3f3f3f", "fas fa-plus-circle", []);
         //TODO ergens anders? is kort maar niet mooi
 
-        let tabs = [
-            <Tab title={"Overview"}
-                 eventKey={QfcTab.Overview}
-                 key={QfcTab.Overview}
-                 transition={false}
-                 tabClassName={""}>
+        let tab = 
                 <div className="qf-main-container">
                     <div className="tiles">
                         {hasTiles ? qfTiles : <LoadingIcons.Spinner/>}
                         {(hasTiles && !hasMaxTiles)? tileFactory.createIconTile(iconTileAdd, this.addTile) : null}
                     </div>
-                </div>
-            </Tab>
-
-        ];
+                </div>;
 
         if (currentCustomTile) {
+            //<Buttons.Success title={"Save"} onClick={() => this.handleSaveClick(currentCustomTile)}/>
             let actionButtons = [
-                <Buttons.Primary title={"Back"} onClick={() => this.handleSaveClick(currentCustomTile)}/>,
+                <Buttons.Primary title={"Go back"} onClick={() => this.handleBackClick()}/>,
                 <Buttons.Danger title={"Delete"} onClick={() => this.handleDeleteClick(currentCustomTile)}/>
             ];
-
-            tabs.push(<Tab title={"Custom Tile"}
-                           eventKey={QfcTab.Customizer}
-                           key={QfcTab.Customizer}>
-                <QfcCustomiserWrapper qfTile={currentCustomTile}
+            
+            tab = <QfcCustomiserWrapper qfTile={currentCustomTile}
                                       onSave={this.saveTile}
                                       actionButtons={actionButtons}
                                       qfController={this._tileController}
-                                      filterProvider={this._filterProvider}/>
-            </Tab>);
+                                      filterProvider={this._filterProvider}/>;
         }
 
         return (
             <section className="qf-wrapper">
-                <Tabs id={"qfc-tabs"}
-                      mountOnEnter={true}
-                      onSelect={this.selectTab}
-                      activeKey={this.state.currentSelectedTab}>
-                    {tabs}
-                </Tabs>
+                    {tab}
             </section>
         );
     }

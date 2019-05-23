@@ -277,7 +277,7 @@ body{
             right: 0;
             height: 215px;
             width: 200px;
-            margin: 0 6px;
+            margin: 0 10px;
             opacity: 0;
             transition: .5s ease;
           }
@@ -411,9 +411,18 @@ body{
     }
 
     .customizer-userinput{
-      padding: 10px;
-      .qfc-input-label{
+      margin-top: 10px;
+      .qfc-input-label-100{
         width: 100%;
+        padding: 1px;
+      }
+      .qfc-input-label-75{
+        width: 75%;
+        padding: 1px;
+      }
+      .qfc-input-label-25{
+        width: 25%;
+        padding: 1px;
       }
     }
 }

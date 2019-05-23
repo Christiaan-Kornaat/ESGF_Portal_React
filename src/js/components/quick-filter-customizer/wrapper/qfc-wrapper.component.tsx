@@ -132,19 +132,21 @@ export default class QFCWrapper extends Component<QFCProps> {
 
         let qfTiles = this.createTiles(qfTileModels);
         let hasTiles = qfTiles.length > 0;
+        let hasMaxTiles = qfTiles.length >= 8;
         let tileFactory = new TileFactory();
-        let iconTileAdd = new QFFilterTileDTO("test", "#3f3f3f", "fas fa-plus-circle", []);
+        let iconTileAdd = new QFFilterTileDTO("Add Quick Filter", "#3f3f3f", "fas fa-plus-circle", []);
         //TODO ergens anders? is kort maar niet mooi
 
         let tabs = [
             <Tab title={"Overview"}
                  eventKey={QfcTab.Overview}
                  key={QfcTab.Overview}
+                 transition={false}
                  tabClassName={""}>
                 <div className="qf-main-container">
                     <div className="tiles">
                         {hasTiles ? qfTiles : <LoadingIcons.Spinner/>}
-                        {hasTiles ? tileFactory.createIconTile(iconTileAdd, this.addTile) : null}
+                        {(hasTiles && !hasMaxTiles)? tileFactory.createIconTile(iconTileAdd, this.addTile) : null}
                     </div>
                 </div>
             </Tab>

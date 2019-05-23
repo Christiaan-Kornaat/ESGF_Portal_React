@@ -4,7 +4,7 @@ namespace Overlays {
 
     export namespace QFTiles { 
         export function PlusIcon() { 
-            return <div className="h-100"><i className="fa fa-pencil-alt overlayIcon" aria-hidden="true"></i></div>;
+            return <div className="h-100"><i className="fa fa-pencil-alt overlayIcon" aria-hidden="true"/></div>;
         }
     }
 }

@@ -75,14 +75,14 @@ export class PreviewTab extends Component<PreviewTabProps> {
                         <LoadingIcons.Spinner/>}
                 </div>
                 <div className="customizer-userinput">
-                    <label className="qfc-input-label-100"> Titel
+                    <label className="qfc-input-label-100"> Title
                         <input type="text"
                                defaultValue={this.state.qfTile.title}
                                onChange={this.handleTitleChange}
                                className="form-control inputfield"
                                placeholder="Quick filter Name"/>
                     </label>
-                    <label className="qfc-input-label-25"> Color
+                    <label className="qfc-input-label-25"> Color 
                         <input type="color"
                                className="form-control"
                                onChange={this.handleColourChange}
@@ -91,7 +91,9 @@ export class PreviewTab extends Component<PreviewTabProps> {
                     <label className="qfc-input-label-75"> Icon
                         <input type="text" className="form-control inputfield" placeholder="Font awesome Icon"/>
                     </label>
-                    {this.props.actionButtons ? this.props.actionButtons : null}
+                    <div className="button-container">
+                        {this.props.actionButtons ? this.props.actionButtons : null}
+                    </div>
                 </div>
             </div>
         );

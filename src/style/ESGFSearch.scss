@@ -424,5 +424,13 @@ body{
         width: 25%;
         padding: 1px;
       }
+
+      .button-container{
+        float: right;
+
+        .btn.btn-primary{
+          margin: 3px;
+        }
+      }
     }
 }

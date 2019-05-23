@@ -155,7 +155,7 @@ export default class QFCWrapper extends Component<QFCProps> {
 
         if (currentCustomTile) {
             let actionButtons = [
-                <Buttons.Success title={"Save"} onClick={() => this.handleSaveClick(currentCustomTile)}/>,
+                <Buttons.Primary title={"Back"} onClick={() => this.handleSaveClick(currentCustomTile)}/>,
                 <Buttons.Danger title={"Delete"} onClick={() => this.handleDeleteClick(currentCustomTile)}/>
             ];
 

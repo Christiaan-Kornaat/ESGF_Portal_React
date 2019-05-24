@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Component} from "react";
 
-class HtmlList<T = any> extends Component<{ items: T[], createListItem: (T) => JSX.Element, className: string }> {
+class HtmlList<T = any> extends Component<{ items: T[], createListItem: (T) => any, className?: string }> {
 
     state: { items: T[] };
     private readonly _tagName: any;
@@ -10,7 +10,7 @@ class HtmlList<T = any> extends Component<{ items: T[], createListItem: (T) => J
     constructor(props, tagName) {
         super(props);
 
-        let {createListItem} = props;
+        let {items, createListItem} = props;
 
         const TAG_WHITELIST = ["ol", "ul"];
 
@@ -20,14 +20,28 @@ class HtmlList<T = any> extends Component<{ items: T[], createListItem: (T) => J
 
         this._tagName = tagName;
         this._createListItem = createListItem;
+
+        this.state = {
+            items: items
+        };
     }
 
     shouldComponentUpdate({items}: Readonly<{ items: T[]; createListItem: (T) => any; className: string }>, nextState: Readonly<{}>, nextContext: any): boolean {
         return !(items.length === 0 && items.length === this.state.items.length);
     }
 
+    /**
+     *
+     * @param {Array}items
+     */
+    componentWillReceiveProps({items}) {
+        this.setState({
+            items: items
+        });
+    }
+
     render() {
-        let {items} = this.props;
+        let {items} = this.state;
 
         let Tag = this._tagName;
 

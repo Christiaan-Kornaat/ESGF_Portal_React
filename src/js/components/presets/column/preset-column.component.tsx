@@ -5,16 +5,16 @@ import ListItemFactoryFactory from "../../../model/factories/list-item-factory.f
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import { PresetDTO } from "../../../model/dto/esgf-preset.dto";
 
-type PreviewTabProps = { presets: PresetDTO, properties: ESGFFilterPropertyDTO[], onSave?: (PresetDTO) => void, actionButtons?: JSX.Element[] | JSX.Element, deselectProperty: (property: ESGFFilterPropertyDTO) => void };
+type PreviewTabProps = { preset: PresetDTO, properties: ESGFFilterPropertyDTO[], onSave?: (PresetDTO) => void, actionButtons?: JSX.Element[] | JSX.Element, deselectProperty: (property: ESGFFilterPropertyDTO) => void };
 
 export class PresetsPreviewTab extends Component<PreviewTabProps> {
-    state: { presets };
+    state: { preset };
 
     constructor(props: PreviewTabProps) {
         super(props);
 
         this.state = {
-            presets: props.presets
+            preset: props.preset
         };
     }
 
@@ -23,9 +23,17 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
     }
 
     handlePropertiesChange(properties) {
-        let preset = this.props.presets;
+        let preset = this.props.preset;
 
         preset.properties = properties;
+
+        this.savePreset(preset);
+    }
+
+    handleTitleChange(event) {
+        let preset = this.props.preset;
+
+        preset.title = event.target.value;
 
         this.savePreset(preset);
     }
@@ -40,25 +48,25 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
 
         let handleDeselectProperty = (item) => {
             deselectProperty(item);
-            this.savePreset(this.props.presets);
+            this.savePreset(this.props.preset);
         };
 
         let createQFListItem = (item) => new ListItemFactoryFactory().createQFCTileListItem(item, handleDeselectProperty);
 
-        this.state.presets.properties = this.props.properties;
+        this.state.preset.properties = this.props.properties;
 
         return (
             <div className="content-tab-customizer-wrapper">
                 <div className="preview">
-                    {this.state.presets != null ?
+                    {this.state.preset != null ?
                         createQFListItem :
                         <LoadingIcons.Spinner />}
                 </div>
                 <div className="customizer-userinput">
                     <label className="qfc-input-label-100"> Title
                         <input type="text"
-                            defaultValue={this.state.presets.title}
-                            // onChange={this.handleTitleChange}
+                            defaultValue={this.state.preset.title}
+                            onChange={this.handleTitleChange}
                             className="form-control inputfield"
                             placeholder="Quick filter Name" />
                     </label>

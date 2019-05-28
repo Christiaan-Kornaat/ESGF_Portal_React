@@ -33,7 +33,7 @@ type PresetCustomiserProps = {
     className?: string,
     filterProvider: ESGFFilterProvider,
     qfController,
-    presets: PresetDTO,
+    preset: PresetDTO,
     onSave: (PresetDTO) => void,
     actionButtons: JSX.Element | JSX.Element[]
 };
@@ -87,7 +87,7 @@ export default class PresetCustomiserWrapper extends ColumnedPage<PresetCustomis
         this.deselectFilterProperty = this.deselectFilterProperty.bind(this);
 
         this._selectedPropertyManager = new SelectedPropertyManager();
-        this.props.presets.properties.forEach(property => this._selectedPropertyManager.select(property));
+        this.props.preset.properties.forEach(property => this._selectedPropertyManager.select(property));
 
         this._selectedPropertyManager.events.selectionChanged.subscribe(() => this.update());
 
@@ -212,7 +212,7 @@ export default class PresetCustomiserWrapper extends ColumnedPage<PresetCustomis
                 headerButtons: [optionComponents.properties]
             }} />;
 
-        let PresetTab = <PresetsPreviewTab presets={this.props.presets}
+        let PresetTab = <PresetsPreviewTab preset={this.props.preset}
             actionButtons={this.props.actionButtons}
             onSave={this.props.onSave}
             deselectProperty={this.deselectFilterProperty}

@@ -3,7 +3,7 @@ import ESGFFilterPropertyDTO from "./esgf-filter-property.dto";
 export class PresetDTO {
     
     public title: string;
-    public info: string;
+    public description: string;
     public properties: ESGFFilterPropertyDTO[];
 
     /**
@@ -15,6 +15,6 @@ export class PresetDTO {
     constructor(title: string = undefined, info: string = undefined, properties=[]) {
         this.properties = properties;
         this.title = title;
-        this.info = info;
+        this.description = info;
     }
 }

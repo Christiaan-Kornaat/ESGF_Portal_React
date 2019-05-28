@@ -9,7 +9,7 @@ import OverlayFactory from "../../../model/factories/overlay.factory";
 import {QFTileController} from "../../../controllers/localstorage/tiles/tileController-local";
 import {ESGFFilterProvider} from "../../../data/providers/esgf-filter/esgf-filter.provider";
 import {ColumnedPageProps} from "../../shared/pages/page-columned/page-columned.component";
-import QfcCustomiserWrapper from "./qfc-customiser-wrapper.component";
+import QfcCustomizerWrapper from "./qfc-customizer-wrapper.component";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import Buttons from "../../shared/buttons/buttons.component";
 
@@ -145,7 +145,7 @@ export default class QFCWrapper extends Component<QFCProps> {
                 <Buttons.Danger title={"Delete"} onClick={() => this.handleDeleteClick(currentCustomTile)}/>
             ];
 
-            tab = <QfcCustomiserWrapper qfTile={currentCustomTile}
+            tab = <QfcCustomizerWrapper qfTile={currentCustomTile}
                                         onSave={this.saveTile}
                                         actionButtons={actionButtons}
                                         qfController={this._tileController}

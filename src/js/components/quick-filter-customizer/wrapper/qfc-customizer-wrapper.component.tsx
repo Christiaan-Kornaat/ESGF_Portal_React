@@ -48,7 +48,7 @@ enum SortState {
 
 type ListItemFactory<TItem> = (item: TItem) => JSX.Element;
 
-export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProps> {
+export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProps> {
 
     public get selectedFilter(): ESGFFilterDTO {
         return this.state.selectedFilter;

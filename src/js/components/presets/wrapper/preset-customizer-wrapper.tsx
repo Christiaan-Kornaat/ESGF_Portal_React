@@ -212,7 +212,7 @@ export default class PresetCustomiserWrapper extends ColumnedPage<PresetCustomis
                 headerButtons: [optionComponents.properties]
             }} />;
 
-        let QuickFilterTab = <PresetsPreviewTab presets={this.props.presets}
+        let PresetTab = <PresetsPreviewTab presets={this.props.presets}
             actionButtons={this.props.actionButtons}
             onSave={this.props.onSave}
             deselectProperty={this.deselectFilterProperty}
@@ -220,7 +220,7 @@ export default class PresetCustomiserWrapper extends ColumnedPage<PresetCustomis
 
         this.state.columns.get(ColumnPosition.Left).tabs.set("Filters", FilterList);
         this.state.columns.get(ColumnPosition.Centre).tabs.set("Properties", PropertyList);
-        this.state.columns.get(ColumnPosition.Right).tabs.set("Quick Filter", QuickFilterTab);
+        this.state.columns.get(ColumnPosition.Right).tabs.set("Preset", PresetTab);
 
         this.state.className += " XPF-Wrapper";
 

@@ -1,8 +1,6 @@
 import * as React from "react";
 import { Component } from "react";
-import { QFFilterTileDTO } from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
-import TileFactory from "../../../model/factories/tile.factory";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import { PresetDTO } from "../../../model/dto/esgf-preset.dto";
@@ -25,16 +23,16 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
     }
 
     handlePropertiesChange(properties) {
-        let qfTile = this.props.presets;
+        let preset = this.props.presets;
 
-        qfTile.properties = properties;
+        preset.properties = properties;
 
-        this.saveTile(qfTile);
+        this.savePreset(preset);
     }
 
-    saveTile(tile) {
-        this.setState({ qfTile: tile });
-        this.props.onSave(tile);
+    savePreset(preset) {
+        this.setState({ preset: preset });
+        this.props.onSave(preset);
     }
 
     render() {
@@ -42,7 +40,7 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
 
         let handleDeselectProperty = (item) => {
             deselectProperty(item);
-            this.saveTile(this.props.presets);
+            this.savePreset(this.props.presets);
         };
 
         let createQFListItem = (item) => new ListItemFactoryFactory().createQFCTileListItem(item, handleDeselectProperty);
@@ -53,7 +51,7 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
             <div className="content-tab-customizer-wrapper">
                 <div className="preview">
                     {this.state.presets != null ?
-                        null :
+                        createQFListItem :
                         <LoadingIcons.Spinner />}
                 </div>
                 <div className="customizer-userinput">
@@ -63,9 +61,6 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
                             // onChange={this.handleTitleChange}
                             className="form-control inputfield"
                             placeholder="Quick filter Name" />
-                    </label>
-                    <label className="qfc-input-label-75"> Icon
-                        <input type="text" className="form-control inputfield" placeholder="Font awesome Icon" />
                     </label>
                     <div className="button-container">
                         {this.props.actionButtons ? this.props.actionButtons : null}

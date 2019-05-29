@@ -26,7 +26,7 @@ import { LocalStorageController } from "../../../controllers/localstorage/esgf-l
 
 type XpfWrapperState = ColumnedPageState & {
     filters: ESGFFilterDTO[],
-    selectedFilter: ESGFFilterDTO,
+    selectedFilterProperties: ESGFFilterPropertyDTO[],
     selectedPropertyManager: SelectedPropertyManager,
     sortState: Map<SortState, SorterManager>,
     columns: Map<ColumnPosition, PageColumnModel>,
@@ -50,12 +50,8 @@ type ListItemFactory<TItem> = (item: TItem) => JSX.Element;
 
 export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
-    public get selectedFilter(): ESGFFilterDTO {
-        return this.state.selectedFilter;
-    }
-
     public get properties() {
-        return this.selectedFilter ? this.selectedFilter.properties : [];
+        return this.state.selectedFilterProperties ? this.state.selectedFilterProperties : [];
     }
 
     public state: XpfWrapperState;
@@ -108,7 +104,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
             ]),
             sortState: this.createSortState(),
             selectedPropertyManager: selectedManager,
-            selectedFilter: null,
+            selectedFilterProperties: null,
             presetsListItems: []
         };
 
@@ -167,7 +163,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
         this._listItemFactories = {
             filters: new FilterListItemFactoryFactory().createFactory(this.selectFilter.bind(this)),
-            presets: listItemFactory.createPresetListItemFactory(({ properties }: PresetDTO) => selectedManager.selectMany(properties) , createOnInfoPresetClick, () => (null) ),
+            presets: listItemFactory.createPresetListItemFactory( ({ properties }: PresetDTO) => { selectedManager.selectMany(properties); this.setState({ selectedFilterProperties: properties }); } , createOnInfoPresetClick, () => (null) ),
             properties: createPropertyListItemFactory(toggleSelected),
             propertiesSelected: createPropertyListItemFactory(deselect),
         };
@@ -198,7 +194,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
     }
 
     selectFilter(filter) {
-        this.setState({selectedFilter: filter});
+        this.setState({selectedFilterProperties: filter.properties});
     }
 
     componentDidMount(): void {

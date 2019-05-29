@@ -88,7 +88,7 @@ body{
         }
       }
 
-      .property {
+      .property, .preset {
         @extend .list-group-item, .py-2 ;
         transition: all 0.2s ease;
 
@@ -105,6 +105,7 @@ body{
           @extend .float-right ;
           font-size: 1.5em;
           color: $primary-blue;
+          margin-left: 10px;
          
           &:hover {
             color: $dark-blue;

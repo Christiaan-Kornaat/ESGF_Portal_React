@@ -49,11 +49,11 @@ export default class ListItemFactoryFactory {
             let onEditClick = createOnEditClick(preset);
 
             return <li key={preset.title}
-                className="filter"
+                className="preset"
                 onClick={() => onClick(preset)}>
                 {preset.title}
-                <Buttons.Primary onClick={onEditClick} title="Edit" />
                 <Buttons.Info onClick={onInfoClick} />
+                <Buttons.Edit onClick={onEditClick} />
             </li>;
         };
     }

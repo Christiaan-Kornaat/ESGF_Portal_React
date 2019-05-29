@@ -15,6 +15,11 @@ Buttons.Info = ({onClick}) =>
           onClick={onClick}> <i className="fas fa-info-circle"/>
 </span>;
 
+Buttons.Edit = ({onClick}) =>
+    <span className={"icon-info"}
+          onClick={onClick}> <i class="fas fa-edit"/>
+</span>;
+
 Buttons.Primary = ({title, onClick}) =>
     <a key={"button-" + title}
        onClick={onClick}>

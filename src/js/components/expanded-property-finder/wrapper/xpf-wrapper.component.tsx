@@ -20,13 +20,17 @@ import PageColumnListTab from "../../shared/pages/page-columned/page-column-list
 import {SorterFactoryFactory} from "../../../sorters/sorter.factory.factory";
 import {filterComparator, propertyComparator} from "../../../sorters/comparators/esgf.comparator";
 import {alphabeticalComparator} from "../../../sorters/comparators/primitive.comparator";
+import { PresetDTO } from "../../../model/dto/esgf-preset.dto";
+import { PresetJSONDTO, PresetConverter } from "../../../data/converters/preset-converter";
+import { LocalStorageController } from "../../../controllers/localstorage/esgf-localstorage.controller";
 
 type XpfWrapperState = ColumnedPageState & {
     filters: ESGFFilterDTO[],
     selectedFilter: ESGFFilterDTO,
     selectedPropertyManager: SelectedPropertyManager,
     sortState: Map<SortState, SorterManager>,
-    columns: Map<ColumnPosition, PageColumnModel>
+    columns: Map<ColumnPosition, PageColumnModel>,
+    presetsListItems: PresetDTO[]
 };
 type XpfWrapperProps = {
     className?: string,
@@ -58,10 +62,13 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
     private readonly _selectedPropertyManager: SelectedPropertyManager;
     private readonly _filterProvider: ESGFFilterProvider;
+    private readonly _presetController: LocalStorageController<PresetDTO, PresetJSONDTO>;
 
     private _searchFunctions: { filters: SearchFunction<ESGFFilterDTO>; properties: SearchFunction<ESGFFilterPropertyDTO> };
     private _optionComponents: { presets: JSX.Element; filters: JSX.Element; propertiesSelected: JSX.Element; properties: JSX.Element };
-    private _listItemFactories: { filters: ListItemFactory<ESGFFilterDTO>, properties: ListItemFactory<ESGFFilterPropertyDTO>, propertiesSelected: ListItemFactory<ESGFFilterPropertyDTO> };
+    private _listItemFactories: { filters: ListItemFactory<ESGFFilterDTO>, presets: ListItemFactory<PresetDTO>,properties: ListItemFactory<ESGFFilterPropertyDTO>, propertiesSelected: ListItemFactory<ESGFFilterPropertyDTO> };
+
+
 
     private sortFunctions = {
         sortState() { return this.state.sortState; },
@@ -90,6 +97,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         this._filterProvider = filterProvider;
 
         this._selectedPropertyManager.events.selectionChanged.subscribe(this.update);
+        this._presetController = new LocalStorageController<PresetDTO, PresetJSONDTO>(new PresetConverter(filterProvider), "ESGFPresetStorage");
 
         this.state = {
             filters: [],
@@ -100,10 +108,12 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
             ]),
             sortState: this.createSortState(),
             selectedPropertyManager: selectedManager,
-            selectedFilter: null
+            selectedFilter: null,
+            presetsListItems: []
         };
 
         this.initOptionComponents();
+        this.updatePresets = this.updatePresets.bind(this);
     }
 
     update() {
@@ -148,13 +158,18 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
         let createOnInfoClick = createOnInfoClickFactory(showPropertyInfo, this.selectTab, "property-info");
 
+        let createPresetInfoTab = (preset: PresetDTO) => columnTabFactory.createInfoTab(infoTabVMFactory.createPresetVM(preset));
+        let showPresetInfo = (preset: PresetDTO) => showInfo(createPresetInfoTab(preset));
+        let createOnInfoPresetClick = createOnInfoClickFactory(showPresetInfo, this.selectTab, "Preset-info");
+
         let createPropertyListItemFactory = ((createOnInfoClick, isSelectedFunction) => (onClick: (ESGFFilterPropertyDTO) => void) =>
             listItemFactory.createPropertyListItemFactory(onClick, createOnInfoClick, isSelectedFunction))(createOnInfoClick, isSelected);
 
         this._listItemFactories = {
             filters: new FilterListItemFactoryFactory().createFactory(this.selectFilter.bind(this)),
+            presets: listItemFactory.createPresetListItemFactory(({ properties }: PresetDTO) => selectedManager.selectMany(properties) , createOnInfoPresetClick, () => (null) ),
             properties: createPropertyListItemFactory(toggleSelected),
-            propertiesSelected: createPropertyListItemFactory(deselect)
+            propertiesSelected: createPropertyListItemFactory(deselect),
         };
 
         let createSortButtonFactory = createInvertSort => (columnName: SortState) => <Buttons.Sort key={columnName}
@@ -176,6 +191,12 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         };
     }
 
+
+    private async updatePresets() {
+        let presets = await Promise.all(this._presetController.getLocalstorage());
+        this.setState({ presetsListItems: presets });
+    }
+
     selectFilter(filter) {
         this.setState({selectedFilter: filter});
     }
@@ -186,6 +207,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
             .then(filters => Array.from(filters.values()))
             .then(filters => filters.filter(filter => filter.properties.length > 1))
             .then(filters => this.setState({filters: filters}));
+        this.updatePresets();
     }
 
     /**
@@ -201,8 +223,8 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
     render() {
         let {_optionComponents: optionComponents, _searchFunctions: searchFunctions, _listItemFactories, sortFunctions} = this;
-        let {filters} = this.state;
-        let {filters: filterListItemFactory, properties: propertyListItemFactory, propertiesSelected: selectedPropertyListItemFactory} = _listItemFactories;
+        let { filters, presetsListItems} = this.state;
+        let {filters: filterListItemFactory, presets: presetsListItemFactory, properties: propertyListItemFactory, propertiesSelected: selectedPropertyListItemFactory} = _listItemFactories;
 
         let filtersLoading = !this._filterProvider.hasFilters;
 
@@ -219,10 +241,10 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
         let PresetList = <PageColumnListTab title={"Presets"}
                                             key={"PresetList"}
-                                            items={[]}
+                                            items={presetsListItems}
                                             sortFunction={sortFunctions.filters}
-                                            listItemFactory={filterListItemFactory}
-                                            isLoading={filtersLoading}
+                                            listItemFactory={presetsListItemFactory}
+                                            isLoading={false}
                                             searchComponentModel={{
                                                 searchMethod: searchFunctions.filters,
                                                 headerButtons: [optionComponents.presets]

@@ -2,7 +2,6 @@ import * as React from "react";
 import {Component} from "react";
 import TileFactory from "../../../model/factories/tile.factory";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
-import {QFTileProvider} from "../../../data/providers/qf-tile/qf-tile.provider";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import Overlays from "../../shared/overlay/overlays.component";
 import OverlayFactory from "../../../model/factories/overlay.factory";

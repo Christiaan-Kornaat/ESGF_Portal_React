@@ -2,8 +2,21 @@ import { QFFilterTileDTO } from "../../model/dto/qf-filter-tile.dto";
 import ESGFFilterPropertyDTO from "../../model/dto/esgf-filter-property.dto";
 import { ESGFFilterProvider } from "../providers/esgf-filter/esgf-filter.provider";
 import { PresetDTO } from "../../model/dto/esgf-preset.dto";
+import IConverter from "./converter.interface";
 
-export class PresetConverter {
+export type EsgfFilterPropertyJSONDTO = {
+    name: string;
+    esgfFilterName: any;
+}
+
+export type PresetJSONDTO = {
+    title: string, description: string, properties: {
+        name: string;
+        esgfFilterName: any;
+    }[]
+};
+
+export class PresetConverter implements IConverter<PresetDTO, PresetJSONDTO> {
     private _filterProvider: ESGFFilterProvider;
 
     constructor(filterProvider: ESGFFilterProvider) {
@@ -12,11 +25,11 @@ export class PresetConverter {
         this.fromJSONObject = this.fromJSONObject.bind(this);
     }
 
-    toJSONObject(preset: PresetDTO) {
+    toJSONObject(preset: PresetDTO): PresetJSONDTO {
         let properties = preset.properties.map(property => ({ name: property.name, esgfFilterName: property.filter.shortName }))
 
         return {
-            name: preset.title,
+            title: preset.title,
             description: preset.description,
             properties: properties
         }

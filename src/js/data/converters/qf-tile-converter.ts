@@ -1,8 +1,12 @@
 import { QFFilterTileDTO } from "../../model/dto/qf-filter-tile.dto";
 import ESGFFilterPropertyDTO from "../../model/dto/esgf-filter-property.dto";
 import { ESGFFilterProvider } from "../providers/esgf-filter/esgf-filter.provider";
+import IConverter from "./converter.interface";
+import { EsgfFilterPropertyJSONDTO } from "./preset-converter";
 
-export class QFTileConverter {
+export type QFFilterTileJSONDTO = { colour:string, icon:string, title:string, properties: EsgfFilterPropertyJSONDTO[]};
+
+export class QFTileConverter implements IConverter<QFFilterTileDTO, QFFilterTileJSONDTO> {
     private _filterProvider: ESGFFilterProvider;
 
     constructor(filterProvider: ESGFFilterProvider){
@@ -11,7 +15,7 @@ export class QFTileConverter {
         this.fromJSONObject = this.fromJSONObject.bind(this);
     }
 
-    toJSONObject(tile: QFFilterTileDTO) {
+    toJSONObject(tile: QFFilterTileDTO): QFFilterTileJSONDTO {
         let properties = tile.properties.map(property => ({ name: property.name, esgfFilterName: property.filter.shortName }))
 
         return {

@@ -1,5 +1,5 @@
-import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
-import ESGFSearchResultDTO from "../../../model/dto/esgf-search-result.dto";
+import ESGFFilterPropertyDTO from "../../model/dto/esgf-filter-property.dto";
+import ESGFSearchResultDTO from "../../model/dto/esgf-search-result.dto";
 
 export type SearchResultFactory = ({id, esgfid, data_node, url}) => ESGFSearchResultDTO;
 

@@ -1,4 +1,4 @@
-import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
+import {QFFilterTileDTO} from "../../model/dto/qf-filter-tile.dto";
 import IQFTileService from "./qf-tile.service.interface";
 
 export class QFTileService implements IQFTileService {

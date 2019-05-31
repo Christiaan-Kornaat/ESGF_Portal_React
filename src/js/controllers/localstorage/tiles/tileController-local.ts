@@ -1,6 +1,6 @@
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import {QFTileConverter} from "../../../data/converters/qf-tile-converter";
-import {ESGFFilterProvider} from "../../../data/providers/esgf-filter/esgf-filter.provider";
+import {ESGFFilterProvider} from "../../../data/esgf-filter/esgf-filter.provider";
 
 export class QFTileController {
     private readonly _defaultTiles: any;

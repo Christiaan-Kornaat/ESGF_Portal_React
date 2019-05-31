@@ -1,6 +1,6 @@
-import {sleep} from "../../../util/async.util";
-import {ESGFFilterDTO} from "../../../model/dto/esgf-filter.dto";
-import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
+import {sleep} from "../../util/async.util";
+import {ESGFFilterDTO} from "../../model/dto/esgf-filter.dto";
+import ESGFFilterPropertyDTO from "../../model/dto/esgf-filter-property.dto";
 
 export class ESGFFilterProvider {
     private readonly filterService: any;

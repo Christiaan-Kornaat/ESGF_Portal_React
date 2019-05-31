@@ -3,33 +3,30 @@ import {Component} from "react";
 import {ESGFSearchPortal} from "./components/esgf-search-portaal/esgf-search-portal.component";
 import XPFWrapper from "./components/expanded-property-finder/wrapper/xpf-wrapper.component";
 import {QFWrapper} from "./components/quick-filter-search/wrapper/qf-wrapper.component";
-import {ESGFFilterProvider} from "./data/providers/esgf-filter/esgf-filter.provider";
-import {ESGFSearchResultsProvider} from "./data/providers/esgf-search/esgf-search-results.provider";
-import {QFTileProvider} from "./data/providers/qf-tile/qf-tile.provider";
-import ESGFFilterService from "./data/services/esgf-filter/esgf-filter.service";
-import {ESGFFilterServiceDemo} from "./data/services/esgf-filter/esgf-filter.service.demo";
-import {ESGFFilterServiceMock} from "./data/services/esgf-filter/esgf-filter.service.mock";
-import ESGFSearchService from "./data/services/esgf-search/esgf-search.service";
-import {ESGFSearchServiceDemo} from "./data/services/esgf-search/esgf-search.service.demo";
-import {ESGFSearchServiceMock} from "./data/services/esgf-search/esgf-search.service.mock";
-import {QFTileService} from "./data/services/qf-tile/qf-tile.service";
-import QFTileServiceDemo from "./data/services/qf-tile/qf-tile.service.demo";
+import {ESGFFilterProvider} from "./data/esgf-filter/esgf-filter.provider";
+import {ESGFSearchResultsProvider} from "./data/esgf-search/esgf-search-results.provider";
+import {QFTileProvider} from "./data/qf-tile/qf-tile.provider";
+import ESGFFilterService from "./data/esgf-filter/esgf-filter.service";
+import {ESGFFilterServiceDemo} from "./data/esgf-filter/esgf-filter.service.demo";
+import {ESGFFilterServiceMock} from "./data/esgf-filter/esgf-filter.service.mock";
+import ESGFSearchService from "./data/esgf-search/esgf-search.service";
+import {ESGFSearchServiceDemo} from "./data/esgf-search/esgf-search.service.demo";
+import {ESGFSearchServiceMock} from "./data/esgf-search/esgf-search.service.mock";
+import {QFTileService} from "./data/qf-tile/qf-tile.service";
+import QFTileServiceDemo from "./data/qf-tile/qf-tile.service.demo";
 import QuickSelectManagerMock from "./managers/quick-filter/quick-filter.manager.mock";
 import SelectedPropertyManager from "./managers/selected-property.manager";
-import IESGFFilterService from "./data/services/esgf-filter/esgf-filter.service.interface";
+import IESGFFilterService from "./data/esgf-filter/esgf-filter.service.interface";
 import {ResultWrapper} from "./components/results-search/result-wrapper/result-wrapper.component";
-import {filterComparator, propertyComparator} from "./sorters/comparators/esgf.comparator";
-import {alphabeticalComparator} from "./sorters/comparators/primitive.comparator";
-import {SorterFactoryFactory} from "./sorters/sorter.factory.factory";
-import SorterManager from "./sorters/sorter.manager";
-import InfoTabVM from "./model/view-model/InfoTabVM";
-import {ESGFFilterDTO} from "./model/dto/esgf-filter.dto";
-import {Comparator} from "./sorters/comparators/comparator";
-import AdagucUrlBuilder from "./data/services/esgf-search/adaguc-url.builder";
+import AdagucUrlBuilder from "./data/adaguc-url.builder";
 import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
 import EsgfSearchManager from "./managers/esgf-search.manager";
 import EsgfSearchQuery from "./model/dto/esgf-search-query";
 import QFCWrapper from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
+import ICatalogService from "./data/catalog/catalog.service.interface";
+import CatalogService from "./data/catalog/catalog.service";
+import ICatalogProvider from "./data/catalog/catalog.provider.interface";
+import CatalogProvider from "./data/catalog/catalog.provider";
 
 interface AppEnvironment {
     FilterService: any,
@@ -82,6 +79,8 @@ const Dependencies = {
 const environment = "prod";
 
 class App extends Component {
+    private readonly catalogService: ICatalogService;
+    private readonly catalogProvider: ICatalogProvider;
     private readonly filterService: IESGFFilterService;
     private readonly filterProvider: ESGFFilterProvider;
     private readonly searchService: any;
@@ -91,16 +90,6 @@ class App extends Component {
     private readonly selectedPropertyManager: SelectedPropertyManager;
     private readonly quickFilterManager: QuickSelectManagerMock;
     private readonly adagucUrlBuilder: AdagucUrlBuilder;
-
-    state: {
-        selectedFilter: ESGFFilterDTO,
-        selectedTabs: { filterColumn, propertyColumn, selectedColumn },
-        columnTabs: { "left": {}, "center": {}, "right": {} },
-        infoTabs: InfoTabVM[],
-        sortState,
-        columnState: {},
-        filters: []
-    };
 
     constructor(props) {
         super(props);
@@ -119,6 +108,9 @@ class App extends Component {
 
         this.adagucUrlBuilder = new AdagucUrlBuilder(new URL(DATA_HOST));
 
+        this.catalogService = new CatalogService(this.adagucUrlBuilder);
+        this.catalogProvider = new CatalogProvider(this.catalogService);
+
         this.searchService = new SearchService(this.adagucUrlBuilder);
         this.searchResultProvider = new SearchResultsProvider(this.searchService);
         this.searchManager = new EsgfSearchManager(this.searchResultProvider);
@@ -132,42 +124,7 @@ class App extends Component {
         this.selectedPropertyManager = new SelectedPropertyManager();
         this.quickFilterManager = new QuickFilterManager(this.filterProvider);
 
-        this.state = {
-            selectedFilter: null,
-            selectedTabs: {filterColumn: null, propertyColumn: null, selectedColumn: null},
-            infoTabs: [],
-            sortState: this.createSortState(),
-            columnTabs: {"left": {}, "center": {}, "right": {}},
-            columnState: {},
-            filters: []
-        };
-
         this.update = this.update.bind(this);
-    }
-
-    /**
-     * @returns {Map<string, SorterManager>} sortState
-     */
-    createSortState() {
-        let sorterFactoryFactory = new SorterFactoryFactory();
-        let createSortState: ((key: string, comparator: Comparator<any>) => [string, SorterManager]) = (key: string, comparator: Comparator<any>) => [
-            key,
-            new SorterManager(new Map([
-                ["A-Z", sorterFactoryFactory.createSorterFactory(comparator)]
-            ]), "A-Z")
-        ];
-
-        //TODO find a way to solidify the keys
-        /**
-         *
-         * @type {Map<string, SorterManager>}
-         */
-        return new Map<string, SorterManager>([
-            createSortState("filters", filterComparator),
-            createSortState("presets", alphabeticalComparator/*FIXME TEMP*/),
-            createSortState("properties", propertyComparator),
-            createSortState("properties-selected", propertyComparator)
-        ]);
     }
 
     // Lifecycle methods
@@ -189,25 +146,24 @@ class App extends Component {
         let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => this.searchManager.search(new EsgfSearchQuery(selection));
         this.selectedPropertyManager.events.selectionChanged.subscribe(onSelectionChanged);
 
-        let QS = <QFWrapper selectionManager={this.selectedPropertyManager}
+        let QF = <QFWrapper selectionManager={this.selectedPropertyManager}
                             qfProvider={this.tileProvider}
-                            filterProvider={this.filterProvider}
-        />;
+                            filterProvider={this.filterProvider}/>;
 
         let XPF = <XPFWrapper filterProvider={this.filterProvider}
                               selectedPropertyManager={this.selectedPropertyManager}/>;
 
-        let QSC = <QFCWrapper
-            qfProvider={this.tileProvider}
-            qfManager={this.quickFilterManager}
-            filterProvider={this.filterProvider}/>;
+        let QFC = <QFCWrapper qfProvider={this.tileProvider}
+                              qfManager={this.quickFilterManager}
+                              filterProvider={this.filterProvider}/>;
 
 
         return (
             <div>
                 <ESGFSearchPortal
-                    tabs={{"Quick filter": QS, "Extended property finder": XPF, "Quick filter customizer": QSC}}/>
-                <ResultWrapper searchResultsManager={this.searchManager}/>
+                    tabs={{"Quick filter": QF, "Extended property finder": XPF, "Quick filter customizer": QFC}}/>
+                <ResultWrapper catalogProvider={this.catalogProvider}
+                               searchResultsManager={this.searchManager}/>
             </div>
         );
     }

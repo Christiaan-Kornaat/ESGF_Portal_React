@@ -1,7 +1,8 @@
-import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
-import {SorterFactoryFactory} from "../../../sorters/sorter.factory.factory";
-import {propertyComparator} from "../../../sorters/comparators/esgf.comparator";
+import ESGFFilterPropertyDTO from "../model/dto/esgf-filter-property.dto";
+import {SorterFactoryFactory} from "../sorters/sorter.factory.factory";
+import {propertyComparator} from "../sorters/comparators/esgf.comparator";
 import IAdagucUrlBuilder from "./adaguc-url.builder.interface";
+import ESGFDataNodeResultDTO from "../model/dto/esgf-data-node-result.dto";
 
 export default class AdagucUrlBuilder implements IAdagucUrlBuilder {
 
@@ -32,6 +33,19 @@ export default class AdagucUrlBuilder implements IAdagucUrlBuilder {
                                      .join("&");
 
         url.searchParams.append("query", encodeURI(query));
+
+        return url;
+    }
+
+    buildCatalogUrl(catalogItem: ESGFDataNodeResultDTO): URL {
+        const SEARCH_PATH = "/esgfsearch/catalog";
+
+
+        const url = new URL(SEARCH_PATH, this.hostUrl);
+        url.searchParams.append("service", "catalogbrowser");
+        url.searchParams.append("node", encodeURI(catalogItem.url));
+        url.searchParams.append("mode", "flat");
+        // url.searchParams.append("format", "text/html");
 
         return url;
     }

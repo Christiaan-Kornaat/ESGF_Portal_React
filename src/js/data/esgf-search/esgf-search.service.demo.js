@@ -1,4 +1,4 @@
-import ESGFSearchResultDTO from "../../../model/dto/esgf-search-result.dto";
+import ESGFSearchResultDTO from "../../model/dto/esgf-search-result.dto";
 
 export class ESGFSearchServiceDemo {
 

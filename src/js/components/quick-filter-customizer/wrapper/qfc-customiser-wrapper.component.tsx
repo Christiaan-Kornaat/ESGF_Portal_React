@@ -9,7 +9,7 @@ import {ESGFFilterDTO} from "../../../model/dto/esgf-filter.dto";
 import Buttons from "../../shared/buttons/buttons.component";
 
 import SelectedPropertyManager from "../../../managers/selected-property.manager";
-import {ESGFFilterProvider} from "../../../data/providers/esgf-filter/esgf-filter.provider";
+import {ESGFFilterProvider} from "../../../data/esgf-filter/esgf-filter.provider";
 import ESGFFilterSearcher from "../../../searchers/esgf-filter.searcher";
 import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";

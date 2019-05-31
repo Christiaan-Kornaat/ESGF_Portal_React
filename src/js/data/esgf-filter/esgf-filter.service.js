@@ -1,6 +1,6 @@
-import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
-import {ESGFFilterDTO} from "../../../model/dto/esgf-filter.dto";
-import ESGFFilterFactory from "../../../model/factories/esgf-filter.factory";
+import ESGFFilterPropertyDTO from "../../model/dto/esgf-filter-property.dto";
+import {ESGFFilterDTO} from "../../model/dto/esgf-filter.dto";
+import ESGFFilterFactory from "../../model/factories/esgf-filter.factory";
 
 export default class ESGFFilterService {
 

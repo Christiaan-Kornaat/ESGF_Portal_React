@@ -1,4 +1,4 @@
-import {ESGFSearchResultsProvider} from "../data/providers/esgf-search/esgf-search-results.provider";
+import {ESGFSearchResultsProvider} from "../data/esgf-search/esgf-search-results.provider";
 import ESGFSearchResultDTO from "../model/dto/esgf-search-result.dto";
 import {EventEmitter, EventSubscriber} from "../lib/event-emitter/events";
 import EsgfSearchQuery from "../model/dto/esgf-search-query";

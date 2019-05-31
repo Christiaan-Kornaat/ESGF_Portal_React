@@ -17,7 +17,9 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "strict": false,
+    "noEmit": true
   },
   "exclude": [
     "node_modules"

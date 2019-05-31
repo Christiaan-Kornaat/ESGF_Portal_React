@@ -43,12 +43,16 @@ export default class ResultItem extends Component<ResultItemProps> {
 
         //TODO move to somewhere else??
         let createTableRow = (dataset: CatalogItemDataset, index) => {
+            let downloadLink = dataset.url ?
+                <a target={"_blank"} href={dataset.url} className={"clickable"}><ResultIcons.Download className={"mx-auto"}/></a> :
+                "-";
+
             return (
                 <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{dataset.name}</td>
                     <td>{dataset.dataSize}</td>
-                    <td className="clickable text-center"><a href={""}><ResultIcons.Download className={"mx-auto"}/></a></td>
+                    <td className="text-center">{downloadLink}</td>
                     <td className="clickable text-center">View</td>
                     <td className="clickable text-center"><ResultIcons.Basket/></td>
                 </tr>

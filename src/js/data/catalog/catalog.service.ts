@@ -12,8 +12,6 @@ export default class CatalogService implements ICatalogService {
     }
 
     private parseCatalogItem(json: any): EsgfCatalogItem {
-        console.log(json);
-        console.log(EsgfCatalogItem.parse(json));
         return EsgfCatalogItem.parse(json);
     }
 

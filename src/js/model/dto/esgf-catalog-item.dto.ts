@@ -59,8 +59,8 @@ export interface CatalogItemDataset {
     name: string;
     dataSize: CatalogItemDataSize;
     variables: CatalogItemVariableContainer;
+    url?: string; //TODO change to URL?
 
-    urlPath?: string; //TODO change to URL?
     id?: string;
     properties?: CatalogItemDatasetProperties;
     serviceName?: string;
@@ -90,8 +90,26 @@ export default class EsgfCatalogItem {
 
     private static parseDatasets(json: any[]): CatalogItemDataset[] {
 
+        let isUrl = item => typeof item == "string"
+            && ((<string>item).startsWith("http://") || (<string>item).startsWith("https://"));
+
+        let findUrls = (object) => {
+            let values = Object.values(object);
+
+            return values.filter(isUrl)
+                         .map(item => <string>item);
+        };
+
         return json.filter(({dataSize}) => dataSize != undefined)
-                   .map(({dataSize, text, variables}) => ({name: text, dataSize: dataSize, variables: variables}));
+                   .map(({dataSize, text, variables, ...otherVars}) => {
+
+                       let dataset: CatalogItemDataset = ({name: text, dataSize: dataSize, variables: variables});
+
+                       let urls = findUrls(otherVars);
+                       dataset.url = (urls.length > 0) ? urls[0] : undefined;
+
+                       return dataset;
+                   });
     }
 
     public static parse(json): EsgfCatalogItem {

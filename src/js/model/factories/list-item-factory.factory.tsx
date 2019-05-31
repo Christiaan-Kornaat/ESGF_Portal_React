@@ -48,12 +48,13 @@ export default class ListItemFactoryFactory {
             let onInfoClick = createOnInfoClick(preset);
             let onEditClick = createOnEditClick(preset);
 
+            let createNonPropagating = (func) => (event) => { event.preventDefault(); event.stopPropagation(); func(); }
             return <li key={preset.title}
                 className="preset"
-                onClick={() => onClick(preset)}>
+                onClick={()=>onClick(preset)}>
                 {preset.title}
                 <Buttons.Info onClick={onInfoClick} />
-                <Buttons.Edit onClick={onEditClick} />
+                <Buttons.Edit onClick={createNonPropagating(onEditClick)} />
             </li>;
         };
     }

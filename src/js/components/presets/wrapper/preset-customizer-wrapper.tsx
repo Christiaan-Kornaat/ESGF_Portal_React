@@ -32,9 +32,8 @@ type PresetCustomiserState = ColumnedPageState & {
 type PresetCustomiserProps = {
     className?: string,
     filterProvider: ESGFFilterProvider,
-    qfController,
     preset: PresetDTO,
-    onSave: (PresetDTO) => void,
+    onSave?: (PresetDTO) => void,
     actionButtons: JSX.Element | JSX.Element[]
 };
 
@@ -214,7 +213,7 @@ export default class PresetCustomiserWrapper extends ColumnedPage<PresetCustomis
 
         let PresetTab = <PresetsPreviewTab preset={this.props.preset}
             actionButtons={this.props.actionButtons}
-            onSave={this.props.onSave}
+            onSave={this.props.onSave ? this.props.onSave : () => null}
             deselectProperty={this.deselectFilterProperty}
             properties={this.selectedProperties} />;
 

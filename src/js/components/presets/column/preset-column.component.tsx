@@ -38,6 +38,14 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
         this.savePreset(preset);
     }
 
+    handleDescriptionChange(event) {
+        let preset = this.props.preset;
+
+        preset.description = event.target.value;
+
+        this.savePreset(preset);
+    }
+
     savePreset(preset) {
         this.setState({ preset: preset });
         this.props.onSave(preset);
@@ -59,7 +67,10 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
             <div className="content-tab-customizer-wrapper">
                 <div className="preview">
                     {this.state.preset != null ?
-                        createQFListItem :
+                    this.state.preset.properties.forEach(element => {
+                        createQFListItem(element)
+                    })
+                         :
                         <LoadingIcons.Spinner />}
                 </div>
                 <div className="customizer-userinput">
@@ -68,7 +79,14 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
                             defaultValue={this.state.preset.title}
                             onChange={this.handleTitleChange}
                             className="form-control inputfield"
-                            placeholder="Quick filter Name" />
+                            placeholder="Preset name" />
+                    </label>
+                    <label className="qfc-input-label-100"> Title
+                        <textarea
+                            defaultValue={this.state.preset.description}
+                            onChange={this.handleDescriptionChange}
+                            className="form-control inputfield"
+                            placeholder="Preset description" />
                     </label>
                     <div className="button-container">
                         {this.props.actionButtons ? this.props.actionButtons : null}

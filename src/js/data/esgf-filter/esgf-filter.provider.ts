@@ -1,9 +1,10 @@
 import {sleep} from "../../util/async.util";
 import {ESGFFilterDTO} from "../../model/dto/esgf-filter.dto";
 import ESGFFilterPropertyDTO from "../../model/dto/esgf-filter-property.dto";
+import ESGFFilterService from "./esgf-filter.service";
 
 export class ESGFFilterProvider {
-    private readonly filterService: any;
+    private readonly filterService: ESGFFilterService;
     private readonly filterCache: Map<String, ESGFFilterDTO>;
     private propertyCache: Map<ESGFFilterDTO, ESGFFilterPropertyDTO[]>;
 
@@ -58,10 +59,15 @@ export class ESGFFilterProvider {
          * @param {ESGFFilterDTO}filter
          * @return {ESGFFilterDTO}
          */
-        let provideFilterProperties = (filter) => {
-            filter.properties = this.propertyCache.has(filter) ?
-                this.propertyCache.get(filter) :
-                this.filterService.fetch(filter.shortName);
+        let provideFilterProperties = async (filter) => {
+            try {
+                filter.properties = this.propertyCache.has(filter) ?
+                    this.propertyCache.get(filter) :
+                    await this.filterService.fetch(filter.shortName);
+            } catch (e) {
+                throw e;
+            }
+
             this.propertyCache.set(filter, filter.properties);
             return filter;
         };

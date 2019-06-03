@@ -30,8 +30,8 @@ export class QFWrapper extends Component<{ selectionManager: any, filterProvider
         let {qfTileModels, errorState} = this.state;
 
         if (errorState == ErrorState.ConnectionError) {
-            return <LoadingIcons.NoConnection
-                className={"text-danger m-auto"}/>;
+            return <LoadingIcons.NoConnection className={"text-danger m-auto"}
+                                              onClick={() => this.update()}/>;
         }
 
         let qfTiles = this.createTiles(qfTileModels);
@@ -118,7 +118,7 @@ export class QFWrapper extends Component<{ selectionManager: any, filterProvider
 
     private async update() {
         try {
-            let qfTileModels = await Promise.all(this._tileController.getTiles());
+            let qfTileModels = await this._tileController.getTiles();
             this.setState({qfTileModels: qfTileModels});
         } catch (e) {
             this.setState({errorState: ErrorState.ConnectionError});

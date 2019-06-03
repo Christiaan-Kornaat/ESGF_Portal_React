@@ -94,13 +94,12 @@ export class QFTileController {
         ];
     }
 
-    getTiles(): Promise<QFFilterTileDTO>[] {
+    async getTiles(): Promise<QFFilterTileDTO[]> {
         if (!this.isTilesSet()) {
             localStorage.setItem(this.storageKey, JSON.stringify(this._defaultTiles));
         }
         let tiles = JSON.parse(localStorage.getItem(this.storageKey));
-        let tileObjects = tiles.map(this.converter.fromJSONObject);
-        return tileObjects;
+        return await Promise.all(tiles.map(this.converter.fromJSONObject));
     }
 
     setTiles(tiles: QFFilterTileDTO[]) {

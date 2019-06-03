@@ -40,6 +40,11 @@ export default class ESGFFilterService {
                                                .map(createToDTO(facets)));
     }
 
+    /**
+     *
+     * @param id
+     * @return {Promise<ESGFFilterDTO>}
+     */
     fetch(id) {
         /**
          * @param {string} shortName

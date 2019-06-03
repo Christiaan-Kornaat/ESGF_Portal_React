@@ -9,7 +9,6 @@ import OverlayFactory from "../../../model/factories/overlay.factory";
 import {QFTileController} from "../../../controllers/localstorage/tiles/tileController-local";
 import {ESGFFilterProvider} from "../../../data/esgf-filter/esgf-filter.provider";
 import {ColumnedPageProps} from "../../shared/pages/page-columned/page-columned.component";
-import {Tab, Tabs} from "react-bootstrap";
 import QfcCustomiserWrapper from "./qfc-customiser-wrapper.component";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import Buttons from "../../shared/buttons/buttons.component";
@@ -44,7 +43,7 @@ export default class QFCWrapper extends Component<QFCProps> {
 
         this.state = {
             qfTileModels: [],
-            currentCustomTile: null,
+            currentCustomTile: null
         };
 
         this.update = this.update.bind(this);
@@ -52,7 +51,7 @@ export default class QFCWrapper extends Component<QFCProps> {
     }
 
     private async update() {
-        let qfTileModels = await Promise.all(this._tileController.getTiles());
+        let qfTileModels = await this._tileController.getTiles();
         this.setState({qfTileModels: qfTileModels});
     }
 
@@ -103,7 +102,7 @@ export default class QFCWrapper extends Component<QFCProps> {
         this.handleBackClick();
     }
 
-    handleBackClick(){
+    handleBackClick() {
         this.setState({
             currentCustomTile: null
         });
@@ -128,13 +127,13 @@ export default class QFCWrapper extends Component<QFCProps> {
         let iconTileAdd = new QFFilterTileDTO("Add Quick Filter", "#3f3f3f", "fas fa-plus-circle", []);
         //TODO ergens anders? is kort maar niet mooi
 
-        let tab = 
-                <div className="qf-main-container">
-                    <div className="tiles">
-                        {hasTiles ? qfTiles : <LoadingIcons.Spinner/>}
-                        {(hasTiles && !hasMaxTiles)? tileFactory.createIconTile(iconTileAdd, this.addTile) : null}
-                    </div>
-                </div>;
+        let tab =
+            <div className="qf-main-container">
+                <div className="tiles">
+                    {hasTiles ? qfTiles : <LoadingIcons.Spinner/>}
+                    {(hasTiles && !hasMaxTiles) ? tileFactory.createIconTile(iconTileAdd, this.addTile) : null}
+                </div>
+            </div>;
 
         if (currentCustomTile) {
             //<Buttons.Success title={"Save"} onClick={() => this.handleSaveClick(currentCustomTile)}/>
@@ -142,17 +141,17 @@ export default class QFCWrapper extends Component<QFCProps> {
                 <Buttons.Primary title={"Go back"} onClick={() => this.handleBackClick()}/>,
                 <Buttons.Danger title={"Delete"} onClick={() => this.handleDeleteClick(currentCustomTile)}/>
             ];
-            
+
             tab = <QfcCustomiserWrapper qfTile={currentCustomTile}
-                                      onSave={this.saveTile}
-                                      actionButtons={actionButtons}
-                                      qfController={this._tileController}
-                                      filterProvider={this._filterProvider}/>;
+                                        onSave={this.saveTile}
+                                        actionButtons={actionButtons}
+                                        qfController={this._tileController}
+                                        filterProvider={this._filterProvider}/>;
         }
 
         return (
             <section className="qf-wrapper">
-                    {tab}
+                {tab}
             </section>
         );
     }

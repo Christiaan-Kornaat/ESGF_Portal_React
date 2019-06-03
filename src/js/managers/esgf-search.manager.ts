@@ -2,6 +2,7 @@ import {ESGFSearchResultsProvider} from "../data/esgf-search/esgf-search-results
 import ESGFSearchResultDTO from "../model/dto/esgf-search-result.dto";
 import {EventEmitter, EventSubscriber} from "../lib/event-emitter/events";
 import EsgfSearchQuery from "../model/dto/esgf-search-query";
+import ESGFFilterPropertyDTO from "../model/dto/esgf-filter-property.dto";
 
 export default class EsgfSearchManager {
     private readonly _eventEmitter: any;
@@ -22,6 +23,10 @@ export default class EsgfSearchManager {
             searched: new EventSubscriber(this._eventNames.searched, this._eventEmitter),
             searchStarted: new EventSubscriber(this._eventNames.searchStarted, this._eventEmitter)
         };
+    }
+
+    async searchByProperties(properties: ESGFFilterPropertyDTO[]) {
+        return await this.search(new EsgfSearchQuery(properties));
     }
 
     async search(query: EsgfSearchQuery) {

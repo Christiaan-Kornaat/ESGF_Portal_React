@@ -21,7 +21,6 @@ import {ResultWrapper} from "./components/results-search/result-wrapper/result-w
 import AdagucUrlBuilder from "./data/adaguc-url.builder";
 import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
 import EsgfSearchManager from "./managers/esgf-search.manager";
-import EsgfSearchQuery from "./model/dto/esgf-search-query";
 import QFCWrapper from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
 import ICatalogService from "./data/catalog/catalog.service.interface";
 import CatalogService from "./data/catalog/catalog.service";
@@ -143,7 +142,7 @@ class App extends Component {
     }
 
     render() {
-        let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => this.searchManager.search(new EsgfSearchQuery(selection));
+        let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => this.searchManager.searchByProperties(selection);
         this.selectedPropertyManager.events.selectionChanged.subscribe(onSelectionChanged);
 
         let QF = <QFWrapper selectionManager={this.selectedPropertyManager}

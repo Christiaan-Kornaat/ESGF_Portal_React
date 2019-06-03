@@ -1,6 +1,6 @@
-import ESGFFilterFactory from "../../../model/factories/esgf-filter.factory";
+import ESGFFilterFactory from "../../model/factories/esgf-filter.factory";
 import IESGFFilterService from "./esgf-filter.service.interface";
-import {ESGFFilterDTO} from "../../../model/dto/esgf-filter.dto";
+import {ESGFFilterDTO} from "../../model/dto/esgf-filter.dto";
 
 export class ESGFFilterServiceDemo implements IESGFFilterService {
     /**

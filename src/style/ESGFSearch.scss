@@ -6,7 +6,7 @@ $dark-blue: darken($primary-blue, 15);
 $default-gray: #dee2e6;
 
 // delete after demo
-body{
+body {
   min-height: 3000px;
 }
 
@@ -25,6 +25,10 @@ body{
   a.nav-item.nav-link.active {
     background-color: white;
     border: none;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
   }
 
   .loadIcon {
@@ -106,7 +110,7 @@ body{
           font-size: 1.5em;
           color: $primary-blue;
           margin-left: 10px;
-         
+
           &:hover {
             color: $dark-blue;
           }
@@ -200,7 +204,7 @@ body{
         }
       }
 
-      .optionsButton{
+      .optionsButton {
         @extend .input-group-append;
 
         .Button {
@@ -223,13 +227,13 @@ body{
     }
   }
 
-  .qf-wrapper, .cqf-wrapper{
+  .qf-wrapper, .cqf-wrapper {
     @extend .row;
     margin: 0 auto;
     background-color: white;
     height: 500px;
     width: 100%;
-    
+
     .qf-root {
       position: fixed;
     }
@@ -241,15 +245,15 @@ body{
       list-style-type: none
     }
 
-    ul{
+    ul {
       @extend .list-unstyled, .p-0;
-      margin-left:8px;
+      margin-left: 8px;
     }
 
     .qf-main-container, .cqf-main-container {
       @extend .container;
-      
-      .button-open-presets{
+
+      .button-open-presets {
         margin: 10px;
         font-size: 20px;
         cursor: pointer;
@@ -258,12 +262,12 @@ body{
       .tiles {
         @extend .w-100, .h-100, .d-flex, .justify-content-center, .flex-wrap ;
 
-        .overlayContainer{
+        .overlayContainer {
           height: 215px;
           position: relative;
           margin: auto 0px;
 
-          .overlayIcon{
+          .overlayIcon {
             font-size: 75px;
             position: absolute;
             left: 50%;
@@ -294,23 +298,23 @@ body{
 
         .qf-tile {
           @extend .p-0, .shadow;
-  
+
           $background-colour: #E0EBEB;
-  
+
           width: 200px;
           height: 215px;
           margin: auto 10px;
           background-color: $background-colour;
-          
+
           .qf-tile-header {
             @extend .w-100, .h5, .text-center;
             height: 32px;
             line-height: 32px;
             color: white;
           }
-  
+
           &:hover {
-            background-color:darken($color: $background-colour, $amount: 5);
+            background-color: darken($color: $background-colour, $amount: 5);
           }
         }
       }
@@ -346,22 +350,22 @@ body{
     }
   }
 
-  .actionIcon{
-        font-size: 100px;
-        padding: 10px;
+  .actionIcon {
+    font-size: 100px;
+    padding: 10px;
   }
 
-  .result-wrapper{
+  .result-wrapper {
     @extend .container ;
     background: white;
-    margin-top:10px;
+    margin-top: 10px;
     padding: 0px;
 
-    .Collapsible{
+    .Collapsible {
       @extend .list-group-item ;
     }
 
-    .result-header{
+    .result-header {
       background: $primary-blue;
       color: white;
       font-size: 20px;
@@ -369,11 +373,11 @@ body{
       padding-left: 18px;
     }
 
-    .clickable{
+    .clickable {
       color: $primary-blue;
     }
 
-    .dataset{
+    .dataset {
       @extend .list-group-item ;
       transition: all 0.2s ease;
 
@@ -386,61 +390,65 @@ body{
 
 }
 
-.content-tab-customizer-wrapper{
+.content-tab-customizer-wrapper {
   @extend .h-100, .d-flex, .justify-content-center, .flex-wrap ;
   width: 300px;
   padding: 10px;
   background-color: white;
-  
 
-    .qf-tile {
-      @extend .p-0, .shadow;
-      $background-colour: #E0EBEB;
-      width: 200px;
-      height: 215px;
-      margin: auto 10px;
-      background-color: $background-colour;
 
-      .qf-tile-header {
-        @extend .w-100, .h5, .text-center;
-        height: 32px;
-        line-height: 32px;
-        color: white;
-      }
+  .qf-tile {
+    @extend .p-0, .shadow;
+    $background-colour: #E0EBEB;
+    width: 200px;
+    height: 215px;
+    margin: auto 10px;
+    background-color: $background-colour;
+
+    .qf-tile-header {
+      @extend .w-100, .h5, .text-center;
+      height: 32px;
+      line-height: 32px;
+      color: white;
+    }
+
+    &:hover {
+      background-color: darken($color: $background-colour, $amount: 5);
+    }
+  }
+
+  .customizer-userinput {
+    margin-top: 10px;
+
+    .qfc-input-label-100 {
+      width: 100%;
+      padding: 1px;
+    }
+
+    .qfc-input-label-75 {
+      width: 75%;
+      padding: 1px;
+    }
+
+    .qfc-input-label-25 {
+      width: 25%;
+      padding: 1px;
+    }
+
+    .fas .fa-trash {
+      color: $primary-blue;
 
       &:hover {
-        background-color: darken($color: $background-colour, $amount: 5);
+        color: red;
       }
     }
 
-    .customizer-userinput{
-      margin-top: 10px;
-      .qfc-input-label-100{
-        width: 100%;
-        padding: 1px;
-      }
-      .qfc-input-label-75{
-        width: 75%;
-        padding: 1px;
-      }
-      .qfc-input-label-25{
-        width: 25%;
-        padding: 1px;
-      }
+    .button-container {
+      float: right;
 
-      .fas .fa-trash{
-        color: $primary-blue;
-        &:hover{
-          color: red;
-        }
-      }
-
-      .button-container{
-        float: right;
-
-        .btn.btn-primary{
-          margin: 3px;
-        }
+      .btn.btn-primary {
+        margin: 3px;
       }
     }
+  }
 }

@@ -1,6 +1,6 @@
-import ESGFSearchResultDTO from "../../../model/dto/esgf-search-result.dto";
-import IESGFSearchService from "../../services/esgf-search/esgf-search.service.interface";
-import EsgfSearchQuery from "../../../model/dto/esgf-search-query";
+import ESGFSearchResultDTO from "../../model/dto/esgf-search-result.dto";
+import IESGFSearchService from "./esgf-search.service.interface";
+import EsgfSearchQuery from "../../model/dto/esgf-search-query";
 
 export class ESGFSearchResultsProvider {
     private _results: Map<String, ESGFSearchResultDTO>;

@@ -17,24 +17,27 @@
     "react-collapsible": "^2.6.0",
     "react-dom": "latest",
     "react-redux": "latest",
-    "react-scripts": "latest",
+    "react-scripts": "1.1.4",
     "react-sidebar": "^3.0.2",
     "react-slide-menu": "^0.5.1",
     "redux": "latest",
-    "why-did-you-update": "^1.0.6"
+    "why-did-you-update": "latest"
   },
   "devDependencies": {
-    "babel-jest": "latest",
     "@babel/preset-env": "latest",
     "@babel/preset-react": "latest",
+    "@types/jest": "^24.0.13",
     "arkit": "^1.5.3",
     "autoprefixer": "latest",
+    "awesome-typescript-loader": "latest",
+    "babel-jest": "latest",
     "babel-register": "latest",
     "babelify": "latest",
-    "awesome-typescript-loader": "latest",
+    "babel-loader": "latest",
     "css-loader": "latest",
     "html-loader": "latest",
     "html-webpack-plugin": "latest",
+    "jest": "^24.8.0",
     "mini-css-extract-plugin": "latest",
     "node-sass": "latest",
     "npm": "latest",
@@ -43,11 +46,10 @@
     "precss": "latest",
     "sass-loader": "latest",
     "style-loader": "latest",
+    "ts-jest": "^24.0.2",
     "typescript": "latest",
     "webpack": "latest",
-    "webpack-cli": "latest",
-    "jest": "latest",
-    "@types/jest": "latest"
+    "webpack-cli": "latest"
   },
   "scripts": {
     "test": "jest"

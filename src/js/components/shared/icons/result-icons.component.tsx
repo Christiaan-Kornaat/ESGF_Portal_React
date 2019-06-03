@@ -1,7 +1,13 @@
 import * as React from "react";
 
-const ResultIcons = {Basket: null};
+namespace ResultIcons {
 
-ResultIcons.Basket = () => <i className="fas fa-shopping-basket"/>;
+    export function Basket({className = ""}) {
+        return <i className={"fas fa-shopping-basket" + className}/>;
+    }
 
+    export function Download({className = ""}) {
+        return <i className={"fas fa-file-download " + className}/>;
+    }
+}
 export default ResultIcons;

@@ -1,4 +1,4 @@
-import {ESGFFilterDTO} from "../../../model/dto/esgf-filter.dto";
+import {ESGFFilterDTO} from "../../model/dto/esgf-filter.dto";
 
 export default interface IESGFFilterService {
 

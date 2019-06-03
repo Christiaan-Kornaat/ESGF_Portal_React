@@ -5,8 +5,9 @@ import ESGFDataNodeResultDTO from "../../../model/dto/esgf-data-node-result.dto"
 import ESGFSearchResultDTO from "../../../model/dto/esgf-search-result.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import EsgfSearchQuery from "../../../model/dto/esgf-search-query";
+import ICatalogProvider from "../../../data/catalog/catalog.provider.interface";
 
-type ResultWrapperProps = { searchResultsManager: EsgfSearchManager };
+type ResultWrapperProps = { catalogProvider: ICatalogProvider, searchResultsManager: EsgfSearchManager };
 
 export class ResultWrapper extends Component<ResultWrapperProps> {
     private _searchManager: EsgfSearchManager;
@@ -42,14 +43,15 @@ export class ResultWrapper extends Component<ResultWrapperProps> {
     }
 
     componentDidMount(): void {
-        this._searchManager.search(new EsgfSearchQuery([]))
+        this._searchManager.search(new EsgfSearchQuery([]));
     }
 
     render() {
         let {searchResult, isLoading} = this.state;
         isLoading = isLoading || !searchResult;
 
-        let createResultItem = (result: ESGFDataNodeResultDTO) => <ResultItem key={result.esgfid} labelModel={result}/>;
+        let createResultItem = (result: ESGFDataNodeResultDTO) => <ResultItem key={result.esgfid} labelModel={result}
+                                                                              resultProvider={this.props.catalogProvider}/>;
 
         let resultComponents = !isLoading ? searchResult.results.map(createResultItem) : <LoadingIcons.Spinner/>;
         let numFoundComponent = !isLoading ?

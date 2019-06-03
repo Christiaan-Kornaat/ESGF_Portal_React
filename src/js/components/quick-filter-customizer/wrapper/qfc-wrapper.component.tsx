@@ -5,13 +5,13 @@ import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import Overlays from "../../shared/overlay/overlays.component";
 import OverlayFactory from "../../../model/factories/overlay.factory";
-import {ESGFFilterProvider} from "../../../data/providers/esgf-filter/esgf-filter.provider";
+import {ESGFFilterProvider} from "../../../data/esgf-filter/esgf-filter.provider";
 import {ColumnedPageProps} from "../../shared/pages/page-columned/page-columned.component";
-import QfcCustomizerWrapper from "./qfc-customizer-wrapper.component";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import Buttons from "../../shared/buttons/buttons.component";
-import { LocalStorageController } from "../../../controllers/localstorage/esgf-localstorage.controller";
-import { QFTileConverter, QFFilterTileJSONDTO } from "../../../data/converters/qf-tile-converter";
+import {LocalStorageController} from "../../../controllers/localstorage/esgf-localstorage.controller";
+import {QFFilterTileJSONDTO, QFTileConverter} from "../../../data/converters/qf-tile-converter";
+import QfcCustomizerWrapper from "./qfc-customizer-wrapper.component";
 
 type QFCProps =
     { qfManager: any, qfProvider: any, filterProvider: any }
@@ -43,10 +43,10 @@ export default class QFCWrapper extends Component<QFCProps> {
                 "icon": "fas fa-thermometer-three-quarters",
                 "title": "Temperature",
                 "properties": [
-                    { "name": "tas", "esgfFilterName": "variable" },
-                    { "name": "tasmin", "esgfFilterName": "variable" },
-                    { "name": "tasmax", "esgfFilterName": "variable" },
-                    { "name": "ta", "esgfFilterName": "variable" }
+                    {"name": "tas", "esgfFilterName": "variable"},
+                    {"name": "tasmin", "esgfFilterName": "variable"},
+                    {"name": "tasmax", "esgfFilterName": "variable"},
+                    {"name": "ta", "esgfFilterName": "variable"}
                 ]
             },
             {
@@ -54,9 +54,9 @@ export default class QFCWrapper extends Component<QFCProps> {
                 "icon": "fas fa-cloud-showers-heavy",
                 "title": "Precipitation",
                 "properties": [
-                    { "name": "pr", "esgfFilterName": "variable" },
-                    { "name": "prc", "esgfFilterName": "variable" },
-                    { "name": "prsn", "esgfFilterName": "variable" }
+                    {"name": "pr", "esgfFilterName": "variable"},
+                    {"name": "prc", "esgfFilterName": "variable"},
+                    {"name": "prsn", "esgfFilterName": "variable"}
                 ]
             },
             {
@@ -64,13 +64,13 @@ export default class QFCWrapper extends Component<QFCProps> {
                 "icon": "fas fa-tint",
                 "title": "Humidity",
                 "properties": [
-                    { "name": "huss", "esgfFilterName": "variable" },
-                    { "name": "hurs", "esgfFilterName": "variable" },
-                    { "name": "rhsmax", "esgfFilterName": "variable" },
-                    { "name": "rhsmin", "esgfFilterName": "variable" },
-                    { "name": "rhs", "esgfFilterName": "variable" },
-                    { "name": "hus", "esgfFilterName": "variable" },
-                    { "name": "hur", "esgfFilterName": "variable" }
+                    {"name": "huss", "esgfFilterName": "variable"},
+                    {"name": "hurs", "esgfFilterName": "variable"},
+                    {"name": "rhsmax", "esgfFilterName": "variable"},
+                    {"name": "rhsmin", "esgfFilterName": "variable"},
+                    {"name": "rhs", "esgfFilterName": "variable"},
+                    {"name": "hus", "esgfFilterName": "variable"},
+                    {"name": "hur", "esgfFilterName": "variable"}
                 ]
             },
             {
@@ -78,10 +78,10 @@ export default class QFCWrapper extends Component<QFCProps> {
                 "icon": "fas fa-wind",
                 "title": "Wind",
                 "properties": [
-                    { "name": "sfcWind", "esgfFilterName": "variable" },
-                    { "name": "sfcWindmax", "esgfFilterName": "variable" },
-                    { "name": "uas", "esgfFilterName": "variable" },
-                    { "name": "vas", "esgfFilterName": "variable" }
+                    {"name": "sfcWind", "esgfFilterName": "variable"},
+                    {"name": "sfcWindmax", "esgfFilterName": "variable"},
+                    {"name": "uas", "esgfFilterName": "variable"},
+                    {"name": "vas", "esgfFilterName": "variable"}
                 ]
             },
             {
@@ -89,12 +89,12 @@ export default class QFCWrapper extends Component<QFCProps> {
                 "icon": "fas fa-sun",
                 "title": "Radiation",
                 "properties": [
-                    { "name": "rsds", "esgfFilterName": "variable" },
-                    { "name": "rsus", "esgfFilterName": "variable" },
-                    { "name": "rlds", "esgfFilterName": "variable" },
-                    { "name": "rlus", "esgfFilterName": "variable" },
-                    { "name": "rsdsdiff", "esgfFilterName": "variable" },
-                    { "name": "clt", "esgfFilterName": "variable" }
+                    {"name": "rsds", "esgfFilterName": "variable"},
+                    {"name": "rsus", "esgfFilterName": "variable"},
+                    {"name": "rlds", "esgfFilterName": "variable"},
+                    {"name": "rlus", "esgfFilterName": "variable"},
+                    {"name": "rsdsdiff", "esgfFilterName": "variable"},
+                    {"name": "clt", "esgfFilterName": "variable"}
                 ]
             },
             {
@@ -102,9 +102,9 @@ export default class QFCWrapper extends Component<QFCProps> {
                 "icon": "fas fa-tachometer-alt",
                 "title": "Pressure",
                 "properties": [
-                    { "name": "ps", "esgfFilterName": "variable" },
-                    { "name": "psl", "esgfFilterName": "variable" },
-                    { "name": "pfull", "esgfFilterName": "variable" }
+                    {"name": "ps", "esgfFilterName": "variable"},
+                    {"name": "psl", "esgfFilterName": "variable"},
+                    {"name": "pfull", "esgfFilterName": "variable"}
                 ]
             },
             {
@@ -112,10 +112,10 @@ export default class QFCWrapper extends Component<QFCProps> {
                 "icon": "fas fa-cloud-sun-rain",
                 "title": "Evaporation",
                 "properties": [
-                    { "name": "evspsbl", "esgfFilterName": "variable" },
-                    { "name": "evspsblpot", "esgfFilterName": "variable" },
-                    { "name": "evspsblsoi", "esgfFilterName": "variable" },
-                    { "name": "evspsblveg", "esgfFilterName": "variable" }
+                    {"name": "evspsbl", "esgfFilterName": "variable"},
+                    {"name": "evspsblpot", "esgfFilterName": "variable"},
+                    {"name": "evspsblsoi", "esgfFilterName": "variable"},
+                    {"name": "evspsblveg", "esgfFilterName": "variable"}
                 ]
             }
         ];
@@ -201,14 +201,13 @@ export default class QFCWrapper extends Component<QFCProps> {
     render() {
         let {qfTileModels, currentCustomTile} = this.state;
 
-        let tileFactory = new TileFactory();
-
         let qfTiles = this.createTiles(qfTileModels);
-        let iconTileAdd = new QFFilterTileDTO("Add Quick Filter", "#3f3f3f", "fas fa-plus-circle", []);
-        //TODO ergens anders? is kort maar niet mooi
-
         let hasTiles = qfTiles.length > 0;
         let hasMaxTiles = qfTiles.length >= 8;
+        let tileFactory = new TileFactory();
+
+        let iconTileAdd = new QFFilterTileDTO("Add Quick Filter", "#3f3f3f", "fas fa-plus-circle", []);
+        //TODO ergens anders? is kort maar niet mooi
 
         let tab = (
             <div className="qf-main-container">

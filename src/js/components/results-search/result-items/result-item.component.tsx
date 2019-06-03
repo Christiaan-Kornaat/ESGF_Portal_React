@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import Collapsible from "react-collapsible";
 import ArrowIcons from "../../shared/icons/arrow-icons.component";
-import ResultIcons from "../../shared/icons/result-icons.component";
 import EsgfCatalogItem, {CatalogItemDataset} from "../../../model/dto/esgf-catalog-item.dto";
 import ESGFDataNodeResultDTO from "../../../model/dto/esgf-data-node-result.dto";
 import ICatalogProvider from "../../../data/catalog/catalog.provider.interface";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
+import DatasetListItem from "./result-dataset-list-item.component";
 
 type ResultItemProps = { labelModel: ESGFDataNodeResultDTO, resultProvider: ICatalogProvider };
 
@@ -15,61 +15,17 @@ enum ViewMode {
     Both = "viewmode-both",
 }
 
+enum ErrorState {
+    NoError,
+    ConnectionError,
+    NotFoundError
+}
+
+type State = { isOpen: boolean, contentModel: EsgfCatalogItem, viewMode: ViewMode, errorState: ErrorState };
+
 export default class ResultItem extends Component<ResultItemProps> {
-    state: { isOpen: boolean, labelModel: ESGFDataNodeResultDTO, contentModel: EsgfCatalogItem, viewMode: ViewMode };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isOpen: true,
-            labelModel: props.labelModel,
-            contentModel: null,
-            viewMode: ViewMode.Both
-        };
-
-    }
-
-    setArrowIsOpen(isOpen: boolean) {
-        this.setState({isOpen: isOpen});
-    }
-
-    componentWillReceiveProps({labelModel}): void {
-        this.setState({labelModel: labelModel});
-    }
-
-    render() {
-        let {state: {isOpen, labelModel}} = this;
-
-        //TODO move to somewhere else??
-        let createTableRow = (dataset: CatalogItemDataset, index) => {
-            let downloadLink = dataset.url ?
-                <a target={"_blank"} href={dataset.url} className={"clickable"}><ResultIcons.Download className={"mx-auto"}/></a> :
-                "-";
-
-            return (
-                <tr key={index}>
-                    <th scope="row">{index + 1}</th>
-                    <td>{dataset.name}</td>
-                    <td>{dataset.dataSize}</td>
-                    <td className="text-center">{downloadLink}</td>
-                    <td className="clickable text-center">View</td>
-                    <td className="clickable text-center"><ResultIcons.Basket/></td>
-                </tr>
-            );
-        };
-
-        let Arrow = isOpen ? ArrowIcons.Down : ArrowIcons.Up;
-
-        let closeArrow = () => this.setArrowIsOpen(true);
-        let openArrow = () => this.setArrowIsOpen(false);
-
-        let handleOpen = async () => {
-            openArrow();
-            let contentModel = await this.props.resultProvider.provide(this.props.labelModel);
-            this.setState({contentModel: contentModel});
-        };
-
+    get renderDatasets() {
         let filterMethod = (ignored) => true;
         let isAggregate = (item: CatalogItemDataset) => item.name.endsWith("aggregation");
 
@@ -81,10 +37,63 @@ export default class ResultItem extends Component<ResultItemProps> {
                 filterMethod = (item: CatalogItemDataset) => !isAggregate(item);
         }
 
-        let {esgfid} = labelModel;
-        let content = this.state.contentModel ?
-            this.state.contentModel.datasets.filter(filterMethod).map(createTableRow) :
-            <LoadingIcons.Spinner/>;
+        return this.state.contentModel.datasets.filter(filterMethod);
+
+    }
+
+    state: State;
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isOpen: true,
+            contentModel: null,
+            viewMode: ViewMode.Both,
+            errorState: ErrorState.NoError
+        };
+
+    }
+
+    setArrowIsOpen(isOpen: boolean) {
+        this.setState({isOpen: isOpen});
+    }
+
+    private get contentComponent() {
+
+        let {errorState, contentModel} = this.state;
+
+        if (errorState != ErrorState.NoError) return <LoadingIcons.Error className={"text-danger"}/>;
+        if (!contentModel) return <LoadingIcons.Spinner/>;
+
+        let createTableRow = (dataset: CatalogItemDataset, index: number) =>
+            <DatasetListItem dataset={dataset}
+                             key={index}/>;
+
+        return this.renderDatasets.map(createTableRow);
+    }
+
+    private async fetchContentModel() {
+        try {
+            let contentModel = await this.props.resultProvider.provide(this.props.labelModel);
+            this.setState({contentModel: contentModel});
+        } catch (e) {
+            this.setState({errorState: ErrorState.ConnectionError});
+        }
+    }
+
+    render() {
+        let {isOpen} = this.state;
+        let {labelModel} = this.props;
+
+        let Arrow = isOpen ? ArrowIcons.Down : ArrowIcons.Up;
+
+        let closeArrow = () => this.setArrowIsOpen(true);
+        let openArrow = () => this.setArrowIsOpen(false);
+        let handleOpen = () => {
+            openArrow();
+            return this.fetchContentModel();
+        };
 
         let ViewModeSelector = ({options, selected, className = ""}: { options: Map<ViewMode, string>, selected: ViewMode, className }) => {
             let onChange = ({target: {value: viewMode}}) => this.setState({viewMode: viewMode});
@@ -99,6 +108,9 @@ export default class ResultItem extends Component<ResultItemProps> {
                 {optionArray.map(createOption)}
             </select>;
         };
+
+        let {esgfid} = labelModel;
+        let content = this.contentComponent;
 
         return (
             <Collapsible lazyRender={true}

@@ -11,6 +11,11 @@ import TileFactory from "../../../model/factories/tile.factory";
 import {QFTileController} from "../../../controllers/localstorage/tiles/tileController-local";
 import {ESGFFilterProvider} from "../../../data/esgf-filter/esgf-filter.provider";
 
+enum ErrorState {
+    NoError,
+    ConnectionError,
+    NotFoundError
+}
 
 export class QFWrapper extends Component<{ selectionManager: any, filterProvider: any, qfProvider: any }> {
 
@@ -19,8 +24,21 @@ export class QFWrapper extends Component<{ selectionManager: any, filterProvider
     private readonly _filterProvider: ESGFFilterProvider;
     private readonly _tileController: QFTileController;//TODO IQFTileController
 
+    state: { QFSidebarShow: boolean, qfTileModels: Array<QFFilterTileDTO>, errorState: ErrorState };
 
-    state: { QFSidebarShow: boolean, qfTileModels: Array<QFFilterTileDTO> };
+    get componentContent() {
+        let {qfTileModels, errorState} = this.state;
+
+        if (errorState == ErrorState.ConnectionError) {
+            return <LoadingIcons.NoConnection
+                className={"text-danger m-auto"}/>;
+        }
+
+        let qfTiles = this.createTiles(qfTileModels);
+        let hasTiles = qfTiles.length > 0;
+
+        return hasTiles ? qfTiles : <LoadingIcons.Spinner/>;
+    }
 
     constructor(props) {
         super(props);
@@ -35,7 +53,8 @@ export class QFWrapper extends Component<{ selectionManager: any, filterProvider
 
         this.state = {
             QFSidebarShow: false,
-            qfTileModels: []
+            qfTileModels: [],
+            errorState: ErrorState.NoError
         };
 
         this.togglePropertySelected = this.togglePropertySelected.bind(this);
@@ -98,8 +117,12 @@ export class QFWrapper extends Component<{ selectionManager: any, filterProvider
     };
 
     private async update() {
-        let qfTileModels = await Promise.all(this._tileController.getTiles());
-        this.setState({qfTileModels: qfTileModels});
+        try {
+            let qfTileModels = await Promise.all(this._tileController.getTiles());
+            this.setState({qfTileModels: qfTileModels});
+        } catch (e) {
+            this.setState({errorState: ErrorState.ConnectionError});
+        }
     }
 
     componentDidMount(): void {
@@ -112,17 +135,12 @@ export class QFWrapper extends Component<{ selectionManager: any, filterProvider
 
         if (qfTileModels.length === 0) return [];
 
-        return qfTileModels.map(QFFilterTileDTO => {
-                return tileFactory.createTile(QFFilterTileDTO, this.quickFilterListItemFactory);
-            }
-        );
+        return qfTileModels.map(QFFilterTileDTO =>
+            tileFactory.createTile(QFFilterTileDTO, this.quickFilterListItemFactory));
     }
 
     render() {
-        let {QFSidebarShow, qfTileModels} = this.state;
-
-        let qfTiles = this.createTiles(qfTileModels);
-        let hasTiles = qfTiles.length > 0;
+        let {QFSidebarShow} = this.state;
 
         return (
             <section className="qf-wrapper">
@@ -130,7 +148,7 @@ export class QFWrapper extends Component<{ selectionManager: any, filterProvider
                 {/*<div className="button-open-presets" onClick={this.openNav}>&#9776; Presets</div>*/}
                 <div className="qf-main-container">
                     <div className="tiles">
-                        {hasTiles ? qfTiles : <LoadingIcons.Spinner/>}
+                        {this.componentContent}
                     </div>
                 </div>
             </section>

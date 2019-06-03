@@ -33,28 +33,27 @@ body {
 
   .loadIcon {
     @extend .d-flex, .justify-content-center ;
-
+    
     .spinnerIcon {
       @extend .spinner-border, .m-auto ;
       color: gray;
-
+      
       .text {
         @extend .sr-only ;
       }
     }
   }
+      .spinnerInline {
+        @extend .spinner-border;
+        height:1rem;
+        width:1rem;
+        vertical-align: middle;
+        font-size: 10px;
 
-  .spinnerInline {
-    @extend .spinner-border;
-    height: 1rem;
-    width: 1rem;
-    vertical-align: middle;
-    font-size: 10px;
-
-    .text {
-      @extend .sr-only;
-    }
-  }
+        .text {
+          @extend .sr-only;
+        }
+      }
 
   .XPF-Wrapper {
     @extend .row;
@@ -63,18 +62,18 @@ body {
     height: 500px;
     width: 100%;
 
-    .dropdown-item {
-      &:hover {
+    .dropdown-item{
+      &:hover{
         background-color: $default-gray;
         color: black;
       }
     }
-
+    
     .Properties {
       @extend .border-right, .border-left ;
     }
 
-    .sortingArrow {
+    .sortingArrow{
       @extend .float-right ;
       line-height: inherit;
     }
@@ -93,7 +92,7 @@ body {
         }
       }
 
-      .property {
+      .property, .preset {
         @extend .list-group-item, .py-2 ;
         transition: all 0.2s ease;
 
@@ -110,6 +109,7 @@ body {
           @extend .float-right ;
           font-size: 1.5em;
           color: $primary-blue;
+          margin-left: 10px;
 
           &:hover {
             color: $dark-blue;

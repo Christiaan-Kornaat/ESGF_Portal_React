@@ -2,8 +2,8 @@ import * as React from "react";
 import {Component} from "react";
 import PageColumn, {PageColumnModel} from "./page-column.component";
 
-export type ColumnedPageProps = { columns?: Map<string, PageColumnModel>, className? };
-export type ColumnedPageState = { columns: Map<string, PageColumnModel>, className? };
+export type ColumnedPageProps = { columns?: Map<string, PageColumnModel>, className?: string };
+export type ColumnedPageState = { columns: Map<string, PageColumnModel>, className?: string };
 
 export default class ColumnedPage<P extends ColumnedPageProps = ColumnedPageProps> extends Component<P> {
 
@@ -34,13 +34,13 @@ export default class ColumnedPage<P extends ColumnedPageProps = ColumnedPageProp
                            onTabSelect={onTabSelect}/>;
     }
 
-    public columnExists(columnName): boolean {
+    public columnExists(columnName: string): boolean {
         let {columns} = this.state;
 
         return columns.has(columnName);
     }
 
-    public tabExists(columnName, tabName): boolean {
+    public tabExists(columnName: string, tabName: string): boolean {
         if (!this.columnExists(columnName)) return false;
 
         let {columns} = this.state;

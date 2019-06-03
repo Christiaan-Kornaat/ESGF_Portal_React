@@ -2,12 +2,11 @@ import * as React from "react";
 import {Component} from "react";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
-import {QFTileController} from "../../../controllers/localstorage/tiles/tileController-local";
 import TileFactory from "../../../model/factories/tile.factory";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 
-type PreviewTabProps = { qfTile: QFFilterTileDTO, properties: ESGFFilterPropertyDTO[], onSave?: (QFFilterTileDTO) => void, actionButtons?: JSX.Element[] | JSX.Element, deselectProperty: (property: ESGFFilterPropertyDTO)=> void };
+type PreviewTabProps = { qfTile: QFFilterTileDTO, properties: ESGFFilterPropertyDTO[], onSave?: (QFFilterTileDTO) => void, actionButtons?: JSX.Element[] | JSX.Element, deselectProperty: (property: ESGFFilterPropertyDTO) => void };
 
 export class PreviewTab extends Component<PreviewTabProps> {
     state: { qfTile };
@@ -61,7 +60,7 @@ export class PreviewTab extends Component<PreviewTabProps> {
         let handleDeselectProperty = (item) => {
             deselectProperty(item);
             this.saveTile(this.props.qfTile);
-        }
+        };
 
         let tileFactory = new TileFactory();
         let createQFListItem = (item) => new ListItemFactoryFactory().createQFCTileListItem(item, handleDeselectProperty);
@@ -83,7 +82,7 @@ export class PreviewTab extends Component<PreviewTabProps> {
                                className="form-control inputfield"
                                placeholder="Quick filter Name"/>
                     </label>
-                    <label className="qfc-input-label-25"> Color 
+                    <label className="qfc-input-label-25"> Color
                         <input type="color"
                                className="form-control"
                                onChange={this.handleColourChange}

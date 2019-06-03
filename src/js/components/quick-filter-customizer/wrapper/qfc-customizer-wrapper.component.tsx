@@ -48,17 +48,17 @@ enum SortState {
 
 type ListItemFactory<TItem> = (item: TItem) => JSX.Element;
 
-export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProps> {
+export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProps> {
 
     public get selectedFilter(): ESGFFilterDTO {
         return this.state.selectedFilter;
     }
 
-    public get properties() {
+    public get properties(): ESGFFilterPropertyDTO[] {
         return this.selectedFilter ? this.selectedFilter.properties : [];
     }
 
-    public get selectedProperties() {
+    public get selectedProperties(): ESGFFilterPropertyDTO[] {
         return this._selectedPropertyManager.selected;
     }
 
@@ -67,11 +67,11 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
     private readonly _filterProvider: ESGFFilterProvider;
     private readonly _selectedPropertyManager: SelectedPropertyManager;
 
-    private _searchFunctions: { filters: SearchFunction<ESGFFilterDTO>; properties: SearchFunction<ESGFFilterPropertyDTO> };
+    private readonly _searchFunctions: { filters: SearchFunction<ESGFFilterDTO>; properties: SearchFunction<ESGFFilterPropertyDTO> };
     private _optionComponents: { filters: JSX.Element; properties: JSX.Element };
     private _listItemFactories: { filters: ListItemFactory<ESGFFilterDTO>, properties: ListItemFactory<ESGFFilterPropertyDTO> };
 
-    private sortFunctions = {
+    private readonly sortFunctions = {
         sortState() { return this.state.sortState; },
 
         get filters() { return this.sortState().get(SortState.Filter).getCurrent(); },
@@ -118,7 +118,7 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
         this.forceUpdate();
     }
 
-    createSortState(): Map<SortState, SorterManager> {
+    private createSortState(): Map<SortState, SorterManager> {
         let sorterFactoryFactory = new SorterFactoryFactory();
         let createSortState = (defaultAscending, comparator) =>
             new SorterManager(new Map([["A-Z", sorterFactoryFactory.createSorterFactory(comparator)]]), "A-Z");
@@ -129,7 +129,7 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
         ]);
     }
 
-    initOptionComponents() {
+    private initOptionComponents() {
         let {isSelected, toggle: toggleSelected} = this._selectedPropertyManager;
 
         let listItemFactory = new ListItemFactoryFactory();
@@ -167,11 +167,11 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
         };
     }
 
-    selectFilter(filter) {
+    selectFilter(filter: ESGFFilterDTO): void {
         this.setState({selectedFilter: filter});
     }
 
-    deselectFilterProperty(property) {
+    deselectFilterProperty(property: ESGFFilterPropertyDTO): void {
         this._selectedPropertyManager.deselect(property);
     }
 
@@ -227,7 +227,7 @@ export default class QfcCustomiserWrapper extends ColumnedPage<QfcCustomiserProp
         return super.render();
     }
 
-    createInvertSort(columnName) {
+    createInvertSort(columnName: SortState): () => void {
         return () => {
             this.state.sortState.get(columnName).invert();
             this.forceUpdate();

@@ -106,7 +106,7 @@ export default class ResultItem extends Component<ResultItemProps> {
                          onOpening={handleOpen}
                          onClosing={closeArrow}>
                 <form className={"form-inline"}>
-                    <b>View mode:</b> <ViewModeSelector options={new Map([
+                    <b>View mode:</b><br/> <ViewModeSelector options={new Map([
                     [ViewMode.Both, "Both"],
                     [ViewMode.Files, "Files"],
                     [ViewMode.Aggregates, "Aggregates"]

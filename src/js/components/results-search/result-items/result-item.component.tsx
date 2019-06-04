@@ -41,6 +41,20 @@ export default class ResultItem extends Component<ResultItemProps> {
 
     }
 
+    private get contentComponent() {
+
+        let {errorState, contentModel} = this.state;
+
+        if (errorState != ErrorState.NoError) return <LoadingIcons.Error className={"text-danger"}/>;
+        if (!contentModel) return <LoadingIcons.Spinner/>;
+
+        let createTableRow = (dataset: CatalogItemDataset, index: number) =>
+            <DatasetListItem dataset={dataset}
+                             index={index}/>;
+
+        return this.renderDatasets.map(createTableRow);
+    }
+
     state: State;
 
     constructor(props) {
@@ -57,20 +71,6 @@ export default class ResultItem extends Component<ResultItemProps> {
 
     setArrowIsOpen(isOpen: boolean) {
         this.setState({isOpen: isOpen});
-    }
-
-    private get contentComponent() {
-
-        let {errorState, contentModel} = this.state;
-
-        if (errorState != ErrorState.NoError) return <LoadingIcons.Error className={"text-danger"}/>;
-        if (!contentModel) return <LoadingIcons.Spinner/>;
-
-        let createTableRow = (dataset: CatalogItemDataset, index: number) =>
-            <DatasetListItem dataset={dataset}
-                             key={index}/>;
-
-        return this.renderDatasets.map(createTableRow);
     }
 
     private async fetchContentModel() {

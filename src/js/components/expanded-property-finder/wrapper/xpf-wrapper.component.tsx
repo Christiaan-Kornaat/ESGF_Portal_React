@@ -154,8 +154,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
             selectTab(ColumnPosition.Right, infoTabName);
         };
 
-         let addPreset = () => {
-            let preset = new PresetDTO("New Preset");
+        let addPreset = (preset) => () => {
             this.state.presetsListItems.push(preset);
              this.setState({
                  currentCustomPreset: preset
@@ -191,7 +190,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
             filters: <OptionsComponent key={"filters"} sortButtons={[createSortButton(SortState.Filter)]}/>,
             presets: <OptionsComponent key={"presets"} sortButtons={[createSortButton(SortState.Preset)]} 
                                                         optionButtons={{
-                                                            "New Preset": addPreset,
+                                                            "New Preset": addPreset(new PresetDTO("New Preset")),
                                                         }}/>,
             properties: <OptionsComponent key={"properties"} sortButtons={[createSortButton(SortState.Property)]}
                                           optionButtons={{
@@ -200,7 +199,8 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
                                           }}/>,
             propertiesSelected: <OptionsComponent key={"propertiesSelected"} sortButtons={[createSortButton(SortState.SelectedProperty)]}
                                                   optionButtons={{
-                                                      "Deselect all": createSetSelected(false, () => this._selectedPropertyManager.selected)
+                                                      "Deselect all": createSetSelected(false, () => this._selectedPropertyManager.selected),
+                                                      "Save as preset": addPreset(new PresetDTO("New Preset", "", this._selectedPropertyManager.selected.map(property => ({ name: property.name, esgfFilterName: property.filter.shortName }))))
                                                   }}/>
         };
     }

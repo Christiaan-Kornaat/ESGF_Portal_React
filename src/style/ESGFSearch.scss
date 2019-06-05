@@ -392,7 +392,7 @@ body {
 
 
 .content-tab-customizer-wrapper {
-  @extend .h-100, .w-100, .d-flex, .justify-content-center, .flex-wrap ;
+  @extend .h-100,.d-flex, .justify-content-center, .flex-wrap ;
   width: 300px;
   padding: 10px;
   background-color: white;
@@ -453,7 +453,7 @@ body {
     }
   }
 }
-.preview{
+.preview-presets{
   @extend .w-100;
 
   .ListPresets {

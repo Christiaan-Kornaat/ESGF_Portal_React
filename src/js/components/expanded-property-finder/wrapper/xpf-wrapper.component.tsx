@@ -309,7 +309,6 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         // let createSelectColumnTab = columnName => newTab => this.selectTab(columnName, newTab);
 
         this.state.className += " XPF-Wrapper";
-
         return super.render();
     }
 

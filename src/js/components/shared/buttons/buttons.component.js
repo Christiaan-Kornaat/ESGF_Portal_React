@@ -17,7 +17,7 @@ Buttons.Info = ({onClick}) =>
 
 Buttons.Edit = ({onClick}) =>
     <span className={"icon-info"}
-          onClick={onClick}> <i class="fas fa-edit"/>
+          onClick={onClick}> <i className="fas fa-edit"/>
 </span>;
 
 Buttons.Primary = ({title, onClick}) =>

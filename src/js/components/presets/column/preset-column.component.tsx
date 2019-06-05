@@ -58,7 +58,7 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
         return (
             <div className="content-tab-preset-customizer-wrapper">
                 <div className="preview-presets">
-                    {this.state.preset != null ?
+                    {this.state.preset.properties != null ?
                         <UnorderedList className="ListPresets" items={this.state.preset.properties} 
                                     createListItem={this.props.propertyPresetListItemFactory}/>
                         :

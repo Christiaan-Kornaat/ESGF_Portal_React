@@ -116,6 +116,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
         this.initOptionComponents();
         this.updatePresets = this.updatePresets.bind(this);
+
     }
 
     update() {
@@ -153,6 +154,14 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
             selectTab(ColumnPosition.Right, infoTabName);
         };
 
+         let addPreset = () => {
+            let preset = new PresetDTO("New Preset");
+            this.state.presetsListItems.push(preset);
+             this.setState({
+                 currentCustomPreset: preset
+             });
+        }
+
         let createPropertyInfoTab = (property: ESGFFilterPropertyDTO) => columnTabFactory.createInfoTab(infoTabVMFactory.createPropertyVM(property));
 
             let createShowInfo = (name) => async (columnTab: JSX.Element) => this.setTab(ColumnPosition.Right, columnTab, name);
@@ -180,7 +189,10 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         let createSortButton = createSortButtonFactory(this.createInvertSort);
         this._optionComponents = {
             filters: <OptionsComponent key={"filters"} sortButtons={[createSortButton(SortState.Filter)]}/>,
-            presets: <OptionsComponent key={"presets"} sortButtons={[createSortButton(SortState.Preset)]}/>,
+            presets: <OptionsComponent key={"presets"} sortButtons={[createSortButton(SortState.Preset)]} 
+                                                        optionButtons={{
+                                                            "New Preset": addPreset,
+                                                        }}/>,
             properties: <OptionsComponent key={"properties"} sortButtons={[createSortButton(SortState.Property)]}
                                           optionButtons={{
                                               "Select all": createSetSelected(true, () => this.properties),
@@ -194,6 +206,8 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
     }
 
 
+
+
     private async updatePresets() {
         let presets = await Promise.all(this._presetController.getLocalstorage());
         this.setState({ presetsListItems: presets });
@@ -205,10 +219,23 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         this.handleBackClick();
     }
 
+    handleDeleteClick(preset: PresetDTO) {
+        if (!window.confirm(`Delete preset ${preset.title}?`)) return;
+        this.deletePreset(preset);
+        this.handleBackClick();
+    }
+
+    deletePreset(preset) {
+        let presets = this.state.presetsListItems.filter(item => item != preset);
+        this._presetController.setLocalstorage(presets);
+        this.setState({ presetsListItems: presets });
+    }
+
     handleBackClick() {
         this.setState({
             currentCustomPreset: null
         });
+        this.updatePresets();
     }
 
     async savePreset() {
@@ -250,7 +277,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         if (this.currentCustomPreset) {
             let saveButton = <Buttons.Success title={"Save"} onClick={() => this.handleSaveClick()}/>;
             let cancelButton = <Buttons.Primary title={"Cancel"} onClick={() => this.handleBackClick()} />;
-            let deleteButton = <Buttons.Danger title={"Delete"} onClick={() => this.handleBackClick()} />;
+            let deleteButton = <Buttons.Danger title={"Delete"} onClick={() => this.handleDeleteClick(this.currentCustomPreset)} />;
 
             return <PresetCustomiserWrapper preset={this.currentCustomPreset} 
             filterProvider={this._filterProvider} 

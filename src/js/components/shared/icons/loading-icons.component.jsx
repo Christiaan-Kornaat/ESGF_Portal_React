@@ -1,20 +1,8 @@
 import React from "react";
+import {Icon} from "./icons.component";
 
 const LoadingIcons = {};
 
-function FontAwesomeIcon({classNames, onClick = null}) {
-    return <div className={"loadIcon"}>
-        <i className={classNames.join(" ")}
-           onClick={onClick ? onClick : () => null}/>
-    </div>;
-}
-
-function Icon({classNames, onClick = null}) {
-    classNames.push("fas");
-    if (onClick) classNames.push("cursor-pointer");
-    return <FontAwesomeIcon classNames={classNames}
-                            onClick={onClick}/>;
-}
 
 LoadingIcons.Spinner = () =>
     <div className="loadIcon">

@@ -114,7 +114,7 @@ export default class ResultItem extends Component<ResultItemProps> {
 
         return (
             <Collapsible lazyRender={true}
-                         trigger={<div><Arrow/>{esgfid}</div>}
+                         trigger={<div><Arrow/> {esgfid}</div>}
                          onOpening={handleOpen}
                          onClosing={closeArrow}>
                 <form className={"form-inline"}>

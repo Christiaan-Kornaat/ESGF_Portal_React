@@ -18,7 +18,7 @@ import QuickSelectManagerMock from "./managers/quick-filter/quick-filter.manager
 import SelectedPropertyManager from "./managers/selected-property.manager";
 import IESGFFilterService from "./data/esgf-filter/esgf-filter.service.interface";
 import {ResultWrapper} from "./components/results-search/result-wrapper/result-wrapper.component";
-import AdagucUrlBuilder from "./data/adaguc-url.builder";
+import AdagucUrlBuilder, {PageInfo} from "./data/adaguc-url.builder";
 import ESGFFilterPropertyDTO from "./model/dto/esgf-filter-property.dto";
 import EsgfSearchManager from "./managers/esgf-search.manager";
 import QFCWrapper from "./components/quick-filter-customizer/wrapper/qfc-wrapper.component";
@@ -26,6 +26,8 @@ import ICatalogService from "./data/catalog/catalog.service.interface";
 import CatalogService from "./data/catalog/catalog.service";
 import ICatalogProvider from "./data/catalog/catalog.provider.interface";
 import CatalogProvider from "./data/catalog/catalog.provider";
+import IESGFSearchService from "./data/esgf-search/esgf-search.service.interface";
+import EsgfSearchQuery from "./model/dto/esgf-search-query";
 
 interface AppEnvironment {
     FilterService: any,
@@ -71,7 +73,7 @@ const Dependencies = {
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
         QuickFilterManager: QuickSelectManagerMock,
-        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
+        DATA_HOST: "http://127.0.0.1:8080"
     }
 };
 
@@ -82,9 +84,9 @@ class App extends Component {
     private readonly catalogProvider: ICatalogProvider;
     private readonly filterService: IESGFFilterService;
     private readonly filterProvider: ESGFFilterProvider;
-    private readonly searchService: any;
+    private readonly searchService: IESGFSearchService;
     private readonly searchResultProvider: ESGFSearchResultsProvider;
-    private readonly searchManager: any;
+    private readonly searchManager: EsgfSearchManager;
     private readonly tileProvider: QFTileProvider;
     private readonly selectedPropertyManager: SelectedPropertyManager;
     private readonly quickFilterManager: QuickSelectManagerMock;
@@ -143,6 +145,13 @@ class App extends Component {
 
     render() {
         let onSelectionChanged = (selection: ESGFFilterPropertyDTO[]) => this.searchManager.searchByProperties(selection);
+        let selectPage = (pageIndex: number, pageSize?: number) => {
+            let {filterProperties: properties, pageInfo: oldPageInfo} = this.searchManager.currentQuery;
+
+            let pageInfo: PageInfo = {index: pageIndex, size: pageSize || oldPageInfo.size};
+
+            return this.searchManager.search(new EsgfSearchQuery(properties, pageInfo));
+        };
         this.selectedPropertyManager.events.selectionChanged.subscribe(onSelectionChanged);
 
         let QF = <QFWrapper selectionManager={this.selectedPropertyManager}
@@ -162,7 +171,8 @@ class App extends Component {
                 <ESGFSearchPortal
                     tabs={{"Quick filter": QF, "Extended property finder": XPF, "Quick filter customizer": QFC}}/>
                 <ResultWrapper catalogProvider={this.catalogProvider}
-                               searchResultsManager={this.searchManager}/>
+                               searchResultsManager={this.searchManager}
+                               selectPage={selectPage}/>
             </div>
         );
     }

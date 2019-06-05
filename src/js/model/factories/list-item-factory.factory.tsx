@@ -35,6 +35,28 @@ export default class ListItemFactoryFactory {
         };
     }
 
+
+    createPresetPropertyListItemFactory(onClick: (property: ESGFFilterPropertyDTO) => void, createOnInfoClick, isSelectedFunction) {
+        return (property: ESGFFilterPropertyDTO) => {
+            let viewModel = new EsgfFilterPropertyVM(property);
+            let checked = isSelectedFunction(property);
+            let onInfoClick = createOnInfoClick(property);
+
+            return (
+                <li key={property.name}
+                    className={checked ? "selected property" : "property"}
+                    onClick={() => onClick(property)}>
+                    <input className={"checkbox"}
+                        type={"checkbox"}
+                        onChange={() => null} //prevents error message
+                        checked={checked} />
+                    <Buttons.Info onClick={onInfoClick} />
+                    {viewModel.name}
+                </li>
+            );
+        };
+    }
+
     /**
      *
      * @param {function(PresetDTO): void} onClick

@@ -18,7 +18,7 @@ import InfoTabVmFactory from "../../../model/factories/info-tab-vm.factory";
 import SorterManager from "../../../sorters/sorter.manager";
 import PageColumnListTab from "../../shared/pages/page-columned/page-column-list-tab.component";
 import {SorterFactoryFactory} from "../../../sorters/sorter.factory.factory";
-import {filterComparator, propertyComparator} from "../../../sorters/comparators/esgf.comparator";
+import {filterComparator, propertyComparator, presetComparator} from "../../../sorters/comparators/esgf.comparator";
 import {alphabeticalComparator} from "../../../sorters/comparators/primitive.comparator";
 import { PresetDTO } from "../../../model/dto/esgf-preset.dto";
 import { PresetJSONDTO, PresetConverter } from "../../../data/converters/preset-converter";
@@ -129,7 +129,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
         return new Map<SortState, SorterManager>([
             [SortState.Filter, createSortState(true, filterComparator)],
-            [SortState.Preset, createSortState(true, alphabeticalComparator)], /*FIXME temp*/
+            [SortState.Preset, createSortState(true, presetComparator)],
             [SortState.Property, createSortState(true, propertyComparator)],
             [SortState.SelectedProperty, createSortState(true, propertyComparator)]
         ]);
@@ -199,15 +199,20 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         this.setState({ presetsListItems: presets });
     }
 
-    handleSaveClick(preset: PresetDTO) {
-        this.savePreset(preset);
-
-        window.alert("tile saved");
+    handleSaveClick() {
+        this.savePreset();
+        window.alert("Preset Saved");
+        this.handleBackClick();
     }
 
-    async savePreset(tile) {
-        let presets = this.state.presetsListItems;
+    handleBackClick() {
+        this.setState({
+            currentCustomPreset: null
+        });
+    }
 
+    async savePreset() {
+        let presets = this.state.presetsListItems;
         this._presetController.setLocalstorage(presets);
     }
 
@@ -243,11 +248,13 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         let filtersLoading = !this._filterProvider.hasFilters;
 
         if (this.currentCustomPreset) {
-            let saveButton = <Buttons.Success title={"Save"} onClick={() => this.handleSaveClick(this.currentCustomPreset)}/>;
+            let saveButton = <Buttons.Success title={"Save"} onClick={() => this.handleSaveClick()}/>;
+            let cancelButton = <Buttons.Primary title={"Cancel"} onClick={() => this.handleBackClick()} />;
+            let deleteButton = <Buttons.Danger title={"Delete"} onClick={() => this.handleBackClick()} />;
 
             return <PresetCustomiserWrapper preset={this.currentCustomPreset} 
             filterProvider={this._filterProvider} 
-            actionButtons={[saveButton]}/>
+            actionButtons={[saveButton,cancelButton,deleteButton]}/>
         }
 
         let FilterList = <PageColumnListTab title={"Filters"}
@@ -264,7 +271,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         let PresetList = <PageColumnListTab title={"Presets"}
                                             key={"PresetList"}
                                             items={presetsListItems}
-                                            sortFunction={sortFunctions.filters}
+                                            sortFunction={sortFunctions.presets}
                                             listItemFactory={presetsListItemFactory}
                                             isLoading={filtersLoading}
                                             searchComponentModel={{

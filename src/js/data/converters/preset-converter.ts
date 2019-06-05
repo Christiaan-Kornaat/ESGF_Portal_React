@@ -1,8 +1,7 @@
-import { QFFilterTileDTO } from "../../model/dto/qf-filter-tile.dto";
 import ESGFFilterPropertyDTO from "../../model/dto/esgf-filter-property.dto";
-import { ESGFFilterProvider } from "../providers/esgf-filter/esgf-filter.provider";
 import { PresetDTO } from "../../model/dto/esgf-preset.dto";
 import IConverter from "./converter.interface";
+import { ESGFFilterProvider } from "../esgf-filter/esgf-filter.provider";
 
 export type EsgfFilterPropertyJSONDTO = {
     name: string;

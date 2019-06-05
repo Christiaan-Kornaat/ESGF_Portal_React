@@ -23,21 +23,21 @@ Buttons.Edit = ({onClick}) =>
 Buttons.Primary = ({title, onClick}) =>
     <a key={"button-" + title}
        onClick={onClick}>
-        <input className="btn btn-primary"
+        <input className="btn btn-primary btn-sm"
                type="button"
                value={title}/>
     </a>;
 Buttons.Success = ({title, onClick}) =>
     <a key={"button-" + title}
        onClick={onClick}>
-        <input className="btn btn-success"
+        <input className="btn btn-success btn-sm"
                type="button"
                value={title}/>
     </a>;
 Buttons.Danger = ({title, onClick}) =>
     <a key={"button" + title}
        onClick={onClick}>
-        <input className="btn btn-danger"
+        <input className="btn btn-danger btn-sm"
                type="button"
                value={title}/>
     </a>;

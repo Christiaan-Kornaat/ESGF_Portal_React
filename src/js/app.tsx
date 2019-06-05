@@ -71,7 +71,7 @@ const Dependencies = {
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
         QuickFilterManager: QuickSelectManagerMock,
-        DATA_HOST: "http://MacBook-Pro-van-Marijn.local:8080"
+        DATA_HOST: "http://mbp-van-marijn.knmi.nl:8080"
     }
 };
 

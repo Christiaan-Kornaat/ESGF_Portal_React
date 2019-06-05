@@ -4,18 +4,27 @@ import LoadingIcons from "../../shared/icons/loading-icons.component";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import { PresetDTO } from "../../../model/dto/esgf-preset.dto";
+import UnorderedList from "../../shared/list-unordered/list-unordered.component";
 
-type PreviewTabProps = { preset: PresetDTO, properties: ESGFFilterPropertyDTO[], onSave?: (PresetDTO) => void, actionButtons?: JSX.Element[] | JSX.Element, deselectProperty: (property: ESGFFilterPropertyDTO) => void };
+type PreviewTabProps = { preset: PresetDTO, properties: ESGFFilterPropertyDTO[], onSave?: (PresetDTO) => void, actionButtons?: JSX.Element[] | JSX.Element, propertyPresetListItemFactory: (property: ESGFFilterPropertyDTO) => JSX.Element };
 
 export class PresetsPreviewTab extends Component<PreviewTabProps> {
-    state: { preset };
+    state: { preset: PresetDTO };
+
+    private _listItemFactory: ListItemFactoryFactory;
 
     constructor(props: PreviewTabProps) {
         super(props);
 
+        this._listItemFactory = new ListItemFactoryFactory();
+
         this.state = {
             preset: props.preset
         };
+
+        this.handleTitleChange = this.handleTitleChange.bind(this);
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.handlePropertiesChange = this.handlePropertiesChange.bind(this);
     }
 
     componentWillReceiveProps({ properties }: PreviewTabProps): void {
@@ -24,26 +33,17 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
 
     handlePropertiesChange(properties) {
         let preset = this.props.preset;
-
         preset.properties = properties;
-
-        this.savePreset(preset);
     }
 
     handleTitleChange(event) {
         let preset = this.props.preset;
-
         preset.title = event.target.value;
-
-        this.savePreset(preset);
     }
 
     handleDescriptionChange(event) {
         let preset = this.props.preset;
-
         preset.description = event.target.value;
-
-        this.savePreset(preset);
     }
 
     savePreset(preset) {
@@ -52,25 +52,16 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
     }
 
     render() {
-        let { deselectProperty } = this.props;
-
-        let handleDeselectProperty = (item) => {
-            deselectProperty(item);
-            this.savePreset(this.props.preset);
-        };
-
-        let createQFListItem = (item) => new ListItemFactoryFactory().createQFCTileListItem(item, handleDeselectProperty);
 
         this.state.preset.properties = this.props.properties;
 
         return (
-            <div className="content-tab-customizer-wrapper">
+            <div className="content-tab-preset-customizer-wrapper">
                 <div className="preview">
                     {this.state.preset != null ?
-                    this.state.preset.properties.forEach(element => {
-                        createQFListItem(element)
-                    })
-                         :
+                        <UnorderedList className="ListPresets" items={this.state.preset.properties} 
+                                    createListItem={this.props.propertyPresetListItemFactory}/>
+                        :
                         <LoadingIcons.Spinner />}
                 </div>
                 <div className="customizer-userinput">
@@ -81,7 +72,7 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
                             className="form-control inputfield"
                             placeholder="Preset name" />
                     </label>
-                    <label className="qfc-input-label-100"> Title
+                    <label className="qfc-input-label-100"> Description
                         <textarea
                             defaultValue={this.state.preset.description}
                             onChange={this.handleDescriptionChange}
@@ -96,4 +87,5 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
         );
     }
 }
+
 

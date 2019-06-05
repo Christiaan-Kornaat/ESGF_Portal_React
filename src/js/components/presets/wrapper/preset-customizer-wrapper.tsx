@@ -9,7 +9,6 @@ import { ESGFFilterDTO } from "../../../model/dto/esgf-filter.dto";
 import Buttons from "../../shared/buttons/buttons.component";
 
 import SelectedPropertyManager from "../../../managers/selected-property.manager";
-import { ESGFFilterProvider } from "../../../data/providers/esgf-filter/esgf-filter.provider";
 import ESGFFilterSearcher from "../../../searchers/esgf-filter.searcher";
 import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
@@ -22,6 +21,7 @@ import { filterComparator, propertyComparator } from "../../../sorters/comparato
 import OptionsComponent from "../../expanded-property-finder/wrapper/xpf-list-options.component";
 import { PresetsPreviewTab } from "../column/preset-column.component";
 import { PresetDTO } from "../../../model/dto/esgf-preset.dto";
+import { ESGFFilterProvider } from "../../../data/esgf-filter/esgf-filter.provider";
 
 type PresetCustomiserState = ColumnedPageState & {
     filters: ESGFFilterDTO[],
@@ -214,7 +214,7 @@ export default class PresetCustomiserWrapper extends ColumnedPage<PresetCustomis
         let PresetTab = <PresetsPreviewTab preset={this.props.preset}
             actionButtons={this.props.actionButtons}
             onSave={this.props.onSave ? this.props.onSave : () => null}
-            deselectProperty={this.deselectFilterProperty}
+            propertyPresetListItemFactory={this._listItemFactories.properties}
             properties={this.selectedProperties} />;
 
         this.state.columns.get(ColumnPosition.Left).tabs.set("Filters", FilterList);

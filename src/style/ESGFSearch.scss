@@ -390,8 +390,9 @@ body {
 
 }
 
+
 .content-tab-customizer-wrapper {
-  @extend .h-100, .d-flex, .justify-content-center, .flex-wrap ;
+  @extend .h-100, .w-100, .d-flex, .justify-content-center, .flex-wrap ;
   width: 300px;
   padding: 10px;
   background-color: white;
@@ -446,9 +447,86 @@ body {
     .button-container {
       float: right;
 
-      .btn.btn-primary {
+      .btn.btn-succes,.btn-primary  {
         margin: 3px;
       }
     }
   }
 }
+.preview{
+  @extend .w-100;
+
+  .ListPresets {
+    @extend .list-group, .list-group-flush, .overflow-auto ;
+    height: 255px;
+    width: 100%;
+    font-size: 12px;
+    
+    .selected {
+      color: $primary-blue !important;
+    }
+    .property {
+      @extend .list-group-item, .py-2 ;
+      transition: all 0.2s ease;
+
+      .checkbox {
+        padding: 5px;
+        margin: 5px 5px 0 0;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .icon-info {
+        @extend .float-right ;
+        font-size: 1.5em;
+        color: $primary-blue;
+        margin-left: 10px;
+
+        &:hover {
+          color: $dark-blue;
+        }
+      }
+
+      &:hover {
+        background-color: $default-gray;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+  .content-tab-preset-customizer-wrapper {
+    @extend .h-100,
+    .w-100,
+    .d-flex,
+    .justify-content-center,
+    .flex-wrap;
+
+    .customizer-userinput {
+      margin-top: 10px;
+
+      .qfc-input-label-100 {
+        font-size: 12px;
+        width: 100%;
+        padding: 1px;
+      }
+
+      .form-control {
+        font-size: 12px;
+      }
+
+      .button-container {
+        float: right;
+
+        .btn.btn-succes,
+        .btn-primary {
+          margin: 3px;
+        }
+      }
+    }
+
+  }
+
+

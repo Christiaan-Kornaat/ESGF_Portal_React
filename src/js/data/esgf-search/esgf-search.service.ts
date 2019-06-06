@@ -3,6 +3,7 @@ import IAdagucUrlBuilder from "../adaguc-url.builder.interface";
 import IESGFSearchService from "./esgf-search.service.interface";
 import ESGFDataNodeResultDTO from "../../model/dto/esgf-data-node-result.dto";
 import ESGFSearchResultDTO from "../../model/dto/esgf-search-result.dto";
+import {DefaultPageInfo} from "../adaguc-url.builder";
 
 
 export default class ESGFSearchService implements IESGFSearchService {
@@ -26,8 +27,8 @@ export default class ESGFSearchService implements IESGFSearchService {
         return await this.fetch([]);
     }
 
-    async fetch(properties: ESGFFilterPropertyDTO[]): Promise<ESGFSearchResultDTO> {
-        const url = this._urlBuilder.buildSearchUrl(properties);
+    async fetch(properties: ESGFFilterPropertyDTO[], pageInfo = DefaultPageInfo): Promise<ESGFSearchResultDTO> {
+        const url = this._urlBuilder.buildSearchUrl(properties, pageInfo);
 
         //  Register new request if not already sent
         if (!this.isRequestActive(url)) {

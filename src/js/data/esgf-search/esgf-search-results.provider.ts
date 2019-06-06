@@ -21,7 +21,7 @@ export class ESGFSearchResultsProvider {
      */
     async provide(query: EsgfSearchQuery) {
         if (!this._results.has(query.id)) {
-            let results = await this._searchService.fetch(query.filterProperties);
+            let results = await this._searchService.fetch(query.filterProperties, query.pageInfo);
 
             this._results.set(query.id, results);
         }

@@ -5,10 +5,18 @@ import EsgfSearchQuery from "../model/dto/esgf-search-query";
 import ESGFFilterPropertyDTO from "../model/dto/esgf-filter-property.dto";
 
 export default class EsgfSearchManager {
+    get currentQuery(): EsgfSearchQuery {
+        return this._currentQuery;
+    }
+
+    get currentResults(): ESGFSearchResultDTO {
+        return this._currentResults;
+    }
+
     private readonly _eventEmitter: any;
     private readonly _eventNames: { searched, searchStarted } = {searched: "searched", searchStarted: "search-started"};
 
-    private _currentQuery: string;
+    private _currentQuery: EsgfSearchQuery;
     private _currentResults: ESGFSearchResultDTO = null;
     private _resultsProvider: ESGFSearchResultsProvider;
 
@@ -30,13 +38,13 @@ export default class EsgfSearchManager {
     }
 
     async search(query: EsgfSearchQuery) {
-        this._currentQuery = query.id;
+        this._currentQuery = query;
 
         this._eventEmitter.emit(this._eventNames.searchStarted);
         let results = await this._resultsProvider.provide(query);
 
         /* Check if request has changed in the meantime to ensure only the most recent query emits an event */
-        if (this._currentQuery != query.id) return results;
+        if (this._currentQuery.id != query.id) return results;
 
         this._currentResults = results;
         this._eventEmitter.emit(this._eventNames.searched, results);
@@ -44,7 +52,5 @@ export default class EsgfSearchManager {
         return results;
     }
 
-    get currentResults(): ESGFSearchResultDTO {
-        return this._currentResults;
-    }
+
 }

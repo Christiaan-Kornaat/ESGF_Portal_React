@@ -2,9 +2,19 @@ import React from "react";
 
 const ArrowIcons = {};
 
-ArrowIcons.Up = () => <i className={"sortingArrow fas fa-angle-up"}/>;
-ArrowIcons.Down = () => <i className={"sortingArrow fas fa-angle-down"}/>;
+/**
+ * @param {string} className
+ * @return {*}
+ */
+function createArrowIcon(className) {
+    return <i className={[className, "fas", "sortingArrow"].join(" ")}/>;
+}
 
-ArrowIcons.Trash = ({onClick}) => <i onClick={onClick} className={"fas fa-trash"}/>
+ArrowIcons.Up = ({className = ""}) => createArrowIcon(className + " fa-angle-up");
+ArrowIcons.Down = ({className = ""}) => createArrowIcon(className + " fa-angle-down");
+ArrowIcons.Left = ({className = ""}) => createArrowIcon(className + " fa-angle-left");
+ArrowIcons.Right = ({className = ""}) => createArrowIcon(className + " fa-angle-right");
+
+ArrowIcons.Trash = ({onClick}) => <i onClick={onClick} className={"fas fa-trash"}/>;
 
 export default ArrowIcons;

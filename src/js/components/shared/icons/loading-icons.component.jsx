@@ -1,5 +1,5 @@
 import React from "react";
-import {Icon} from "./icons.component";
+import {FontAwesomeIcon} from "./icons.component";
 
 const LoadingIcons = {};
 
@@ -16,10 +16,11 @@ LoadingIcons.SpinnerInline = () =>
         <span className="text">Loading...</span>
     </div>;
 
-LoadingIcons.Error = ({className = "", onClick = null}) => <Icon classNames={["fa-exclamation-triangle", className]}
-                                                                 onClick={onClick}/>;
+LoadingIcons.Error = ({className = "", onClick = null}) =>
+    <FontAwesomeIcon classNames={["fa-exclamation-triangle", className]}
+                     onClick={onClick}/>;
 
-LoadingIcons.NoConnection = ({className = "", onClick = null}) => <Icon classNames={["fa-wifi", className]}
-                                                                        onClick={onClick}/>;
+LoadingIcons.NoConnection = ({className = "", onClick = null}) => <FontAwesomeIcon classNames={["fa-wifi", className]}
+                                                                                   onClick={onClick}/>;
 
 export default LoadingIcons;

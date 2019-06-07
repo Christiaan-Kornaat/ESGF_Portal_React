@@ -52,6 +52,8 @@
     "webpack-cli": "latest"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node server.js", 
+    "heroku-postbuild": "webpack -p" 
   }
 }

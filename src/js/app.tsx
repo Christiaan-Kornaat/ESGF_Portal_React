@@ -73,7 +73,7 @@ const Dependencies = {
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
         QuickFilterManager: QuickSelectManagerMock,
-        DATA_HOST: "https://climate4impact.eu"
+        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
     }
 };
 

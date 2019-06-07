@@ -12,7 +12,7 @@ export class PresetDTO {
      * @param {string}info
      * @param {ESGFFilterPropertyDTO[]}properties
      */
-    constructor(title: string = undefined, info: string = undefined, properties=[]) {
+    constructor(title: string = undefined, info: string = undefined, properties: ESGFFilterPropertyDTO[] = []) {
         this.properties = properties;
         this.title = title;
         this.description = info;

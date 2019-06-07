@@ -62,7 +62,7 @@ const Dependencies = {
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
         QuickFilterManager: QuickSelectManagerMock,
-        DATA_HOST: "http://localhost:8080"
+        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
     },
     prod: {
         SearchService: ESGFSearchService,
@@ -73,7 +73,7 @@ const Dependencies = {
         QuickFilterTileProvider: QFTileProvider,
         SelectedPropertyManager: SelectedPropertyManager,
         QuickFilterManager: QuickSelectManagerMock,
-        DATA_HOST: "http://jan-mouwes-2.knmi.nl:8080"
+        DATA_HOST: "https://climate4impact.eu"
     }
 };
 

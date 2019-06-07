@@ -371,6 +371,10 @@ body {
       font-size: 20px;
       padding: 8px;
       padding-left: 18px;
+      .pagination{
+        float: right;
+        margin: -4px;
+      }
     }
 
     .clickable {

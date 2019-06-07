@@ -161,6 +161,11 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
              });
         }
 
+        let saveAsPreset = () => {
+            let preset = new PresetDTO("New Preset", "", this._selectedPropertyManager.selected);
+             addPreset(preset)();
+        }
+
         let createPropertyInfoTab = (property: ESGFFilterPropertyDTO) => columnTabFactory.createInfoTab(infoTabVMFactory.createPropertyVM(property));
 
             let createShowInfo = (name) => async (columnTab: JSX.Element) => this.setTab(ColumnPosition.Right, columnTab, name);
@@ -200,7 +205,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
             propertiesSelected: <OptionsComponent key={"propertiesSelected"} sortButtons={[createSortButton(SortState.SelectedProperty)]}
                                                   optionButtons={{
                                                       "Deselect all": createSetSelected(false, () => this._selectedPropertyManager.selected),
-                                                      "Save as preset": addPreset(new PresetDTO("New Preset", "", this._selectedPropertyManager.selected.map(property => ({ name: property.name, esgfFilterName: property.filter.shortName }))))
+                                                      "Save as preset": saveAsPreset
                                                   }}/>
         };
     }

@@ -11,7 +11,8 @@ Buttons.IconButton = ({onClick, children = null, className = ""}) =>
     </span>;
 
 
-Buttons.Options = ({onClick}) => <Buttons.IconButton onClick={onClick}>
+Buttons.Options = ({onClick}) => <Buttons.IconButton onClick={onClick}
+                                                     className={"Button"}>
     <i className="fas fa-ellipsis-h"/>
 </Buttons.IconButton>;
 

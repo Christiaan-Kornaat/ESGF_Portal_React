@@ -193,7 +193,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         let createSortButton = createSortButtonFactory(this.createInvertSort);
         this._optionComponents = {
             filters: <OptionsComponent key={"filters"} sortButtons={[createSortButton(SortState.Filter)]}/>,
-            presets: <OptionsComponent key={"presets"} sortButtons={[createSortButton(SortState.Preset)]} 
+            presets: <OptionsComponent key={"presets"} sortButtons={[createSortButton(SortState.Preset)]}
                                                         optionButtons={{
                                                             "New Preset": addPreset(new PresetDTO("New Preset")),
                                                         }}/>,
@@ -221,13 +221,13 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
     handleSaveClick() {
         this.savePreset();
         window.alert("Preset Saved");
-        this.handleBackClick();
+        this.clearCurrentPreset();
     }
 
     handleDeleteClick(preset: PresetDTO) {
         if (!window.confirm(`Delete preset ${preset.title}?`)) return;
         this.deletePreset(preset);
-        this.handleBackClick();
+        this.clearCurrentPreset();
     }
 
     deletePreset(preset) {
@@ -236,10 +236,8 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
         this.setState({ presetsListItems: presets });
     }
 
-    handleBackClick() {
-        this.setState({
-            currentCustomPreset: null
-        });
+    clearCurrentPreset() {
+        this.setState({ currentCustomPreset: null });
         this.updatePresets();
     }
 
@@ -281,11 +279,11 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
         if (this.currentCustomPreset) {
             let saveButton = <Buttons.Success title={"Save"} onClick={() => this.handleSaveClick()}/>;
-            let cancelButton = <Buttons.Primary title={"Cancel"} onClick={() => this.handleBackClick()} />;
+            let cancelButton = <Buttons.Primary title={"Cancel"} onClick={() => this.clearCurrentPreset()} />;
             let deleteButton = <Buttons.Danger title={"Delete"} onClick={() => this.handleDeleteClick(this.currentCustomPreset)} />;
 
-            return <PresetCustomiserWrapper preset={this.currentCustomPreset} 
-            filterProvider={this._filterProvider} 
+            return <PresetCustomiserWrapper preset={this.currentCustomPreset}
+            filterProvider={this._filterProvider}
             actionButtons={[saveButton,cancelButton,deleteButton]}/>
         }
 

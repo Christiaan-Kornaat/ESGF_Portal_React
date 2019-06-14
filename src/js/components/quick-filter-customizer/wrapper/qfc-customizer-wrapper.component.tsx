@@ -114,7 +114,7 @@ export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProp
         this.initOptionComponents();
     }
 
-    update() {
+    update(): void {
         this.forceUpdate();
     }
 
@@ -129,7 +129,7 @@ export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProp
         ]);
     }
 
-    private initOptionComponents() {
+    private initOptionComponents(): void {
         let {isSelected, toggle: toggleSelected} = this._selectedPropertyManager;
 
         let listItemFactory = new ListItemFactoryFactory();
@@ -144,8 +144,8 @@ export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProp
 
         let createPropertyInfoTab = (property: ESGFFilterPropertyDTO) => columnTabFactory.createInfoTab(infoTabVMFactory.createPropertyVM(property));
 
-        let showInfo = async (columnTab: JSX.Element) => this.setTab(ColumnPosition.Right, columnTab, "property-info");
-        let showPropertyInfo = (property: ESGFFilterPropertyDTO) => showInfo(createPropertyInfoTab(property));
+        let showInfo = async (columnTab: JSX.Element, key: string) => this.setTab(ColumnPosition.Right, columnTab, key);
+        let showPropertyInfo = (property: ESGFFilterPropertyDTO) => showInfo(createPropertyInfoTab(property), "property-info");
 
         let createOnInfoClick = createOnInfoClickFactory(showPropertyInfo, this.selectTab, "property-info");
 
@@ -183,7 +183,7 @@ export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProp
             .then(filters => this.setState({filters: filters}));
     }
 
-    render() {
+    render(): any {
         let {_optionComponents: optionComponents, _searchFunctions: searchFunctions, _listItemFactories, sortFunctions} = this;
         let {filters} = this.state;
         let {filters: filterListItemFactory, properties: propertyListItemFactory} = _listItemFactories;

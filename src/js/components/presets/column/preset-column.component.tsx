@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Component } from "react";
+import {Component} from "react";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
-import { PresetDTO } from "../../../model/dto/esgf-preset.dto";
+import {PresetDTO} from "../../../model/dto/esgf-preset.dto";
 import UnorderedList from "../../shared/list-unordered/list-unordered.component";
 
 type PreviewTabProps = { preset: PresetDTO, properties: ESGFFilterPropertyDTO[], onSave?: (PresetDTO) => void, actionButtons?: JSX.Element[] | JSX.Element, propertyPresetListItemFactory: (property: ESGFFilterPropertyDTO) => JSX.Element };
@@ -27,7 +27,7 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
         this.handlePropertiesChange = this.handlePropertiesChange.bind(this);
     }
 
-    componentWillReceiveProps({ properties }: PreviewTabProps): void {
+    componentWillReceiveProps({properties}: PreviewTabProps): void {
         this.handlePropertiesChange(properties);
     }
 
@@ -47,7 +47,7 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
     }
 
     savePreset(preset) {
-        this.setState({ preset: preset });
+        this.setState({preset: preset});
         this.props.onSave(preset);
     }
 
@@ -55,29 +55,31 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
 
         this.state.preset.properties = this.props.properties;
 
+        let previewContent = this.state.preset.properties != null ?
+            <UnorderedList className="ListPresets"
+                           items={this.state.preset.properties}
+                           createListItem={this.props.propertyPresetListItemFactory}/> :
+            <LoadingIcons.Spinner/>;
+
         return (
             <div className="content-tab-preset-customizer-wrapper">
                 <div className="preview-presets">
-                    {this.state.preset.properties != null ?
-                        <UnorderedList className="ListPresets" items={this.state.preset.properties} 
-                                    createListItem={this.props.propertyPresetListItemFactory}/>
-                        :
-                        <LoadingIcons.Spinner />}
+                    {previewContent}
                 </div>
                 <div className="customizer-userinput">
                     <label className="qfc-input-label-100"> Title
                         <input type="text"
-                            defaultValue={this.state.preset.title}
-                            onChange={this.handleTitleChange}
-                            className="form-control inputfield"
-                            placeholder="Preset name" />
+                               defaultValue={this.state.preset.title}
+                               onChange={this.handleTitleChange}
+                               className="form-control inputfield"
+                               placeholder="Preset name"/>
                     </label>
                     <label className="qfc-input-label-100"> Description
                         <textarea
                             defaultValue={this.state.preset.description}
                             onChange={this.handleDescriptionChange}
                             className="form-control inputfield"
-                            placeholder="Preset description" />
+                            placeholder="Preset description"/>
                     </label>
                     <div className="button-container">
                         {this.props.actionButtons ? this.props.actionButtons : null}

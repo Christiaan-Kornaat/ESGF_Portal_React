@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Component} from "react";
+import {ChangeEvent, Component} from "react";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
 import TileFactory from "../../../model/factories/tile.factory";
@@ -7,9 +7,10 @@ import ListItemFactoryFactory from "../../../model/factories/list-item-factory.f
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 
 type PreviewTabProps = { qfTile: QFFilterTileDTO, properties: ESGFFilterPropertyDTO[], onSave?: (QFFilterTileDTO) => void, actionButtons?: JSX.Element[] | JSX.Element, deselectProperty: (property: ESGFFilterPropertyDTO) => void };
+type State = { qfTile: QFFilterTileDTO }
 
 export class PreviewTab extends Component<PreviewTabProps> {
-    state: { qfTile };
+    state: State;
 
     constructor(props: PreviewTabProps) {
         super(props);
@@ -22,14 +23,14 @@ export class PreviewTab extends Component<PreviewTabProps> {
         };
     }
 
-    handleColourChange(event) {
+    handleColourChange(event: ChangeEvent<HTMLInputElement>): void {
         let qfTile = this.props.qfTile;
         qfTile.color = event.target.value;
 
         this.saveTile(qfTile);
     }
 
-    handleTitleChange(event) {
+    handleTitleChange(event: ChangeEvent<HTMLInputElement>): void {
         let qfTile = this.props.qfTile;
 
         qfTile.title = event.target.value;
@@ -41,7 +42,7 @@ export class PreviewTab extends Component<PreviewTabProps> {
         this.handlePropertiesChange(properties);
     }
 
-    handlePropertiesChange(properties) {
+    handlePropertiesChange(properties: ESGFFilterPropertyDTO[]): void {
         let qfTile = this.props.qfTile;
 
         qfTile.properties = properties;
@@ -49,12 +50,12 @@ export class PreviewTab extends Component<PreviewTabProps> {
         this.saveTile(qfTile);
     }
 
-    saveTile(tile) {
+    saveTile(tile: QFFilterTileDTO): void {
         this.setState({qfTile: tile});
         this.props.onSave(tile);
     }
 
-    render() {
+    render(): any {
         let {deselectProperty} = this.props;
 
         let handleDeselectProperty = (item) => {
@@ -67,12 +68,14 @@ export class PreviewTab extends Component<PreviewTabProps> {
 
         this.state.qfTile.properties = this.props.properties;
 
+        let previewContent = this.state.qfTile !== null ?
+            tileFactory.createTile(this.state.qfTile, createQFListItem) :
+            <LoadingIcons.Spinner/>;
+
         return (
             <div className="content-tab-customizer-wrapper">
                 <div className="preview">
-                    {this.state.qfTile != null ?
-                        tileFactory.createTile(this.state.qfTile, createQFListItem) :
-                        <LoadingIcons.Spinner/>}
+                    {previewContent}
                 </div>
                 <div className="customizer-userinput">
                     <label className="qfc-input-label-100"> Title

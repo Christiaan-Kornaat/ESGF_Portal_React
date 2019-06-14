@@ -10,7 +10,7 @@ import Buttons from "../../shared/buttons/buttons.component";
 import OptionsComponent from "./xpf-list-options.component";
 import SelectedPropertyManager from "../../../managers/selected-property.manager";
 import {ESGFFilterProvider} from "../../../data/esgf-filter/esgf-filter.provider";
-import ESGFFilterSearcher from "../../../searchers/esgf-filter.searcher";
+import ESGFFilterSearcher from "../../../searchers/facet-search.strategy";
 import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";

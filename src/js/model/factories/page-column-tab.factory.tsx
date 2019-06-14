@@ -1,11 +1,11 @@
 import {ESGFFilterDTO} from "../dto/esgf-filter.dto";
 import * as React from "react";
-import PageColumnTab from "../../components/shared/pages/page-columned/page-column-tab.component";
 import StringFormatter from "../formatters/string.formatter";
 import InfoTabVM from "../view-model/InfoTabVM";
+import {PageColumnTabs} from "../../components/info/tab/info-tab.component";
 
 export class FilterListItemFactoryFactory {
-    createFactory(onClick: (filter: ESGFFilterDTO) => void) {
+    createFactory(onClick: (filter: ESGFFilterDTO) => void): (filter: ESGFFilterDTO) => JSX.Element {
         return (filter: ESGFFilterDTO) =>
             <li key={filter.shortName}
                 className="filter"
@@ -22,32 +22,9 @@ export type SearchComponentModel<TItem = any> = {
 }
 
 export default class PageColumnTabFactory {
+    /** @deprecated use InfoTab component directly instead*/
     createInfoTab(viewModel: InfoTabVM): JSX.Element {
-        let {paragraphs, textTitle} = viewModel;
-
-        let InfoParagraph = ({title, content}) =>
-            <div className="paragraph">
-                <h5 className="header">{title}</h5>
-                <p className="text">
-                    {content}
-                </p>
-            </div>;
-
-
-        let paragraphObjects = Object.keys(paragraphs)
-                                     .map(key => <InfoParagraph key={key}
-                                                                title={key}
-                                                                content={paragraphs[key]}/>);
-
-        let content = (
-            <div className="infotab">
-                <h4 className="title">{textTitle}</h4>
-                {paragraphObjects}
-            </div>
-        );
-
-        return <PageColumnTab title={viewModel.tabTitle}
-                              key={viewModel.tabTitle}>{[content]}</PageColumnTab>;
+        return <PageColumnTabs.InfoTabs.InfoTab viewModel={viewModel}/>;
     }
 
 

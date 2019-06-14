@@ -1,10 +1,7 @@
 import * as React from "react";
 import ColumnedPage, {ColumnedPageState} from "../../shared/pages/page-columned/page-columned.component";
 import {PageColumnModel} from "../../shared/pages/page-columned/page-column.component";
-import PageColumnTabFactory, {
-    FilterListItemFactoryFactory,
-    SearchFunction
-} from "../../../model/factories/page-column-tab.factory";
+import {FilterListItemFactoryFactory, SearchFunction} from "../../../model/factories/page-column-tab.factory";
 import {ESGFFilterDTO} from "../../../model/dto/esgf-filter.dto";
 import Buttons from "../../shared/buttons/buttons.component";
 
@@ -14,7 +11,6 @@ import ESGFFilterSearcher from "../../../searchers/facet-search.strategy";
 import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
-import InfoTabVmFactory from "../../../model/factories/info-tab-vm.factory";
 import SorterManager from "../../../sorters/sorter.manager";
 import PageColumnListTab from "../../shared/pages/page-columned/page-column-list-tab.component";
 import {SorterFactoryFactory} from "../../../sorters/sorter.factory.factory";
@@ -22,6 +18,9 @@ import {filterComparator, propertyComparator} from "../../../sorters/comparators
 import OptionsComponent from "../../expanded-property-finder/wrapper/xpf-list-options.component";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import {PreviewTab} from "../column/qfc-content-tab-preview.component";
+import {PageColumnTabs} from "../../info/tab/info-tab.component";
+import InfoTabs = PageColumnTabs.InfoTabs;
+
 
 type QfcCustomiserState = ColumnedPageState & {
     filters: ESGFFilterDTO[],
@@ -133,8 +132,6 @@ export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProp
         let {isSelected, toggle: toggleSelected} = this._selectedPropertyManager;
 
         let listItemFactory = new ListItemFactoryFactory();
-        let infoTabVMFactory = new InfoTabVmFactory();
-        let columnTabFactory = new PageColumnTabFactory();
 
         let createOnInfoClickFactory = (showInfo, selectTab, infoTabName) => property => async event => {
             event.stopPropagation();
@@ -142,7 +139,7 @@ export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProp
             selectTab(ColumnPosition.Right, infoTabName);
         };
 
-        let createPropertyInfoTab = (property: ESGFFilterPropertyDTO) => columnTabFactory.createInfoTab(infoTabVMFactory.createPropertyVM(property));
+        let createPropertyInfoTab = (property) => <InfoTabs.PropertyInfoTab property={property}/>;
 
         let showInfo = async (columnTab: JSX.Element, key: string) => this.setTab(ColumnPosition.Right, columnTab, key);
         let showPropertyInfo = (property: ESGFFilterPropertyDTO) => showInfo(createPropertyInfoTab(property), "property-info");

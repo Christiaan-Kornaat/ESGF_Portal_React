@@ -14,155 +14,155 @@ import {QFFilterTileJSONDTO, QFTileConverter} from "../../../data/converters/qf-
 import QfcCustomizerWrapper from "./qfc-customizer-wrapper.component";
 import {QuickFilterTiles} from "../../../data/qf-tile/qf-tile-defaults.data";
 
-type QFCProps =
-    { qfManager: any, filterProvider: any }
-    & ColumnedPageProps;
-type QFCState = {
-    qfTileModels: QFFilterTileDTO[],
-    currentCustomTile,
-} & ColumnedPageProps;
+export namespace QuickFilterCustomizer {
+    type Props =
+        { qfManager: any, filterProvider: any }
+        & ColumnedPageProps;
+    type State = {
+        qfTileModels: QFFilterTileDTO[],
+        currentCustomTile,
+    } & ColumnedPageProps;
 
-export default class QFCWrapper extends Component<QFCProps> {
+    export class Wrapper extends Component<Props> {
 
-    private readonly _filterProvider: ESGFFilterProvider;
-    private readonly _tileController: LocalStorageController<QFFilterTileDTO, QFFilterTileJSONDTO>;
+        private readonly _filterProvider: ESGFFilterProvider;
+        private readonly _tileController: LocalStorageController<QFFilterTileDTO, QFFilterTileJSONDTO>;
 
-    state: QFCState;
+        state: State;
 
-    constructor(props) {
-        super(props);
+        constructor(props) {
+            super(props);
 
-        this.saveTile = this.saveTile.bind(this);
-        this.addTile = this.addTile.bind(this);
+            this.saveTile = this.saveTile.bind(this);
+            this.addTile = this.addTile.bind(this);
 
-        let {filterProvider} = props;
-        this._filterProvider = filterProvider;
+            let {filterProvider} = props;
+            this._filterProvider = filterProvider;
 
-        this._tileController = new LocalStorageController<QFFilterTileDTO, QFFilterTileJSONDTO>(new QFTileConverter(filterProvider), "ESGFQFStorage", QuickFilterTiles.Defaults);
+            this._tileController = new LocalStorageController<QFFilterTileDTO, QFFilterTileJSONDTO>(new QFTileConverter(filterProvider), "ESGFQFStorage", QuickFilterTiles.Defaults);
 
-        this.state = {
-            qfTileModels: null,
-            currentCustomTile: null
+            this.state = {
+                qfTileModels: null,
+                currentCustomTile: null
+            };
+
+            this.update = this.update.bind(this);
+            this.handleBackClick = this.handleBackClick.bind(this);
+        }
+
+        private async update(): Promise<void> {
+            let qfTileModels = await Promise.all(this._tileController.getLocalstorage());
+            this.setState({qfTileModels: qfTileModels});
+        }
+
+        componentDidMount(): void {
+            this.update();
+        }
+
+        openCustomiser(qfTile): void {
+            this.setState({currentCustomTile: qfTile});
         };
 
-        this.update = this.update.bind(this);
-        this.handleBackClick = this.handleBackClick.bind(this);
-    }
-
-    private async update(): Promise<void> {
-        let qfTileModels = await Promise.all(this._tileController.getLocalstorage());
-        this.setState({qfTileModels: qfTileModels});
-    }
-
-    componentDidMount(): void {
-        this.update();
-    }
-
-    openCustomiser(qfTile): void {
-        this.setState({currentCustomTile: qfTile});
-    };
-
-    createTiles(qfTileModels: QFFilterTileDTO[]): JSX.Element[] {
-        //TODO get with dependency injection
-        let tileFactory = new TileFactory();
-        let overlayFactory = new OverlayFactory();
-        let overlay = <Overlays.QFTiles.PlusIcon/>;
-        if (qfTileModels.length === 0) return [];
+        createTiles(qfTileModels: QFFilterTileDTO[]): JSX.Element[] {
+            //TODO get with dependency injection
+            let tileFactory = new TileFactory();
+            let overlayFactory = new OverlayFactory();
+            let overlay = <Overlays.QFTiles.PlusIcon/>;
+            if (qfTileModels.length === 0) return [];
 
 
-        return qfTileModels.map((QFFilterTileDTO, index) => {
-            let tile = tileFactory.createTile(QFFilterTileDTO, new ListItemFactoryFactory().createQuickFilterListItem);
+            return qfTileModels.map((QFFilterTileDTO, index) => {
+                let tile = tileFactory.createTile(QFFilterTileDTO, new ListItemFactoryFactory().createQuickFilterListItem);
 
-            return overlayFactory.createOverlay(tile, overlay, () => this.openCustomiser(QFFilterTileDTO), index);
-        });
-    }
-
-    addTile() {
-        let tile = new QFFilterTileDTO("", "#000");
-        this.state.qfTileModels.push(tile);
-        this.openCustomiser(tile);
-    }
-
-    async handleSaveClick(tile: QFFilterTileDTO): Promise<void> {
-        await this.saveTile(tile);
-
-        window.alert("tile saved");
-    }
-
-    async saveTile(tile): Promise<void> {
-        let tiles = this.state.qfTileModels;
-
-        this._tileController.setLocalstorage(tiles);
-    }
-
-    handleDeleteClick(tile: QFFilterTileDTO): void {
-        if (!window.confirm(`Delete tile ${tile.title}?`)) return;
-        this.deleteTile(tile);
-        this.handleBackClick();
-    }
-
-    handleBackClick(): void {
-        this.setState({
-            currentCustomTile: null
-        });
-    }
-
-    deleteTile(tile): void {
-        let tiles = this.state.qfTileModels.filter(item => item != tile);
-
-        this._tileController.setLocalstorage(tiles);
-
-        this.setState({qfTileModels: tiles});
-    }
-
-
-    render(): JSX.Element {
-        let {qfTileModels, currentCustomTile} = this.state;
-
-        let qfTiles, hasTiles, hasMaxTiles;
-        if (qfTileModels !== null) {
-            qfTiles = this.createTiles(qfTileModels);
-
-            hasTiles = qfTiles.length > 0;
-            hasMaxTiles = qfTiles.length >= 8;
+                return overlayFactory.createOverlay(tile, overlay, () => this.openCustomiser(QFFilterTileDTO), index);
+            });
         }
-        let isLoading = qfTileModels === null;
 
-        let tileFactory = new TileFactory();
+        addTile() {
+            let tile = new QFFilterTileDTO("", "#000");
+            this.state.qfTileModels.push(tile);
+            this.openCustomiser(tile);
+        }
 
-        let iconTileAdd = new QFFilterTileDTO("Add Quick Filter", "#3f3f3f", "fas fa-plus-circle", []);
-        //TODO ergens anders? is kort maar niet mooi
+        async handleSaveClick(tile: QFFilterTileDTO): Promise<void> {
+            await this.saveTile(tile);
 
-        let tab = (
-            <div className="qf-main-container">
-                <div className="tiles">
-                    {!isLoading ? qfTiles : <LoadingIcons.Spinner/>}
-                    {(!isLoading && !hasMaxTiles) ? tileFactory.createIconTile(iconTileAdd, this.addTile) : null}
+            window.alert("tile saved");
+        }
+
+        async saveTile(tile): Promise<void> {
+            let tiles = this.state.qfTileModels;
+
+            this._tileController.setLocalstorage(tiles);
+        }
+
+        handleDeleteClick(tile: QFFilterTileDTO): void {
+            if (!window.confirm(`Delete tile ${tile.title}?`)) return;
+            this.deleteTile(tile);
+            this.handleBackClick();
+        }
+
+        handleBackClick(): void {
+            this.setState({
+                currentCustomTile: null
+            });
+        }
+
+        deleteTile(tile): void {
+            let tiles = this.state.qfTileModels.filter(item => item != tile);
+
+            this._tileController.setLocalstorage(tiles);
+
+            this.setState({qfTileModels: tiles});
+        }
+
+
+        render(): JSX.Element {
+            let {qfTileModels, currentCustomTile} = this.state;
+
+            let qfTiles, hasMaxTiles;
+            if (qfTileModels !== null) {
+                qfTiles = this.createTiles(qfTileModels);
+
+                hasMaxTiles = qfTiles.length >= 8;
+            }
+            let isLoading = qfTileModels === null;
+
+            let tileFactory = new TileFactory();
+
+            let iconTileAdd = new QFFilterTileDTO("Add Quick Filter", "#3f3f3f", "fas fa-plus-circle", []);
+            //TODO ergens anders? is kort maar niet mooi
+
+            let tab = (
+                <div className="qf-main-container">
+                    <div className="tiles">
+                        {!isLoading ? qfTiles : <LoadingIcons.Spinner/>}
+                        {(!isLoading && !hasMaxTiles) ? tileFactory.createIconTile(iconTileAdd, this.addTile) : null}
+                    </div>
                 </div>
-            </div>
-        );
+            );
 
-        if (currentCustomTile) {
-            //<Buttons.Success title={"Save"} onClick={() => this.handleSaveClick(currentCustomTile)}/>
-            let actionButtons = [
-                <Buttons.Primary title={"Go back"} onClick={() => this.handleBackClick()}/>,
-                <Buttons.Danger title={"Delete"} onClick={() => this.handleDeleteClick(currentCustomTile)}/>
-            ];
+            if (currentCustomTile) {
+                //<Buttons.Success title={"Save"} onClick={() => this.handleSaveClick(currentCustomTile)}/>
+                let actionButtons = [
+                    <Buttons.Primary title={"Go back"} onClick={() => this.handleBackClick()}/>,
+                    <Buttons.Danger title={"Delete"} onClick={() => this.handleDeleteClick(currentCustomTile)}/>
+                ];
 
-            tab = <QfcCustomizerWrapper qfTile={currentCustomTile}
-                                        onSave={this.saveTile}
-                                        actionButtons={actionButtons}
-                                        qfController={this._tileController}
-                                        filterProvider={this._filterProvider}/>;
+                tab = <QfcCustomizerWrapper qfTile={currentCustomTile}
+                                            onSave={this.saveTile}
+                                            actionButtons={actionButtons}
+                                            qfController={this._tileController}
+                                            filterProvider={this._filterProvider}/>;
+            }
+
+            return (
+                <section className="qf-wrapper">
+                    {tab}
+                </section>
+            );
         }
-
-        return (
-            <section className="qf-wrapper">
-                {tab}
-            </section>
-        );
     }
-
-
 }
 
+export default QuickFilterCustomizer.Wrapper;

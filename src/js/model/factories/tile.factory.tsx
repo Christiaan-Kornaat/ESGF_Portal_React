@@ -1,18 +1,21 @@
-import { Tile } from "../../components/quick-filter-search/esgf-qfilter-tile/qf-tile.component";
 import React from "react";
-import { QFFilterTileDTO } from "../dto/qf-filter-tile.dto";
-import { IconTile } from "../../components/quick-filter-search/esgf-qfilter-tile/qf-icon-tile.component";
+import {QFFilterTileDTO} from "../dto/qf-filter-tile.dto";
+import {Tiles} from "../../components/quick-filter-search/esgf-qfilter-tile/tiles.component";
+import ListTile = Tiles.ListTile;
+import IconTile = Tiles.IconTile;
 
 export default class TileFactory {
     /**
      *
-    *@summary Creates qf tile
-    */
-    createTile(QFFilterTileDTO: QFFilterTileDTO, quickFilterListItemFactory: any): JSX.Element {
-        return <Tile key={QFFilterTileDTO.title}
-            listItemFactory={quickFilterListItemFactory}
-            QFFilterTileDTO={QFFilterTileDTO}
-        />
+     *@summary Creates qf tile
+     */
+    createTile(QFFilterTileDTO: QFFilterTileDTO, listItemFactory: any): JSX.Element {
+        let {properties, title, icon, color} = QFFilterTileDTO;
+
+        return <ListTile key={QFFilterTileDTO.title}
+                         listItemFactory={listItemFactory}
+                         listItems={properties}
+                         tileModel={{title, icon, style: {backgroundColor: color}}}/>;
     }
 
     /**
@@ -20,9 +23,11 @@ export default class TileFactory {
      * @summary Creates an add new tile tile
      */
     createIconTile(QFFilterTileDTO: QFFilterTileDTO, onClick: any): JSX.Element {
+        let {title, icon, color} = QFFilterTileDTO;
+
         return <IconTile key={QFFilterTileDTO.title}
-            QFFilterTileDTO={QFFilterTileDTO}
-            onClick={onClick}
-        />
+                         onClick={onClick}
+                         icon={QFFilterTileDTO.icon}
+                         tileModel={{title, icon, style: {backgroundColor: color}}}/>;
     }
 }

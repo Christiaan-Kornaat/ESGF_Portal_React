@@ -8,7 +8,7 @@ import Buttons from "../../shared/buttons/buttons.component";
 import SelectedPropertyManager from "../../../managers/selected-property.manager";
 import {ESGFFilterProvider} from "../../../data/esgf-filter/esgf-filter.provider";
 import ESGFFilterSearcher from "../../../searchers/facet-search.strategy";
-import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
+import PropertySearchStrategy from "../../../searchers/esgf-property.searcher";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import SorterManager from "../../../sorters/sorter.manager";
@@ -19,7 +19,9 @@ import OptionsComponent from "../../expanded-property-finder/wrapper/xpf-list-op
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import {PreviewTab} from "../column/qfc-content-tab-preview.component";
 import {PageColumnTabs} from "../../info/tab/info-tab.component";
+import {ColumnTabs} from "../../esgf-search-portaal/columned-pages/column-tabs/property-list-tab.component";
 import InfoTabs = PageColumnTabs.InfoTabs;
+import PropertyListTab = ColumnTabs.ListTabs.PropertyListTab;
 
 
 type QfcCustomiserState = ColumnedPageState & {
@@ -92,7 +94,7 @@ export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProp
 
         this._searchFunctions = {
             filters: new ESGFFilterSearcher().search,
-            properties: new ESGFPropertySearcher().search
+            properties: new PropertySearchStrategy().search
         };
 
         let {filterProvider} = props;
@@ -198,16 +200,13 @@ export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProp
                                                 headerButtons: [optionComponents.filters]
                                             }}/>;
 
-        let PropertyList = <PageColumnListTab title={"Properties"}
-                                              key={"PropertyList"}
-                                              items={this.properties}
-                                              sortFunction={sortFunctions.properties}
-                                              listItemFactory={propertyListItemFactory}
-                                              isLoading={false}
-                                              searchComponentModel={{
-                                                  searchMethod: searchFunctions.properties,
-                                                  headerButtons: [optionComponents.properties]
-                                              }}/>;
+        let propertyList = <PropertyListTab items={this.properties}
+                                            sorterManager={this.state.sortState.get(SortState.Property)}
+                                            listItemFactory={propertyListItemFactory}
+                                            searchComponentModel={{
+                                                searchMethod: searchFunctions.properties,
+                                                headerButtons: [optionComponents.properties]
+                                            }}/>;
 
         let QuickFilterTab = <PreviewTab qfTile={this.props.qfTile}
                                          actionButtons={this.props.actionButtons}
@@ -216,7 +215,7 @@ export default class QfcCustomizerWrapper extends ColumnedPage<QfcCustomiserProp
                                          properties={this.selectedProperties}/>;
 
         this.state.columns.get(ColumnPosition.Left).tabs.set("Filters", FilterList);
-        this.state.columns.get(ColumnPosition.Centre).tabs.set("Properties", PropertyList);
+        this.state.columns.get(ColumnPosition.Centre).tabs.set("Properties", propertyList);
         this.state.columns.get(ColumnPosition.Right).tabs.set("Quick Filter", QuickFilterTab);
 
         this.state.className += " XPF-Wrapper";

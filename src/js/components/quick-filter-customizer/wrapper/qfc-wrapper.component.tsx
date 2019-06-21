@@ -12,9 +12,10 @@ import Buttons from "../../shared/buttons/buttons.component";
 import {LocalStorageController} from "../../../controllers/localstorage/esgf-localstorage.controller";
 import {QFFilterTileJSONDTO, QFTileConverter} from "../../../data/converters/qf-tile-converter";
 import QfcCustomizerWrapper from "./qfc-customizer-wrapper.component";
+import {QuickFilterTiles} from "../../../data/qf-tile/qf-tile-defaults.data";
 
 type QFCProps =
-    { qfManager: any, qfProvider: any, filterProvider: any }
+    { qfManager: any, filterProvider: any }
     & ColumnedPageProps;
 type QFCState = {
     qfTileModels: QFFilterTileDTO[],
@@ -37,93 +38,10 @@ export default class QFCWrapper extends Component<QFCProps> {
         let {filterProvider} = props;
         this._filterProvider = filterProvider;
 
-        let defaultTiles = [
-            {
-                "colour": "#f9a718",
-                "icon": "fas fa-thermometer-three-quarters",
-                "title": "Temperature",
-                "properties": [
-                    {"name": "tas", "esgfFilterName": "variable"},
-                    {"name": "tasmin", "esgfFilterName": "variable"},
-                    {"name": "tasmax", "esgfFilterName": "variable"},
-                    {"name": "ta", "esgfFilterName": "variable"}
-                ]
-            },
-            {
-                "colour": "#00a8ec",
-                "icon": "fas fa-cloud-showers-heavy",
-                "title": "Precipitation",
-                "properties": [
-                    {"name": "pr", "esgfFilterName": "variable"},
-                    {"name": "prc", "esgfFilterName": "variable"},
-                    {"name": "prsn", "esgfFilterName": "variable"}
-                ]
-            },
-            {
-                "colour": "#4CAF50",
-                "icon": "fas fa-tint",
-                "title": "Humidity",
-                "properties": [
-                    {"name": "huss", "esgfFilterName": "variable"},
-                    {"name": "hurs", "esgfFilterName": "variable"},
-                    {"name": "rhsmax", "esgfFilterName": "variable"},
-                    {"name": "rhsmin", "esgfFilterName": "variable"},
-                    {"name": "rhs", "esgfFilterName": "variable"},
-                    {"name": "hus", "esgfFilterName": "variable"},
-                    {"name": "hur", "esgfFilterName": "variable"}
-                ]
-            },
-            {
-                "colour": "#AEB404",
-                "icon": "fas fa-wind",
-                "title": "Wind",
-                "properties": [
-                    {"name": "sfcWind", "esgfFilterName": "variable"},
-                    {"name": "sfcWindmax", "esgfFilterName": "variable"},
-                    {"name": "uas", "esgfFilterName": "variable"},
-                    {"name": "vas", "esgfFilterName": "variable"}
-                ]
-            },
-            {
-                "colour": "#e35c5c",
-                "icon": "fas fa-sun",
-                "title": "Radiation",
-                "properties": [
-                    {"name": "rsds", "esgfFilterName": "variable"},
-                    {"name": "rsus", "esgfFilterName": "variable"},
-                    {"name": "rlds", "esgfFilterName": "variable"},
-                    {"name": "rlus", "esgfFilterName": "variable"},
-                    {"name": "rsdsdiff", "esgfFilterName": "variable"},
-                    {"name": "clt", "esgfFilterName": "variable"}
-                ]
-            },
-            {
-                "colour": "#9268FF",
-                "icon": "fas fa-tachometer-alt",
-                "title": "Pressure",
-                "properties": [
-                    {"name": "ps", "esgfFilterName": "variable"},
-                    {"name": "psl", "esgfFilterName": "variable"},
-                    {"name": "pfull", "esgfFilterName": "variable"}
-                ]
-            },
-            {
-                "colour": "#dda606",
-                "icon": "fas fa-cloud-sun-rain",
-                "title": "Evaporation",
-                "properties": [
-                    {"name": "evspsbl", "esgfFilterName": "variable"},
-                    {"name": "evspsblpot", "esgfFilterName": "variable"},
-                    {"name": "evspsblsoi", "esgfFilterName": "variable"},
-                    {"name": "evspsblveg", "esgfFilterName": "variable"}
-                ]
-            }
-        ];
-
-        this._tileController = new LocalStorageController<QFFilterTileDTO, QFFilterTileJSONDTO>(new QFTileConverter(filterProvider), "ESGFQFStorage", defaultTiles);
+        this._tileController = new LocalStorageController<QFFilterTileDTO, QFFilterTileJSONDTO>(new QFTileConverter(filterProvider), "ESGFQFStorage", QuickFilterTiles.Defaults);
 
         this.state = {
-            qfTileModels: [],
+            qfTileModels: null,
             currentCustomTile: null
         };
 
@@ -131,7 +49,7 @@ export default class QFCWrapper extends Component<QFCProps> {
         this.handleBackClick = this.handleBackClick.bind(this);
     }
 
-    private async update() {
+    private async update(): Promise<void> {
         let qfTileModels = await Promise.all(this._tileController.getLocalstorage());
         this.setState({qfTileModels: qfTileModels});
     }
@@ -140,7 +58,7 @@ export default class QFCWrapper extends Component<QFCProps> {
         this.update();
     }
 
-    openCustomiser(qfTile) {
+    openCustomiser(qfTile): void {
         this.setState({currentCustomTile: qfTile});
     };
 
@@ -165,31 +83,31 @@ export default class QFCWrapper extends Component<QFCProps> {
         this.openCustomiser(tile);
     }
 
-    handleSaveClick(tile: QFFilterTileDTO) {
-        this.saveTile(tile);
+    async handleSaveClick(tile: QFFilterTileDTO): Promise<void> {
+        await this.saveTile(tile);
 
         window.alert("tile saved");
     }
 
-    async saveTile(tile) {
+    async saveTile(tile): Promise<void> {
         let tiles = this.state.qfTileModels;
 
         this._tileController.setLocalstorage(tiles);
     }
 
-    handleDeleteClick(tile: QFFilterTileDTO) {
+    handleDeleteClick(tile: QFFilterTileDTO): void {
         if (!window.confirm(`Delete tile ${tile.title}?`)) return;
         this.deleteTile(tile);
         this.handleBackClick();
     }
 
-    handleBackClick() {
+    handleBackClick(): void {
         this.setState({
             currentCustomTile: null
         });
     }
 
-    deleteTile(tile) {
+    deleteTile(tile): void {
         let tiles = this.state.qfTileModels.filter(item => item != tile);
 
         this._tileController.setLocalstorage(tiles);
@@ -198,12 +116,18 @@ export default class QFCWrapper extends Component<QFCProps> {
     }
 
 
-    render() {
+    render(): JSX.Element {
         let {qfTileModels, currentCustomTile} = this.state;
 
-        let qfTiles = this.createTiles(qfTileModels);
-        let hasTiles = qfTiles.length > 0;
-        let hasMaxTiles = qfTiles.length >= 8;
+        let qfTiles, hasTiles, hasMaxTiles;
+        if (qfTileModels !== null) {
+            qfTiles = this.createTiles(qfTileModels);
+
+            hasTiles = qfTiles.length > 0;
+            hasMaxTiles = qfTiles.length >= 8;
+        }
+        let isLoading = qfTileModels === null;
+
         let tileFactory = new TileFactory();
 
         let iconTileAdd = new QFFilterTileDTO("Add Quick Filter", "#3f3f3f", "fas fa-plus-circle", []);
@@ -212,8 +136,8 @@ export default class QFCWrapper extends Component<QFCProps> {
         let tab = (
             <div className="qf-main-container">
                 <div className="tiles">
-                    {hasTiles ? qfTiles : <LoadingIcons.Spinner/>}
-                    {(hasTiles && !hasMaxTiles) ? tileFactory.createIconTile(iconTileAdd, this.addTile) : null}
+                    {!isLoading ? qfTiles : <LoadingIcons.Spinner/>}
+                    {(!isLoading && !hasMaxTiles) ? tileFactory.createIconTile(iconTileAdd, this.addTile) : null}
                 </div>
             </div>
         );

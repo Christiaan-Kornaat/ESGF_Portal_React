@@ -16,17 +16,17 @@ export class LocalStorageController<T, TJSONObject> {
             localStorage.setItem(this._storageKey, JSON.stringify(this._default));
         }
         let Localstorage = JSON.parse(localStorage.getItem(this._storageKey));
-        return Localstorage.map(this.converter.fromJSONObject);
+        return Localstorage.map(item => this.converter.fromJSONObject(item));
     }
 
-    setLocalstorage(Localstorage: T[]) {
-        let Objects = Localstorage.map(this.converter.toJSONObject);
+    setLocalstorage(Localstorage: T[]): void {
+        let Objects = Localstorage.map(item => this.converter.toJSONObject(item));
 
         let LocalstorageString = JSON.stringify(Objects);
         localStorage.setItem(this._storageKey, LocalstorageString);
     }
 
     isLocalstorageSet(): boolean {
-        return localStorage.getItem(this._storageKey) ? true : false;
+        return !!localStorage.getItem(this._storageKey);
     }
 }

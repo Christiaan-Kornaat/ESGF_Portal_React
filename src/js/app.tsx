@@ -67,7 +67,6 @@ const Dependencies = {
     prod: {
         SearchService: ESGFSearchService,
         FilterService: ESGFFilterService,
-        QFTileService: QFTileServiceDemo,
         SearchResultsProvider: ESGFSearchResultsProvider,
         FilterProvider: ESGFFilterProvider,
         QuickFilterTileProvider: QFTileProvider,
@@ -101,7 +100,6 @@ class App extends Component {
             SearchService,
             SearchResultsProvider,
             SelectedPropertyManager,
-            QFTileService: QuickFilterTileService,
             QuickFilterManager,
             QuickFilterTileProvider,
             DATA_HOST
@@ -118,9 +116,6 @@ class App extends Component {
 
         this.filterService = new FilterService(this.adagucUrlBuilder);
         this.filterProvider = new FilterProvider(this.filterService);
-
-        let tileService = new QuickFilterTileService(this.filterProvider);
-        this.tileProvider = new QuickFilterTileProvider(tileService);
 
         this.selectedPropertyManager = new SelectedPropertyManager();
         this.quickFilterManager = new QuickFilterManager(this.filterProvider);
@@ -155,14 +150,12 @@ class App extends Component {
         this.selectedPropertyManager.events.selectionChanged.subscribe(onSelectionChanged);
 
         let QF = <QFWrapper selectionManager={this.selectedPropertyManager}
-                            qfProvider={this.tileProvider}
                             filterProvider={this.filterProvider}/>;
 
         let XPF = <XPFWrapper filterProvider={this.filterProvider}
                               selectedPropertyManager={this.selectedPropertyManager}/>;
 
-        let QFC = <QFCWrapper qfProvider={this.tileProvider}
-                              qfManager={this.quickFilterManager}
+        let QFC = <QFCWrapper qfManager={this.quickFilterManager}
                               filterProvider={this.filterProvider}/>;
 
 

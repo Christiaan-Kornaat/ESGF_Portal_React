@@ -11,7 +11,7 @@ import OptionsComponent from "./xpf-list-options.component";
 import SelectedPropertyManager from "../../../managers/selected-property.manager";
 import {ESGFFilterProvider} from "../../../data/esgf-filter/esgf-filter.provider";
 import ESGFFilterSearcher from "../../../searchers/facet-search.strategy";
-import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
+import PropertySearchStrategy from "../../../searchers/esgf-property.searcher";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import InfoTabVmFactory from "../../../model/factories/info-tab-vm.factory";
@@ -90,7 +90,7 @@ export default class XPFWrapper extends ColumnedPage<XpfWrapperProps> {
 
         this._searchFunctions = {
             filters: new ESGFFilterSearcher().search,
-            properties: new ESGFPropertySearcher().search
+            properties: new PropertySearchStrategy().search
         };
 
         let {selectedPropertyManager: selectedManager, filterProvider} = props;

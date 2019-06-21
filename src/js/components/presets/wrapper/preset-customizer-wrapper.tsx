@@ -10,7 +10,7 @@ import Buttons from "../../shared/buttons/buttons.component";
 
 import SelectedPropertyManager from "../../../managers/selected-property.manager";
 import ESGFFilterSearcher from "../../../searchers/facet-search.strategy";
-import ESGFPropertySearcher from "../../../searchers/esgf-property.searcher";
+import PropertySearchStrategy from "../../../searchers/esgf-property.searcher";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import ListItemFactoryFactory from "../../../model/factories/list-item-factory.factory";
 import InfoTabVmFactory from "../../../model/factories/info-tab-vm.factory";
@@ -92,7 +92,7 @@ export default class PresetCustomiserWrapper extends ColumnedPage<PresetCustomis
 
         this._searchFunctions = {
             filters: new ESGFFilterSearcher().search,
-            properties: new ESGFPropertySearcher().search
+            properties: new PropertySearchStrategy().search
         };
 
         let { filterProvider } = props;

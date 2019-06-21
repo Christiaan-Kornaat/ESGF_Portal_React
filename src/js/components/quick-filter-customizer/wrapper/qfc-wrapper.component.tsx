@@ -20,7 +20,7 @@ export namespace QuickFilterCustomizer {
         & ColumnedPageProps;
     type State = {
         qfTileModels: QFFilterTileDTO[],
-        currentCustomTile,
+        currentCustomTile: QFFilterTileDTO,
     } & ColumnedPageProps;
 
     export class Wrapper extends Component<Props> {
@@ -59,7 +59,7 @@ export namespace QuickFilterCustomizer {
             this.update();
         }
 
-        openCustomiser(qfTile): void {
+        openCustomizer(qfTile: QFFilterTileDTO): void {
             this.setState({currentCustomTile: qfTile});
         };
 
@@ -74,14 +74,14 @@ export namespace QuickFilterCustomizer {
             return qfTileModels.map((QFFilterTileDTO, index) => {
                 let tile = tileFactory.createTile(QFFilterTileDTO, new ListItemFactoryFactory().createQuickFilterListItem);
 
-                return overlayFactory.createOverlay(tile, overlay, () => this.openCustomiser(QFFilterTileDTO), index);
+                return overlayFactory.createOverlay(tile, overlay, () => this.openCustomizer(QFFilterTileDTO), index);
             });
         }
 
-        addTile() {
+        addTile(): void {
             let tile = new QFFilterTileDTO("", "#000");
             this.state.qfTileModels.push(tile);
-            this.openCustomiser(tile);
+            this.openCustomizer(tile);
         }
 
         async handleSaveClick(tile: QFFilterTileDTO): Promise<void> {

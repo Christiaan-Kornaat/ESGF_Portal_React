@@ -3,7 +3,6 @@ import {ESGFFilterDTO} from "../dto/esgf-filter.dto";
 
 export default class ESGFFilterFactory {
     /**
-     *
      * @param {string}shortName
      * @param {Array<string>}propertyNames
      *

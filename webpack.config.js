@@ -31,7 +31,7 @@ module.exports = {
                 test: /\.(ts|tsx)$/,
                 exclude: /(node_modules|bower_components)/,
                 include: path.resolve(__dirname, "src", "js"),
-                use: "ts-loader"
+                use: "awesome-typescript-loader"
             }, //TypeScript
             {
                 test: /\.(js|jsx)$/,

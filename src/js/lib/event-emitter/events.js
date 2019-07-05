@@ -1,18 +1,13 @@
 import EventEmitter from "./events/event-emitter";
 import EventSubscriber from "./events/event-subscriber";
-
-/**
- * @public
- * @type {{EventSubscriber, EventEmitter}}
- */
-const EventModule = (function () {
-    return {};
-})();
+import EventSubscriberFactory from "./events/event-subscriber.factory";
 
 export {EventSubscriber};
 export {EventEmitter};
+export {EventSubscriberFactory};
 
 export default {
     EventSubscriber,
-    EventEmitter
+    EventEmitter,
+    EventSubscriberFactory
 };

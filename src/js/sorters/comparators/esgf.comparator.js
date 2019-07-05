@@ -1,4 +1,5 @@
 import {alphabeticalComparator} from "./primitive.comparator";
+import { PresetDTO } from "../../model/dto/esgf-preset.dto";
 
 /**
  * @param {ESGFFilterDTO}filter
@@ -25,5 +26,18 @@ export function propertyComparator(property) {
         isGreaterThan: ({name}) => base.isGreaterThan(name),
         isLessThan: ({name}) => base.isLessThan(name),
         isEqualTo: ({name}) => base.isEqualTo(name)
+    };
+}
+
+/**
+ * 
+ * @param {PresetDTO} preset 
+ */
+export function presetComparator(preset) {
+    let base = alphabeticalComparator(preset.title);
+    return {
+        isGreaterThan: ({title}) => base.isGreaterThan(title),
+        isLessThan: ({title}) => base.isLessThan(title),
+        isEqualTo: ({title}) => base.isEqualTo(title)
     };
 }

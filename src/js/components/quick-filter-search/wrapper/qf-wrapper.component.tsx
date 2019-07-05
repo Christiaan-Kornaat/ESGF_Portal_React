@@ -1,39 +1,66 @@
 import * as React from "react";
 import {Component} from "react";
 import StringFormatter from "../../../model/formatters/string.formatter";
-import {QFTile} from "../esgf-qfilter-tile/qf-tile.component";
 import {QFSidebar} from "../qf-sidebar/qfsidebar.component";
 import SelectedPropertyManager from "../../../managers/selected-property.manager";
-import IQuickFilterManager from "../../../managers/quick-filter/quick-filter.manager.interface";
-import {QFTileProvider} from "../../../data/providers/qf-tile/qf-tile.provider";
+import {QFTileProvider} from "../../../data/qf-tile/qf-tile.provider";
 import ESGFFilterPropertyDTO from "../../../model/dto/esgf-filter-property.dto";
 import {QFFilterTileDTO} from "../../../model/dto/qf-filter-tile.dto";
 import LoadingIcons from "../../shared/icons/loading-icons.component";
+import TileFactory from "../../../model/factories/tile.factory";
+import {LocalStorageController} from "../../../controllers/localstorage/esgf-localstorage.controller";
+import {QFFilterTileJSONDTO, QFTileConverter} from "../../../data/converters/qf-tile-converter";
+import {ESGFFilterProvider} from "../../../data/esgf-filter/esgf-filter.provider";
+import {QuickFilterTiles} from "../../../data/qf-tile/qf-tile-defaults.data";
 
+enum ErrorState {
+    NoError,
+    ConnectionError,
+    NotFoundError
+}
 
-export class QFWrapper extends Component<{ searchResultProvider, selectionManager, qfManager, qfProvider }> {
+export class QFWrapper extends Component<{ selectionManager: any, filterProvider: any }> {
 
     private readonly _selectedPropertyManager: SelectedPropertyManager;
-    private readonly _quickFilterManager: IQuickFilterManager;
     private readonly _quickFilterProvider: QFTileProvider;
+    private readonly _filterProvider: ESGFFilterProvider;
+    private readonly _tileController: LocalStorageController<QFFilterTileDTO, QFFilterTileJSONDTO>;
 
-    state: { QFSidebarShow: boolean, qfTileModels: Array<QFFilterTileDTO> };
+    state: { QFSidebarShow: boolean, qfTileModels: Array<QFFilterTileDTO>, errorState: ErrorState };
+
+    get componentContent() {
+        let {qfTileModels, errorState} = this.state;
+
+        if (errorState == ErrorState.ConnectionError) {
+            return <LoadingIcons.NoConnection className={"text-danger m-auto"}
+                                              onClick={() => this.update()}/>;
+        }
+
+        let qfTiles = this.createTiles(qfTileModels);
+        let hasTiles = qfTiles.length > 0;
+
+        return hasTiles ? qfTiles : <LoadingIcons.Spinner/>;
+    }
 
     constructor(props) {
         super(props);
 
-        // @ts-ignore
-        let {selectionManager, qfManager, qfProvider} = props;
+        let {selectionManager, filterProvider, qfProvider} = props;
         this._selectedPropertyManager = selectionManager;
-        this._quickFilterManager = qfManager;
         this._quickFilterProvider = qfProvider;
+        this._filterProvider = filterProvider;
+
+        this._tileController = new LocalStorageController<QFFilterTileDTO, QFFilterTileJSONDTO>(new QFTileConverter(filterProvider), "ESGFQFStorage", QuickFilterTiles.Defaults);
+
 
         this.state = {
             QFSidebarShow: false,
-            qfTileModels: []
+            qfTileModels: [],
+            errorState: ErrorState.NoError
         };
 
         this.togglePropertySelected = this.togglePropertySelected.bind(this);
+        this.update = this.update.bind(this);
         this.quickFilterListItemFactory = this.quickFilterListItemFactory.bind(this);
         this.openNav = this.openNav.bind(this);
         this.closeNav = this.closeNav.bind(this);
@@ -51,7 +78,7 @@ export class QFWrapper extends Component<{ searchResultProvider, selectionManage
      *
      * @param {ESGFFilterPropertyDTO} property
      */
-    togglePropertySelected(property) {
+    togglePropertySelected(property: ESGFFilterPropertyDTO) {
         let {select, deselect, isSelected} = this._selectedPropertyManager;
 
         (isSelected(property) ? deselect : select)(property);
@@ -91,39 +118,32 @@ export class QFWrapper extends Component<{ searchResultProvider, selectionManage
         );
     };
 
-    private update() {
-        this._quickFilterProvider.provide()
-            .then(qfTileModels => this.setState({qfTileModels: qfTileModels}));
-    }
+    private async update() {
+        try {
+            let qfTileModels = await Promise.all(this._tileController.getLocalstorage());
+            this.setState({qfTileModels: qfTileModels});
+        } catch (e) {
+            this.setState({errorState: ErrorState.ConnectionError});
+        }
 
-    createTiles(qfTileModels: QFFilterTileDTO[]): JSX.Element[] {
-        //<DEMO CODE>
-        if (qfTileModels.length === 0) return [];
-
-        return qfTileModels.map(({color, icon, title, properties}) => {
-                title = StringFormatter.toHumanText(title);
-
-                return <QFTile key={title}
-                               listItemFactory={this.quickFilterListItemFactory}
-                               title={title}
-                               color={color}
-                               icon={icon}
-                               properties={properties}
-                               page="qf"/>;
-            }
-        );
-        //</DEMO CODE>
     }
 
     componentDidMount(): void {
         this.update();
     }
 
-    render() {
-        let {QFSidebarShow, qfTileModels} = this.state;
+    createTiles(qfTileModels: QFFilterTileDTO[]): JSX.Element[] {
+        //TODO get with dependency injection
+        let tileFactory = new TileFactory();
 
-        let qfTiles = this.createTiles(qfTileModels);
-        let hasTiles = qfTiles.length > 0;
+        if (qfTileModels.length === 0) return [];
+
+        return qfTileModels.map(QFFilterTileDTO =>
+            tileFactory.createTile(QFFilterTileDTO, this.quickFilterListItemFactory));
+    }
+
+    render() {
+        let {QFSidebarShow} = this.state;
 
         return (
             <section className="qf-wrapper">
@@ -131,7 +151,7 @@ export class QFWrapper extends Component<{ searchResultProvider, selectionManage
                 {/*<div className="button-open-presets" onClick={this.openNav}>&#9776; Presets</div>*/}
                 <div className="qf-main-container">
                     <div className="tiles">
-                        {hasTiles ? qfTiles : <LoadingIcons.Spinner />}
+                        {this.componentContent}
                     </div>
                 </div>
             </section>

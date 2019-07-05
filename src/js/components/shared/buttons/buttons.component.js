@@ -1,14 +1,66 @@
-import PropTypes from "prop-types";
+import * as PropTypes from "prop-types";
 import React, {Component} from "react";
 import ArrowIcons from "../icons/arrow-icons.component";
 
-const Buttons = {};
+const Buttons = {Outline: {}};
 
-Buttons.Options = ({onClick}) =>
-    <span className="Button"
+Buttons.IconButton = ({onClick, children = null, className = ""}) =>
+    <span className={["btn", className].join(" ")}
           onClick={onClick}>
-        <i className="fas fa-ellipsis-h"/>
+        {children}
     </span>;
+
+
+Buttons.Options = ({onClick}) => <Buttons.IconButton onClick={onClick}
+                                                     className={"Button"}>
+    <i className="fas fa-ellipsis-h"/>
+</Buttons.IconButton>;
+
+Buttons.Info = ({onClick}) =>
+    <span className={"icon-info"}
+          onClick={onClick}><i className="fas fa-info-circle"/>
+</span>;
+
+Buttons.Edit = ({onClick}) =>
+    <span className={"icon-info"}
+          onClick={onClick}> <i className="fas fa-edit"/>
+</span>;
+
+Buttons.Primary = ({title, onClick}) =>
+    <a key={"button-" + title}
+       onClick={onClick}>
+        <input className="btn btn-primary btn-sm"
+               type="button"
+               value={title}/>
+    </a>;
+/**
+ *
+ * @param {string} title
+ * @param {function(*): void}onClick
+ * @return {*}
+ * @constructor
+ */
+Buttons.Outline.Primary = ({title, onClick}) =>
+    <a key={"button-" + title}
+       onClick={onClick}>
+        <input className="btn btn-outline-primary"
+               type="button"
+               value={title}/>
+    </a>;
+Buttons.Success = ({title, onClick}) =>
+    <a key={"button-" + title}
+       onClick={onClick}>
+        <input className="btn btn-success btn-sm"
+               type="button"
+               value={title}/>
+    </a>;
+Buttons.Danger = ({title, onClick}) =>
+    <a key={"button" + title}
+       onClick={onClick}>
+        <input className="btn btn-danger btn-sm"
+               type="button"
+               value={title}/>
+    </a>;
 
 /**
  *
@@ -93,3 +145,5 @@ Buttons.Dropdown.Primary = ({name, onClick}) => (
 );
 
 export default Buttons;
+;
+;

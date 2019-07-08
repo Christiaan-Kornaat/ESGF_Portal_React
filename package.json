@@ -26,14 +26,15 @@
   "devDependencies": {
     "@babel/preset-env": "latest",
     "@babel/preset-react": "latest",
+    "@storybook/react": "^5.1.9",
     "@types/jest": "^24.0.13",
     "arkit": "^1.5.3",
     "autoprefixer": "latest",
-    "awesome-typescript-loader": "latest",
+    "awesome-typescript-loader": "^5.2.1",
     "babel-jest": "latest",
+    "babel-loader": "latest",
     "babel-register": "latest",
     "babelify": "latest",
-    "babel-loader": "latest",
     "css-loader": "latest",
     "html-loader": "latest",
     "html-webpack-plugin": "latest",
@@ -44,6 +45,8 @@
     "postcss": "latest",
     "postcss-loader": "latest",
     "precss": "latest",
+    "react-docgen-typescript-loader": "^3.1.0",
+    "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "sass-loader": "latest",
     "style-loader": "latest",
     "ts-jest": "^24.0.2",
@@ -53,7 +56,8 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "node server.js", 
-    "heroku-postbuild": "webpack -p" 
+    "start": "node server.js",
+    "heroku-postbuild": "webpack -p",
+    "storybook": "start-storybook -p 9001 -c .storybook"
   }
 }

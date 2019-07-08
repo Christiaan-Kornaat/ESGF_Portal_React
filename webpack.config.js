@@ -113,6 +113,3 @@ module.exports = {
         ignored: /node_modules/
     }
 };
-module.loaders = [
-    {test: /\.js$/, exclude: /node_modules/, use: "babel-loader"}
-];

@@ -86,7 +86,6 @@ class SearchPortalApp extends Component {
     private readonly searchService: IESGFSearchService;
     private readonly searchResultProvider: ESGFSearchResultsProvider;
     private readonly searchManager: EsgfSearchManager;
-    private readonly tileProvider: QFTileProvider;
     private readonly selectedPropertyManager: SelectedPropertyManager;
     private readonly quickFilterManager: QuickSelectManagerMock;
     private readonly adagucUrlBuilder: AdagucUrlBuilder;
@@ -101,7 +100,6 @@ class SearchPortalApp extends Component {
             SearchResultsProvider,
             SelectedPropertyManager,
             QuickFilterManager,
-            QuickFilterTileProvider,
             DATA_HOST
         } = Dependencies[environment] as AppEnvironment;
 

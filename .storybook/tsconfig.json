@@ -6,17 +6,16 @@
       "target": "es5",
       "lib": ["es6", "dom"],
       "sourceMap": true,
-      "allowJs": false,
+      "allowJs": true,
       "jsx": "react",
       "moduleResolution": "node",
       "rootDir": "../",
       "outDir": "dist",
-      "noImplicitReturns": false,
-      "noImplicitThis": false,
+      "noImplicitReturns": true,
+      "noImplicitThis": false, // gives 3 errors in preser customizer in sortfunctions (state does not exist)
       "noImplicitAny": false,
-      "strict": false,
-      "strictNullChecks": false,
-      "declaration": true
+      "strict": true,
+      "strictNullChecks": false
     },
     "include": [
       "src/**/*"

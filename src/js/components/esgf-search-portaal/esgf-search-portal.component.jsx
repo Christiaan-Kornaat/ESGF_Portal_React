@@ -20,7 +20,7 @@ export class ESGFSearchPortal extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.tabs == prevState.tabs) return;
+        if (nextProps.tabs == prevState.tabs) return null;
         return { tabs: nextProps.tabs };
     }
 

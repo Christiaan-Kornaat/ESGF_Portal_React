@@ -1,9 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import SearchComponent from "../../../expanded-property-finder/wrapper/search.component";
-import {SearchComponentModel} from "../../../../model/factories/page-column-tab.factory";
+import { SearchComponentModel } from "../../../../model/factories/page-column-tab.factory";
 import UnorderedList from "../../list-unordered/list-unordered.component";
 import LoadingIcons from "../../icons/loading-icons.component";
-import IPageColumnTab, {PageColumnTabProps} from "./page-column-tab.interface";
+import IPageColumnTab, { PageColumnTabProps } from "./page-column-tab.interface";
 
 type PageColumnListTabProps<TItem> = PageColumnTabProps & {
     items: TItem[],
@@ -24,7 +24,7 @@ class PageColumnListTab<TItem = any> extends Component<PageColumnListTabProps<TI
     }
 
     private get renderItems() {
-        let {sortFunction, searchComponentModel: {searchMethod}, searchQuery, items} = this.state;
+        let { sortFunction, searchComponentModel: { searchMethod }, searchQuery, items } = this.state;
 
         return sortFunction(searchMethod(searchQuery, items));
     }
@@ -37,7 +37,7 @@ class PageColumnListTab<TItem = any> extends Component<PageColumnListTabProps<TI
     constructor(props) {
         super(props);
 
-        let {sortFunction, searchComponentModel, items, listItemFactory: createListItem, isLoading} = props;
+        let { sortFunction, searchComponentModel, items, listItemFactory: createListItem, isLoading } = props;
 
         this.createListItem = createListItem;
 
@@ -51,40 +51,41 @@ class PageColumnListTab<TItem = any> extends Component<PageColumnListTabProps<TI
 
         this.handleSearch = this.handleSearch.bind(this);
     }
-
+    /* Always returns true can this be removed or not?
     shouldComponentUpdate(nextProps: Readonly<PageColumnTabProps & { items: TItem[]; isLoading: boolean; listItemFactory; searchComponentModel: SearchComponentModel; sortFunction: <TItem>(query: string, items: TItem[]) => TItem[] }>, nextState: Readonly<{}>, nextContext: any): boolean {
         return true;
     }
+    */
 
-    componentWillReceiveProps({items, isLoading, sortFunction}: PageColumnListTabProps<TItem>) {
-        let newState: any = {
-            items: items,
-            isLoading: isLoading
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.items == prevState.items && nextProps.isLoading == prevState.isLoading && nextProps.sortFunction == prevState.sortFunction) return null;
+        return {
+            items: nextProps.items,
+            isLoading: nextProps.isLoading,
+            sortFunction: nextProps.sortFunction
         };
-
-        if (sortFunction) newState.sortFunction = sortFunction;
-
-        this.setState(newState);
     }
 
     /**
      * @param {string} query
      */
-    handleSearch(query) { this.setState({searchQuery: query}); }
+    handleSearch(query) { this.setState({ searchQuery: query }); }
 
 
     render() {
-        let {state: {isLoading, searchComponentModel: {headerButtons}}, createListItem} = this;
+        let { state: { isLoading, searchComponentModel: { headerButtons } }, createListItem } = this;
 
         let content = (!isLoading) ?
             <UnorderedList className="List"
-                           items={this.renderItems}
-                           createListItem={createListItem}/> :
-            <LoadingIcons.Spinner/>;
+                key={this.renderItems}
+                items={this.renderItems}
+                createListItem={createListItem} /> :
+            <LoadingIcons.Spinner />;
 
         this._children = [
             <SearchComponent onSearch={this.handleSearch}
-                             headerButtons={headerButtons}/>,
+                key={"unique key"}
+                headerButtons={headerButtons} />,
             content
         ];
 

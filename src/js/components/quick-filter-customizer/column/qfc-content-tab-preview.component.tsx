@@ -38,10 +38,16 @@ export class PreviewTab extends Component<PreviewTabProps> {
         this.saveTile(qfTile);
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.qfTile.properties == prevState.qfTile.properties) return null;
+        return { properties: nextProps.qfTile.properties };
+    }
+
+    /*
     componentWillReceiveProps({properties}: PreviewTabProps): void {
         this.handlePropertiesChange(properties);
     }
-
+    */
     handlePropertiesChange(properties: ESGFFilterPropertyDTO[]): void {
         let qfTile = this.props.qfTile;
 

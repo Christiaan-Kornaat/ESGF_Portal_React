@@ -11,10 +11,11 @@
       "moduleResolution": "node",
       "rootDir": "../",
       "outDir": "dist",
-      "noImplicitReturns": true,
-      "noImplicitThis": true,
-      "noImplicitAny": true,
-      "strictNullChecks": true,
+      "noImplicitReturns": false,
+      "noImplicitThis": false,
+      "noImplicitAny": false,
+      "strict": false,
+      "strictNullChecks": false,
       "declaration": true
     },
     "include": [

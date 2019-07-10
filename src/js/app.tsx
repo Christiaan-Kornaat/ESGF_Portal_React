@@ -78,7 +78,7 @@ const Dependencies = {
 
 const environment = "prod";
 
-class App extends Component {
+class SearchPortalApp extends Component {
     private readonly catalogService: ICatalogService;
     private readonly catalogProvider: ICatalogProvider;
     private readonly filterService: IESGFFilterService;
@@ -171,4 +171,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default SearchPortalApp;

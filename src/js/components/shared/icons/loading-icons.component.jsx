@@ -16,11 +16,11 @@ LoadingIcons.SpinnerInline = () =>
         <span className="text">Loading...</span>
     </div>;
 
-LoadingIcons.Error = ({className = "", onClick = null}) =>
+LoadingIcons.Error = ({className = "", onClick = ()=>{}}) =>
     <FontAwesomeIcon classNames={["fa-exclamation-triangle", className]}
                      onClick={onClick}/>;
 
-LoadingIcons.NoConnection = ({className = "", onClick = null}) => <FontAwesomeIcon classNames={["fa-wifi", className]}
+LoadingIcons.NoConnection = ({className = "", onClick = ()=>{}}) => <FontAwesomeIcon classNames={["fa-wifi", className]}
                                                                                    onClick={onClick}/>;
 
 export default LoadingIcons;

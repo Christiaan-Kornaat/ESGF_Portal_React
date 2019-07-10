@@ -14,7 +14,7 @@ export default class EsgfSearchQuery {
 
         let entries = Array.from(map.entries()).sort();
 
-        return entries.reduce((currentString, [filter, properties]) => currentString + `${filter}[${properties.join(",")}],`, `search-index=${this.pageInfo.index}-size=${this.pageInfo.size}`);
+        return (String)(entries.reduce((currentString, [filter, properties]) => currentString + `${filter}[${properties.join(",")}],`, `search-index=${this.pageInfo.index}-size=${this.pageInfo.size}`));
     }
 
     public readonly pageInfo: PageInfo;

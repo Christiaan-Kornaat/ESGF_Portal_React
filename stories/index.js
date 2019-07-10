@@ -1,11 +1,33 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { Button } from '@storybook/react/demo';
+import LoadingIcons from "../src/js/components/shared/icons/loading-icons.component";
+import SearchPortalApp from "../src/js/app";
 
-storiesOf('Button', module)
-  .add('with text', () => (
-    <Button>Hello Button</Button>
+storiesOf('SearchPortaal', module)
+  .add('Default', () => (
+    <div className="ESGFSearchPortal">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"/>
+      <SearchPortalApp />
+    </div>
   ))
-  .add('with emoji', () => (
-    <Button><span role="img" aria-label="so cool">😀 😎 👍 💯</span></Button>
-  ));   
+  ;
+
+storiesOf('LoadingIcons', module)
+  .add('Spinner', () => (
+    <div className="ESGFSearchPortal">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"/>
+      <LoadingIcons.Spinner />
+    </div>
+  ))
+  .add('NoConnection', () => (
+    <div className="ESGFSearchPortal">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"/>
+      <LoadingIcons.NoConnection />
+    </div>
+  ))
+  .add('Error', () => (
+    <div className="ESGFSearchPortal">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"/>
+      <LoadingIcons.Error />
+    </div>
+  ));

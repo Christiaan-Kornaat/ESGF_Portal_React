@@ -1,5 +1,7 @@
 import { configure } from '@storybook/react';
 
+import "../src/style/ESGFSearch.scss";
+
 function loadStories() {
   require('../stories/index.js');
   // You can require as many stories as you need.

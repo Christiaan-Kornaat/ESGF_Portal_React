@@ -15,7 +15,7 @@ const JS_PATH = "./src/js";
 const CSS_PATH = "./src/css";
 
 module.exports = {
-    entry: JS_PATH + "/main.js",
+    entry: JS_PATH + "/index.js",
     cache: false,
     mode: "development",
     output: {
@@ -94,12 +94,7 @@ module.exports = {
     },
     externals: {},
     plugins: [
-        //TODO figure this out
-        new HtmlWebPackPlugin({
-            template: HTML_PATH + "/index.html",
-            filename: "./index.html"
-        }),
-        new MiniCssExtractPlugin({
+       new MiniCssExtractPlugin({
             filename: CSS_PATH + "/[name].css",
             chunkFilename: "[id].css"
         }),

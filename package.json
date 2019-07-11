@@ -1,6 +1,21 @@
 {
   "name": "@c4i/esgf-search",
-  "version": "0.1.0",
+  "version": "0.1.2",
+  "main": "./dist/esgf-search.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christiaanko/ESGF_Portal_React"
+  },
+  "keywords": [
+    "esgf-search",
+    "c4i"
+  ],
+  "author": "Christiaan Kornaat",
+  "license": "Apache License 2.0",
+  "bugs": {
+    "url": "https://github.com/christiaanko/ESGF_Portal_React/issues"
+  },
+  "homepage": "https://github.com/christiaanko/ESGF_Portal_React",
   "dependencies": {
     "@types/react": "latest",
     "@types/react-dom": "latest",

@@ -30,14 +30,9 @@ class HtmlList<T = any> extends Component<{ items: T[], createListItem: (T) => a
         return !(items.length === 0 && items.length === this.state.items.length);
     }
 
-    /**
-     *
-     * @param {Array}items
-     */
-    componentWillReceiveProps({items}) {
-        this.setState({
-            items: items
-        });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.items == prevState.items) return null;
+        return { items: nextProps.items };
     }
 
     render() {

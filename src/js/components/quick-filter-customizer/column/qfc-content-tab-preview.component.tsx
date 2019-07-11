@@ -43,11 +43,6 @@ export class PreviewTab extends Component<PreviewTabProps> {
         return { properties: nextProps.qfTile.properties };
     }
 
-    /*
-    componentWillReceiveProps({properties}: PreviewTabProps): void {
-        this.handlePropertiesChange(properties);
-    }
-    */
     handlePropertiesChange(properties: ESGFFilterPropertyDTO[]): void {
         let qfTile = this.props.qfTile;
 

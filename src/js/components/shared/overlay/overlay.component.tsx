@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 export class Overlay extends Component<{ background: JSX.Element, foreground: JSX.Element, onClick: any }> {
     onClick: any;
@@ -7,7 +7,7 @@ export class Overlay extends Component<{ background: JSX.Element, foreground: JS
         background: JSX.Element,
         foreground: JSX.Element
     };
-    
+
     constructor(props) {
         super(props);
 
@@ -20,11 +20,12 @@ export class Overlay extends Component<{ background: JSX.Element, foreground: JS
         };
     }
 
-    componentWillReceiveProps({ background, foreground }) {
-        this.setState({
-            background: background,
-            foreground: foreground
-        });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.background == prevState.background && nextProps.foreground == prevState.foreground) return null;
+        return {
+            background: nextProps.background,
+            foreground: nextProps.foreground
+        };
     }
 
     render() {

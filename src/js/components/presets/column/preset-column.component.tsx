@@ -27,8 +27,9 @@ export class PresetsPreviewTab extends Component<PreviewTabProps> {
         this.handlePropertiesChange = this.handlePropertiesChange.bind(this);
     }
 
-    componentWillReceiveProps({properties}: PreviewTabProps): void {
-        this.handlePropertiesChange(properties);
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.properties == prevState.properties) return null;
+        return { properties: nextProps.properties };
     }
 
     handlePropertiesChange(properties) {

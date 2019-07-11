@@ -23,11 +23,12 @@ class PageColumn extends Component<PageColumnProps> {
         };
     }
 
-    componentWillReceiveProps({tabs, activeTab}: PageColumnProps) {
-        this.setState({
-            tabs: tabs,
-            activeTabName: activeTab == null ? this.state.activeTabName : activeTab
-        });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.tabs == prevState.tabs && nextProps.activeTabName == prevState.activeTabName) return null;
+        return { 
+            tabs: nextProps.tabs,
+            activeTabName: nextProps.activeTabName
+        };
     }
 
     /**

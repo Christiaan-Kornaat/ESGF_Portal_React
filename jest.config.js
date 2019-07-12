@@ -15,7 +15,7 @@ module.exports = {
     // cacheDirectory: "/private/var/folders/mg/bdys5ygx5tj0nwf17dxv0dd40000gn/T/jest_dx",
 
     // Automatically clear mock calls and instances between every test
-    // clearMocks: false,
+    clearMocks: true,
 
     // Indicates whether the coverage information should be collected while executing the test
     // collectCoverage: false,
@@ -77,7 +77,10 @@ module.exports = {
     ],
 
     // A map from regular expressions to module names that allow to stub out resources with a single module
-    // moduleNameMapper: {},
+    moduleNameMapper: {
+        "^@c4i/esgf-search$": "<rootDir>/src",
+        "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules"
+    },
 
     // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module
     // loader modulePathIgnorePatterns: [],
@@ -121,7 +124,7 @@ module.exports = {
     // runner: "jest-runner",
 
     // The paths to modules that run some code to configure or set up the testing environment before each test
-    // setupFiles: [],
+    setupFiles: ["./test/setup-jest.js", "jest-canvas-mock"],
 
     // A list of paths to modules that run some code to configure or set up the testing framework before each test
     // setupFilesAfterEnv: [],

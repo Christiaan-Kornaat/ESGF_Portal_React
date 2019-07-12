@@ -124,16 +124,15 @@ export default class ResultItem extends Component<ResultItemProps> {
                     [ViewMode.Aggregates, "Aggregates"]
                 ])} selected={this.state.viewMode} className={"mb-2 mr-sm-2"}/>
                 </form>
+                {/* This could be the cause for Errors */}
                 <table className="table">
                     <thead>
-                    <tr>
                         <th scope="col">#</th>
                         <th scope="col">Dataset</th>
                         <th scope="col">Size</th>
                         <th scope="col">Download</th>
                         <th scope="col">View</th>
                         <th scope="col">Basket</th>
-                    </tr>
                     </thead>
                     <tbody>
                     {content}

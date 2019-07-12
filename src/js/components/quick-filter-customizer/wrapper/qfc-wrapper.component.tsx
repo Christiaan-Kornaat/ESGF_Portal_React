@@ -141,7 +141,7 @@ export namespace QuickFilterCustomizer {
                 <div className="qf-main-container">
                     <div className="tiles">
                         {!isLoading ? qfTiles : <LoadingIcons.Spinner />}
-                        {(!isLoading && !hasMaxTiles) ? overlayFactory.createOverlay(tileFactory.createTile(iconTileAdd, new ListItemFactoryFactory().createQuickFilterListItem), plusIconOverlay, () => this.addTile(), 9) : null}
+                        {(!isLoading && !hasMaxTiles) ? overlayFactory.createOverlay(tileFactory.createTile(iconTileAdd, new ListItemFactoryFactory().createQuickFilterListItem), plusIconOverlay, () => this.addTile(), 9 /* TODO: Unique key */) : null}
                     </div>
                 </div>
             );

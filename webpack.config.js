@@ -7,7 +7,6 @@ const path = require("path");
 require("babel-register");
 const autoprefixer = require('autoprefixer');
 const webpack = require("webpack");
-const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
@@ -68,14 +67,14 @@ module.exports = {
         }),
         new webpack.HotModuleReplacementPlugin()
     ],
+    externals: {
+        'react': 'commonjs react' // this line is just to use the React dependency of our parent-testing-project instead of using our own React.
+    },
     devServer: {
         overlay: false,
         hot: true
     },
     watchOptions: {
         ignored: /node_modules/
-    },
-    externals: {
-        'react': 'commonjs react' // this line is just to use the React dependency of our parent-testing-project instead of using our own React.
     }
 };

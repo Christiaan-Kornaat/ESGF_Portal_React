@@ -158,7 +158,7 @@ class SearchPortalApp extends Component {
 
 
         return (
-            <div>
+            <div className='ESGFSearchPortal'>
                 <ESGFSearchPortal
                     tabs={{"Quick filter": QF, "Extended property finder": XPF, "Quick filter customizer": QFC}}/>
                 <ResultWrapper catalogProvider={this.catalogProvider}

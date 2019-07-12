@@ -1,105 +1,75 @@
 /**
  * Note: I borrowed this from a demo-project, my understanding of this file is limited -Jan
+ * Thank you Jan, very cool -Mart
  */
 
 const path = require("path");
-const webpack = require("webpack");
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 require("babel-register");
-
-const OUTPUT_PATH = __dirname + "/dist";
-
-const HTML_PATH = "./src/html";
-const JS_PATH = "./src/js";
-const CSS_PATH = "./src/css";
+const autoprefixer = require('autoprefixer');
+const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-    entry: JS_PATH + "/index.js",
-    cache: false,
-    mode: "development",
+    entry: path.resolve(__dirname, 'src/js/index.js'),
+    mode: "production",
     output: {
-        path: path.resolve(OUTPUT_PATH),
-        filename: "esgf-search.js",
+        path: path.resolve(__dirname, 'dist'),
+        filename: "index.js",
         hotUpdateChunkFilename: "hot/hot-update.js",
-        hotUpdateMainFilename: "hot/hot-update.json"
+        hotUpdateMainFilename: "hot/hot-update.json",
+        libraryTarget: 'umd'
     },
-    devtool: "source-map",
     module: {
         rules: [
-            {
+            { //TypeScript
                 test: /\.(ts|tsx)$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /(node_modules|bower_components|dist)/,
                 include: path.resolve(__dirname, "src", "js"),
-                use: "awesome-typescript-loader"
-            }, //TypeScript
-            {
+                use: ['awesome-typescript-loader']
+            },
+            { // JavaScript
                 test: /\.(js|jsx)$/,
-                exclude: /(node_modules|bower_components)/,
-                include: path.resolve(__dirname, "src", "js"),
+                exclude: /(node_modules|dist)/,
+                use: ['babel-loader']
+            },
+            { // Static files
+                test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
+                loader: 'file-loader?name=[name].[ext]' // <-- retain original file name
+            },
+            { // Fonts
+                test: /\.(ttf|eot|woff|woff2)$/,
                 use: {
-                    loader: "babel-loader",
-                    query:
-                        {
-                            presets: [
-                                "@babel/preset-env",
-                                "@babel/preset-react"
-                            ]
-                        }
+                    loader: 'file-loader',
+                    options: {
+                        name: 'fonts/[name].[ext]'
+                    }
                 }
-            }, //JavaScript
-            {
-                test: /\.html$/,
+            },
+            { // SCSS
+                test: /\.scss$/,
                 use: [
-                    {
-                        loader: "html-loader",
-                        options: {minimize: true}
-                    }
+                    'style-loader', // creates style nodes from JS strings
+                    MiniCssExtractPlugin.loader,
+                    'css-loader', // translates CSS into CommonJS
+                    'postcss-loader',
+                    'sass-loader' // compiles Sass to CSS
                 ]
-            }, //HTML
-            {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader"]
-            }, //CSS
-            {
-                test: /\.(scss)$/,
-                use: [
-                    {
-                        loader: "style-loader" // inject CSS to page
-                    }, {
-                        loader: "css-loader" // translates CSS into CommonJS modules
-                    }, {
-                        loader: "postcss-loader", // Run post css actions
-                        options: {
-                            plugins: function () { // post css plugins, can be exported to postcss.config.js
-                                return [
-                                    require("precss"),
-                                    require("autoprefixer")
-                                ];
-                            }
-                        }
-                    }, {
-                        loader: "sass-loader" // compiles Sass to CSS
-                    }
-                ]
-            },//SCSS
-            {
-                test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.woff2$|\.eot$|\.ttf$|\.wav$|\.mp3$/,
-                loader: "file-loader?name=[name].[ext]" // <-- retain original file name
-            } //Static files
+              }
         ]
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".jsx"]
+        extensions: [".ts", ".tsx", ".js", ".jsx", "scss"]
     },
-    externals: {},
     plugins: [
        new MiniCssExtractPlugin({
-            filename: CSS_PATH + "/[name].css",
+            filename: '[name].css',
             chunkFilename: "[id].css"
         }),
         new webpack.HotModuleReplacementPlugin()
     ],
+    externals: {
+        'react': 'commonjs react' // this line is just to use the React dependency of our parent-testing-project instead of using our own React.
+    },
     devServer: {
         overlay: false,
         hot: true

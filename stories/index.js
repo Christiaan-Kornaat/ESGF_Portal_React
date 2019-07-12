@@ -5,7 +5,7 @@ import SearchPortalApp from "../src/js/app";
 
 storiesOf('SearchPortaal', module)
   .add('Default', () => (
-    <div className="ESGFSearchPortal">
+    <div>
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
       <SearchPortalApp />
     </div>

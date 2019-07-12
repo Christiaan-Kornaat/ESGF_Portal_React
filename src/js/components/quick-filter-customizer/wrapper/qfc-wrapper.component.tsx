@@ -67,7 +67,7 @@ export namespace QuickFilterCustomizer {
             //TODO get with dependency injection
             let tileFactory = new TileFactory();
             let overlayFactory = new OverlayFactory();
-            let overlay = <Overlays.QFTiles.PlusIcon />;
+            let overlay = <Overlays.QFTiles.PencilIcon />;
             if (qfTileModels.length === 0) return [];
 
 
@@ -132,12 +132,16 @@ export namespace QuickFilterCustomizer {
 
             let iconTileAdd = new QFFilterTileDTO("Add Quick Filter", "#3f3f3f", "fas fa-plus-circle", []);
             //TODO ergens anders? is kort maar niet mooi
+            
+            let overlayFactory = new OverlayFactory();
+            let plusIconOverlay = <Overlays.QFTiles.PlusIcon />;
+            // tileFactory.createIconTile(iconTileAdd, this.addTile)
 
             let tab = (
                 <div className="qf-main-container">
                     <div className="tiles">
                         {!isLoading ? qfTiles : <LoadingIcons.Spinner />}
-                        {(!isLoading && !hasMaxTiles) ? tileFactory.createIconTile(iconTileAdd, () => { this.addTile })  : null}
+                        {(!isLoading && !hasMaxTiles) ? overlayFactory.createOverlay(tileFactory.createTile(iconTileAdd, new ListItemFactoryFactory().createQuickFilterListItem), plusIconOverlay, () => this.addTile(), 9) : null}
                     </div>
                 </div>
             );

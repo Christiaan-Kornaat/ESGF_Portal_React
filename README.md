@@ -14,6 +14,13 @@ Open the terminal and enter `npm i @c4i/esgf-search`.
 1. Import SearchPortalApp: `import { SearchPortalApp } from '@c4i/esgf-search'`.
 2. Add `<SearchPoralApp />` where the search needs to be rendered.
 
+## Publishing
+0. Write unit tests ;)
+1. Adjust version number in package.json
+2. Commit your code
+3. `npm run build`
+4. `npm publish`
+
 ## License
 Copyright 2019 KNMI
 
